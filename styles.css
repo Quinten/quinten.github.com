@@ -1,0 +1,23 @@
+body {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 0px 15px;
+    margin: 0px;
+    font-family: monospace;
+}
+
+ul {
+    list-style-type:circle;
+}
+
+a:link {
+    color: #3498db;
+}
+
+a:visited {
+    color: #9b59b6;
+}
+
+a:hover, a:active {
+    color: #2980b9;
+}
