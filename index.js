@@ -12,8 +12,6 @@ clips = [];
 function onF(time) {
     width = canvas.width = canvas.clientWidth;
     height = canvas.height = canvas.clientHeight;
-    context.fillStyle = '#869496';
-    context.strokeStyle = '#869496';
     context.clearRect(0, 0, width, height);
     clips.forEach(function(clip) {
         clip.render(time);

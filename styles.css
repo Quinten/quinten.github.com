@@ -38,8 +38,8 @@ a:hover, a:active {
     right: 0;
     height: 100vh;
     width: 25vw;
-    transition: width .5s cubic-bezier(0, 0, 0.35, 1);
-    background: #2c3e50;
+    transition: width .5s cubic-bezier(0, 0, 0.35, 1), background-color .5s cubic-bezier(0, 0, 0.35, 1);
+    background-color: #ecf0f1;
 }
 
 .index-canvas.expanded {
