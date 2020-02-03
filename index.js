@@ -22,7 +22,7 @@ function onF(time) {
 }
 window.requestAnimationFrame(onF);
 
-function createClip({
+function addClip({
     x = 0,
     y = 0,
     rotation = 0
@@ -40,7 +40,13 @@ function createClip({
         context.restore();
     };
 
+    clips.push(clip);
+
     return clip;
+}
+
+function removeClip(clip) {
+    clips.splice(clips.indexOf(clip), 1);
 }
 
 var expanded = false;
@@ -57,9 +63,34 @@ expander.addEventListener('click', () => {
     }
 });
 
-(async () => {
-    const module = await import('./clips/20200202.js')
-    module.add();
-})();
+var modules = [], currentModule, moduleIndex = -1;
 
+async function nextModule() {
+    if (!modules.length) {
+        return;
+    }
+    if (currentModule && currentModule.remove) {
+        currentModule.remove();
+    }
+    moduleIndex++;
+    if (moduleIndex >= modules.length) {
+        moduleIndex = 0;
+    }
+    var newModule = await import(
+        './clips/' + modules[moduleIndex]
+    );
+    newModule.add();
+    currentModule = newModule;
+};
 
+fetch('./clips.json').then((response) => {
+    return response.json();
+}).then((data) => {
+    modules = data;
+    nextModule();
+});
+
+// tmp
+canvas.addEventListener('click', function () {
+    nextModule();
+});
