@@ -12,6 +12,9 @@ export const add = () => {
         context.strokeRect(-8, -8, 16, 16);
         context.fillRect(64, -8, 16, 16);
     };
+    events.once('pointerup', (e) => {
+        nextModule();
+    });
 };
 
 export const remove = () => {

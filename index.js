@@ -88,7 +88,49 @@ fetch('./clips.json').then((response) => {
     nextModule();
 });
 
+var events = {
+    listeners: {},
+    on: function (type, callback) {
+        if (!this.listeners[type]) {
+            this.listeners[type] = [];
+        }
+        this.listeners[type].push(
+            callback
+        );
+    },
+    once: function (type, callback) {
+        var disposableCallback = (e) => {
+            callback(e);
+            this.off(type, disposableCallback);
+        };
+        this.on(type, disposableCallback);
+    },
+    off: function (type, callback) {
+        if (!this.listeners[type]) {
+            return;
+        }
+        if (!callback) {
+            this.listeners[type] = [];
+        }
+        this.listeners[type].splice(
+            this.listeners[type]
+                .indexOf(callback),
+            1
+        );
+    },
+    emit: function (type, e) {
+        if (!this.listeners[type]) {
+            return;
+        }
+        this.listeners[type].forEach(
+            (callback) => {
+                callback(e);
+        });
+    }
+};
+
 // tmp
-canvas.addEventListener('click', function () {
-    nextModule();
+canvas.addEventListener('click', function (e) {
+    //nextModule();
+    events.emit('pointerup', e);
 });
