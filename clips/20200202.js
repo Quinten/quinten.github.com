@@ -9,8 +9,8 @@ export const add = () => {
         this.rotation = Math.sin(-time / 600) * Math.PI;
         context.fillStyle = '#f39c12';
     context.strokeStyle = '#f39c12';
-        context.fillRect(-8, -8, 16, 16);
-        context.strokeRect(64, -8, 16, 16);
+        context.fillRect(-16, -16, 32, 32);
+        context.strokeRect(128, -16, 32, 32);
     };
     events.once('pointerup', (e) => {
         nextModule();

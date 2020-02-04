@@ -10,8 +10,8 @@ console.log(context);
 clips = [];
 
 function onF(time) {
-    width = canvas.width = canvas.clientWidth;
-    height = canvas.height = canvas.clientHeight;
+    width = canvas.width = canvas.clientWidth * 2;
+    height = canvas.height = canvas.clientHeight * 2;
     context.clearRect(0, 0, width, height);
     clips.forEach(function(clip) {
         clip.render(time);
