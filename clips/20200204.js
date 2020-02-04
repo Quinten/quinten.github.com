@@ -18,10 +18,13 @@ export const add = () => {
         let bigSquare = addClip();
         bigSquare.phase = b / 15;
         bigSquare.draw = function (time) {
-            this.x = width * this.phase;
-            this.y = height / 2;
+            this.x = width / 2;
+            this.y = height * this.phase;
+            this.rotation = Math.sin((time + 1200 * this.phase) / 600) * Math.PI;
+            this.rotation = Math.max(this.rotation, - Math.PI / 2);
+            this.rotation = Math.min(this.rotation, Math.PI / 2);
             context.fillStyle = '#1abc9c';
-            context.fillRect(-8, - width / 30, 16, width / 15);
+            context.fillRect(-height / 30, - 8, height / 15, 16);
         };
         bigSquares.push(bigSquare);
     }
@@ -40,4 +43,8 @@ export const add = () => {
 export const remove = () => {
     events.off('pointerup', listener);
     removeClip(square);
+    bigSquares.forEach((bigSquare) => {
+        removeClip(bigSquare);
+    });
+    bigSquares = [];
 };
