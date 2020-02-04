@@ -129,8 +129,9 @@ var events = {
     }
 };
 
-// tmp
-canvas.addEventListener('click', function (e) {
-    //nextModule();
-    events.emit('pointerup', e);
+canvas.addEventListener('mouseup', function (e) {  
+    let rect = canvas.getBoundingClientRect();
+    let x = (e.clientX - rect.left) * 2;
+    let y = (e.clientY - rect.top) * 2;
+    events.emit('pointerup', {x, y});
 });

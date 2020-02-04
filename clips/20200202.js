@@ -13,6 +13,7 @@ export const add = () => {
         context.strokeRect(128, -16, 32, 32);
     };
     events.once('pointerup', (e) => {
+        console.log(e);
         nextModule();
     });
 };
