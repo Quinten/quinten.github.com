@@ -5,7 +5,7 @@ let listener = (e) => {
     let dx = sx - e.x;
     let dy = sy - e.y;
     let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 20) {
+    if (d < 48) {
         nextModule();
     }
 };

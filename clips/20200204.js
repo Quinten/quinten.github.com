@@ -3,7 +3,7 @@ let listener = (e) => {
     let dx = width / 2 - e.x;
     let dy = height / 2 - e.y;
     let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 20) {
+    if (d < 48) {
         nextModule();
     }
 };
