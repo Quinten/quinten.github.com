@@ -18,7 +18,7 @@ function onF(time) {
     });
     window.requestAnimationFrame(onF);
 }
-window.requestAnimationFrame(onF);
+onF(0);
 
 function addClip({
     x = 0,
@@ -45,6 +45,23 @@ function addClip({
 
 function removeClip(clip) {
     clips.splice(clips.indexOf(clip), 1);
+}
+
+function quad(x1, y1, x2, y2, x3, y3, x4, y4) {
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.lineTo(x2, y2);
+    context.lineTo(x3, y3);
+    context.lineTo(x4, y4);
+    context.closePath();
+    context.fill();
+}
+
+function line(x1, y1, x2, y2) {
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.lineTo(x2, y2);
+    context.stroke();
 }
 
 var expanded = false;
