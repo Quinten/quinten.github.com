@@ -31,7 +31,7 @@ export const add = () => {
 
     events.on('pointerup', listener);
 
-    let nPrints = 128, prints = [];
+    let nPrints = Math.floor(Math.hypot(width, height) / 32), prints = [];
 
     for (let p = 0; p < nPrints; p++) {
 
