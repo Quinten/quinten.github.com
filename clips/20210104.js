@@ -31,7 +31,7 @@ export const add = () => {
 
     events.on('pointerup', listener);
 
-    let nPrints = Math.floor(Math.hypot(width, height) / 32), prints = [];
+    let nPrints = Math.floor(Math.hypot(window.innerWidth * 2, height) / 32), prints = [];
 
     for (let p = 0; p < nPrints; p++) {
 
@@ -39,7 +39,7 @@ export const add = () => {
         let speed = 1 + Math.random();
 
         let print = {
-            x: Math.floor(Math.random() * (width + 64)) - 32,
+            x: Math.floor(Math.random() * (window.innerWidth * 2 + 64)) - 32,
             y: Math.floor(Math.random() * (height + 64)) - 32,
             w: (32 + (Math.floor(Math.random() * 24) * 16)),
             h: (32 + (Math.floor(Math.random() * 24) * 16)),
@@ -51,6 +51,8 @@ export const add = () => {
     }
 
     snake.draw = function (time) {
+
+        let width = window.innerWidth * 2;
 
         context.fillStyle = '#C2EBFF';
         prints.forEach((print) => {
