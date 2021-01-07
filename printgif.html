@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <canvas></canvas>
+        <img />
+        <script src="gif.js"></script>
+        <script src="gif.worker.js"></script>
+        <script>
+            let nFrames = 128;
+            let width = 507;
+            let height = 507;
+
+            let rendered = false;
+            let progress = 0; // 0 -> 1
+            let bounce = 0; // 0 -> 1 -> 0
+            let frameIndex = 0;
+
+            let canvas = document.querySelector('canvas');
+            let ctx = canvas.getContext('2d');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.background = '#003554';
+
+            let gif = new GIF({
+                workers: 2,
+                quality: 10
+            });
+            gif.on('finished', (blob) => {
+                var img = document.querySelector('img');
+                img.src = URL.createObjectURL(blob);
+                rendered = true;
+                canvas.style.display = 'none';
+            });
+
+            let nPrints = Math.floor(Math.hypot(width, height) / 32);
+            let prints = [];
+
+            for (let p = 0; p < nPrints; p++) {
+
+                let print = {
+                    x: Math.floor(Math.random() * (window.innerWidth * 2 + 64)) - 32,
+                    y: Math.floor(Math.random() * (height + 64)) - 32,
+                    w: (32 + (Math.floor(Math.random() * 24) * 16)),
+                    h: (32 + (Math.floor(Math.random() * 24) * 16)),
+                    p: -0.5 + Math.random(),
+                    f: 1,
+                    fx: 1,
+                    dist: width * 2 + Math.random() * width
+                };
+
+                prints.push(print);
+            }
+
+            let draw = () => {
+                ctx.save();
+                ctx.fillStyle = '#C2EBFF';
+                prints.forEach((print) => {
+                    print.f = print.p + progress;
+                    if (print.f > 0.5) {
+                        print.f -= 1;
+                    }
+                    print.fx = print.dist * print.f;
+                    ctx.fillRect(print.fx, print.y, print.w, print.h);
+                });
+                ctx.fillStyle = '#003554';
+                prints.forEach((print) => {
+                    ctx.fillRect(print.fx + 2, print.y + 2, print.w - 4, print.h - 4);
+                });
+                ctx.fillStyle = '#C2EBFF';
+                prints.forEach((print) => {
+                    ctx.fillRect(print.fx + 12, print.y + 12, print.w - 24, print.h - 24);
+                });
+                ctx.fillStyle = '#003554';
+                prints.forEach((print) => {
+                    ctx.fillRect(print.fx + 14, print.y + 14, print.w - 28, print.h - 28);
+                });
+                ctx.restore();
+            };
+
+            let onF = () => {
+                frameIndex = frameIndex + 1;
+                progress = frameIndex / nFrames;
+                bounce = 1 - Math.abs(1 - progress * 2);
+
+                ctx.save();
+                ctx.fillStyle = canvas.style.background;
+                ctx.fillRect(0, 0, width, height);
+                ctx.restore();
+
+                draw();
+
+                gif.addFrame(canvas, {
+                    copy: true,
+                    delay: 40
+                });
+
+                if (frameIndex < nFrames) {
+                    requestAnimationFrame(onF);
+                } else {
+                    gif.render();
+                }
+            };
+            onF();
+
+        </script>
+    </body>
+</html>
