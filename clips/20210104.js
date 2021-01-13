@@ -19,9 +19,9 @@ export const add = () => {
     square.draw = function (time) {
         this.x = width / 2;
         this.y = height * 3 / 4;
-        context.fillStyle = '#84828F';
+        context.fillStyle = '#ecf0f1';
         context.fillRect(-16, -16, 32, 32);
-        context.strokeStyle = '#84828F';
+        context.strokeStyle = '#ecf0f1';
         let pulse = time % 2000;
         pulse = pulse * pulse / 4000000;
         context.globalAlpha = 1 - pulse;
