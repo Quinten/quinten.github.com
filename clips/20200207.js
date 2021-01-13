@@ -65,7 +65,7 @@ export const add = () => {
                     context.fillStyle = '#c0392b';
                     context.fillRect(-size / 8 * scaleX * this.scaleA, - size / 8 * scaleY * this.scaleA, size / 4 * scaleX * this.scaleA, size / 4 * scaleY * this.scaleA);
                 }
-                
+
             };
             bigSquares.push(bigSquare);
             }
@@ -79,6 +79,12 @@ export const add = () => {
         this.y = height / 2;
         context.fillStyle = '#ecf0f1';
         context.fillRect(-16, -16, 32, 32);
+        context.strokeStyle = '#ecf0f1';
+        let pulse = time % 2000;
+        pulse = pulse * pulse / 4000000;
+        context.globalAlpha = 1 - pulse;
+        pulse = 16 + pulse * 24;
+        context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
     };
 
     events.on('pointerup', listener);
