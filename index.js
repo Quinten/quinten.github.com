@@ -1,8 +1,9 @@
-var canvas, context, width, height, clips;
+var canvas, context, ctx, width, height, clips;
 
 canvas = document.querySelector('canvas');
 
 context = canvas.getContext('2d');
+ctx = context; // alias
 
 // documentation
 console.log(context);
@@ -146,7 +147,7 @@ var events = {
     }
 };
 
-canvas.addEventListener('mouseup', function (e) {  
+canvas.addEventListener('mouseup', function (e) {
     let rect = canvas.getBoundingClientRect();
     let x = (e.clientX - rect.left) * 2;
     let y = (e.clientY - rect.top) * 2;
