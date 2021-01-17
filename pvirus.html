@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <canvas></canvas>
+        <img />
+        <script src="gif.js"></script>
+        <script src="gif.worker.js"></script>
+        <script>
+            let nFrames = 100;
+            let width = 507;
+            let height = 507;
+
+            let rendered = false;
+            let progress = 0; // 0 -> 1
+            let bounce = 0; // 0 -> 1 -> 0
+            let frameIndex = 0;
+
+            let canvas = document.querySelector('canvas');
+            let ctx = canvas.getContext('2d');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.background = '#f3f4eb';
+
+            let gif = new GIF({
+                workers: 2,
+                quality: 5
+            });
+            gif.on('finished', (blob) => {
+                var img = document.querySelector('img');
+                img.src = URL.createObjectURL(blob);
+                rendered = true;
+                canvas.style.display = 'none';
+            });
+
+            let angleY = 0;
+
+            let cosY = Math.cos(angleY);
+            let sinY = Math.sin(angleY);
+
+            let angleX = 0;
+            let cosX = Math.cos(angleX);
+            let sinX = Math.sin(angleX);
+
+            let fl = 400;
+
+            let p = [];
+            let numPoints = 3600;
+            let lineSize = 40;
+            var Lx = 0, Ly = 0, Lz = 0;
+            
+            let s = [];
+            
+            function addStick() {
+            
+                let pt = [];
+                pt.push({x: 0, y: 0, z: 0});
+                pt.push({x: 0, y: 0, z: 200});
+                pt.push({x: -5, y: 0, z: 200});
+                pt.push({x: 5, y: 0, z: 200});
+                
+                let i = p.length;
+                s.push({a: i, b: i + 1});
+                s.push({a: i + 2, b: i + 3});
+                
+                angleX = Math.PI * 2 * Math.random();
+                angleY = Math.PI * 2 * Math.random();
+
+                cosY = Math.cos(angleY);
+                sinY = Math.sin(angleY);
+                cosX = Math.cos(angleX);
+                sinX = Math.sin(angleX);
+                
+                pt.forEach(function (t) {
+                
+                    let x1 = t.x * cosY - t.z * sinY;
+                    let z1 = t.z * cosY + t.x * sinY;
+
+                    let y1 = t.y * cosX - z1 * sinX;
+                    let z2 = z1 * cosX + t.y * sinX;
+
+                    t.x = x1;
+                    t.y = y1;
+                    t.z = z2;
+                    p.push(t);
+                });
+            }
+            
+            for (let g = 0; g < 200; g++) {
+                addStick();
+            }
+            
+            let line = (x1, y1, x2, y2) => {
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+
+            angleX = 4.5 / nFrames;
+            angleY = 4.5 / nFrames;
+
+            cosY = Math.cos(angleY);
+            sinY = Math.sin(angleY);
+            cosX = Math.cos(angleX);
+            sinX = Math.sin(angleX);
+
+            let draw = () => {
+                ctx.save();
+                ctx.strokeStyle = '#030422';
+                ctx.lineWidth = 1;
+
+                let vpX = width / 2;
+                let vpY = height / 2;
+                for (let i = 0; i < p.length; i++) {
+
+                    let x1 = p[i].x * cosY - p[i].z * sinY;
+                    let z1 = p[i].z * cosY + p[i].x * sinY;
+
+                    let y1 = p[i].y * cosX - z1 * sinX;
+                    let z2 = z1 * cosX + p[i].y * sinX;
+
+                    p[i].x = x1;
+                    p[i].y = y1;
+                    p[i].z = z2;
+
+                    let scale = fl / (fl + p[i].z);
+                    p[i]._x = vpX + p[i].x * scale;
+                    p[i]._y = vpY + p[i].y * scale;
+                }
+
+                for (let i = 0; i < s.length; i++) {
+                    let a = p[s[i].a];
+                    let b = p[s[i].b];
+                    if (
+                    //a.z < fl) && (b.z < fl) &&
+                    (a.z > -fl) && (b.z > -fl) &&
+                    !(((b._x < 0) && (a._x > width))
+                    || ((b._x > width) && (a._x < 0))
+                    || ((b._y < 0) && (a._y > height))
+                    || ((b._y > height) && (a._y < 0))))
+                    {
+                        line(b._x, b._y, a._x, a._y);
+                    }
+                }
+                
+                ctx.fillStyle = '#030422';
+                ctx.beginPath();
+                ctx.arc(vpX, vpY, 150, 0 , Math.PI *2, false)
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            };
+
+            let onF = () => {
+                frameIndex = frameIndex + 1;
+                progress = frameIndex / nFrames;
+                bounce = 1 - Math.abs(1 - progress * 2);
+
+                ctx.save();
+                ctx.fillStyle = canvas.style.background;
+                ctx.fillRect(0, 0, width, height);
+                ctx.restore();
+
+                draw();
+
+                gif.addFrame(canvas, {
+                    copy: true,
+                    delay: 40
+                });
+
+                if (frameIndex < nFrames) {
+                    requestAnimationFrame(onF);
+                } else {
+                    gif.render();
+                }
+            };
+            onF();
+
+        </script>
+    </body>
+</html>
