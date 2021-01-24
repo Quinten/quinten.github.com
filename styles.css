@@ -1,6 +1,6 @@
 body {
-    background: #ecf0f1;
-    color: #2c3e50;
+    background: #272D2D;
+    color: #F2FDFF;
     padding: 0px 15px;
     margin: 0px;
     font-family: monospace;
@@ -11,15 +11,15 @@ ul {
 }
 
 a:link {
-    color: #3498db;
+    color: #4FC6E3;
 }
 
 a:visited {
-    color: #9b59b6;
+    color: #D6C2CF;
 }
 
 a:hover, a:active {
-    color: #2980b9;
+    color: #21B0D4;
 }
 
 .dib {
@@ -39,7 +39,7 @@ a:hover, a:active {
     height: 100vh;
     width: 25vw;
     transition: width .5s cubic-bezier(0, 0, 0.35, 1), background-color .5s cubic-bezier(0, 0, 0.35, 1);
-    background-color: #ecf0f1;
+    background-color: #272D2D;
 }
 
 .index-canvas.expanded {
@@ -57,8 +57,9 @@ a:hover, a:active {
     text-align: center;
     line-height: 30px;
     text-decoration: none!important;
-    color: #ecf0f1!important;
-    border: 1px #ecf0f1 solid;
+    color: #F2FDFF!important;
+    border: 1px #F2FDFF solid;
     font-size: 24px;
     border-radius: 50%;
+    background: #272D2D;
 }
