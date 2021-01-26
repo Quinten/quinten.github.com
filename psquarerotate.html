@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <canvas></canvas>
+        <img />
+        <script src="gif.js"></script>
+        <script src="gif.worker.js"></script>
+        <script>
+            function addClip({
+                x = 0,
+                y = 0,
+                rotation = 0
+            } = {}) {
+                var clip = {x, y, rotation};
+
+                clip.draw = function() {};
+
+                clip.render = function(time) {
+                    context.save();
+                    context.translate(this.x, this.y);
+                    context.rotate(this.rotation);
+                    this.draw(time);
+                    context.restore();
+                };
+
+                clips.push(clip);
+
+                return clip;
+            };
+
+            let clips = [];
+
+            let nFrames = 160;
+            let width = 507;
+            let height = 507;
+
+            let rendered = false;
+            let progress = 0; // 0 -> 1
+            let bounce = 0; // 0 -> 1 -> 0
+            let frameIndex = 0;
+
+            let canvas = document.querySelector('canvas');
+            let ctx = canvas.getContext('2d');
+            let context = ctx;
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.background = '#f3f4eb';
+
+            let gif = new GIF({
+                workers: 2,
+                quality: 10
+            });
+            gif.on('finished', (blob) => {
+                var img = document.querySelector('img');
+                img.src = URL.createObjectURL(blob);
+                rendered = true;
+                canvas.style.display = 'none';
+            });
+
+            const scaleX = Math.cos(Math.PI / 4);
+            const scaleY = Math.sin(Math.PI / 4);
+
+            let bigSquares = [];
+            let yes = true;
+            for (let b = 0; b < 9; b++) {
+                for (let c = 0; c < 9; c++) {
+                    yes = !yes;
+                    if (yes) {
+                        let bigSquare = addClip();
+                        bigSquare.phase = Math.random();
+                        bigSquare.gX = b;
+                        bigSquare.gY = c;
+                        bigSquare.draw = function (time) {
+                            let size = Math.max(width, height);
+                            this.x = this.gX / 8 * size + (width - size) / 2;
+                            this.y = this.gY / 8 * size + (height - size) / 2;
+                            //this.rotation = - Math.PI * 3 / 4;
+                            this.rotation = Math.sin((time + 6400 * this.phase) / 3200 * Math.PI) * Math.PI * 2;
+                            this.rotation = Math.max(this.rotation, - Math.PI * 3 / 4);
+                            this.rotation = Math.min(this.rotation, Math.PI * 3 / 4);
+                            context.fillStyle = '#030422';
+                            let scale = Math.abs(this.rotation / (Math.PI * 3 / 4));
+                            context.fillRect(-size / 8 * scaleX * scale, - size / 8 * scaleY * scale, size / 4 * scaleX * scale, size / 4 * scaleY * scale);
+                        };
+                        bigSquares.push(bigSquare);
+                    }
+                }
+            }
+
+            let onF = () => {
+                frameIndex = frameIndex + 1;
+                progress = frameIndex / nFrames;
+                bounce = 1 - Math.abs(1 - progress * 2);
+
+                ctx.save();
+                ctx.fillStyle = canvas.style.background;
+                ctx.fillRect(0, 0, width, height);
+                ctx.restore();
+
+                clips.forEach(function(clip) {
+                    clip.render(frameIndex * 40);
+                });
+
+                if (frameIndex > 80) {
+                    gif.addFrame(canvas, {
+                        copy: true,
+                        delay: 40
+                    });
+                }
+
+                if (frameIndex < nFrames) {
+                    requestAnimationFrame(onF);
+                } else {
+                    gif.render();
+                }
+            };
+            onF();
+
+        </script>
+    </body>
+</html>
