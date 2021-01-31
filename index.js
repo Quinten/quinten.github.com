@@ -79,6 +79,12 @@ expander.addEventListener('click', () => {
     }
 });
 
+var skipper = document.querySelector('.skipper');
+
+skipper.addEventListener('click', () => {
+    nextModule();
+});
+
 var modules = [], currentModule, moduleIndex = -1;
 
 async function nextModule() {
