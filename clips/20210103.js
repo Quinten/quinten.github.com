@@ -12,9 +12,10 @@ let snake;
 
 export const add = () => {
     canvas.style.backgroundColor = '#c2b2b4';
-    
+
     snake = addClip();
 
+    /*
     square = addClip();
     square.draw = function (time) {
         this.x = width / 2;
@@ -30,16 +31,17 @@ export const add = () => {
     };
 
     events.on('pointerup', listener);
-    
+    */
+
     let angleY = (-0.005 + Math.random() / 100) * 2;
-    
+
     let cosY = Math.cos(angleY);
     let sinY = Math.sin(angleY);
 
     let angleX = (-0.005 + Math.random() / 100) * 2;
     let cosX = Math.cos(angleX);
     let sinX = Math.sin(angleX);
-    
+
     let fl = 400;
 
     let p = [];
@@ -52,7 +54,7 @@ export const add = () => {
         //if (r > 2) Lx = Lx + d;
         //if (r < 1) Ly = Ly + d;
         //if (r < 2 && r > 1) Lz = Lz + d;
-        
+
         if(r>2)Lx=(Lx+d>fl||Lx+d<-fl)?Lx-d:Lx+d;
         if(r<1)Ly=(Ly+d>fl||Ly+d<-fl)?Ly-d:Ly+d;
         if(r<2&&r>1)Lz=(Lz+d>fl||Lz+d<-fl)?Lz-d:Lz+d;
@@ -63,10 +65,10 @@ export const add = () => {
         p[i].x =  Lx;
         p[i].y = Ly;
         p[i].z = Lz;
-    }    
-    
+    }
+
     snake.draw = function (time) {
-    
+
         context.strokeStyle = '#84828F';
         context.lineWidth = 2;
 
@@ -88,7 +90,7 @@ export const add = () => {
             p[i]._x = vpX + p[i].x * scale;
             p[i]._y = vpY + p[i].y * scale;
         }
-    
+
         let prevP = p[0];
         for (let i = 1; i < numPoints; i++) {
             if (
@@ -115,7 +117,7 @@ export const add = () => {
 };
 
 export const remove = () => {
-    events.off('pointerup', listener);
-    removeClip(square);
+    //events.off('pointerup', listener);
+    //removeClip(square);
     removeClip(snake);
 };

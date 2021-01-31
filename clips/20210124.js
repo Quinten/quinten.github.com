@@ -10,8 +10,8 @@ let listener = (e) => {
 let myClip;
 
 export const remove = () => {
-    events.off('pointerup', listener);
-    removeClip(square);
+    //events.off('pointerup', listener);
+    //removeClip(square);
     removeClip(myClip);
 };
 
@@ -28,6 +28,7 @@ export const add = () => {
 
     myClip = addClip();
 
+    /*
     square = addClip();
     square.draw = function (time) {
         this.x = width / 2;
@@ -41,6 +42,7 @@ export const add = () => {
         pulse = 16 + pulse * 24;
         context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
     };
+    */
 
     events.on('pointerup', listener);
 

@@ -29,6 +29,7 @@ export const add = () => {
         bigSquares.push(bigSquare);
     }
 
+    /*
     square = addClip();
     square.draw = function (time) {
         this.x = width / 2;
@@ -42,13 +43,14 @@ export const add = () => {
         pulse = 16 + pulse * 24;
         context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
     };
+    */
 
     events.on('pointerup', listener);
 };
 
 export const remove = () => {
-    events.off('pointerup', listener);
-    removeClip(square);
+    //events.off('pointerup', listener);
+    //removeClip(square);
     bigSquares.forEach((bigSquare) => {
         removeClip(bigSquare);
     });

@@ -25,6 +25,7 @@ export const add = () => {
 
     myClip = addClip();
 
+    /*
     square = addClip();
     square.draw = function (time) {
         this.x = width / 2;
@@ -40,6 +41,7 @@ export const add = () => {
     };
 
     events.on('pointerup', listener);
+    */
 
     function intersection(x0, y0, r0, x1, y1, r1) {
         // https://stackoverflow.com/questions/12219802/a-javascript-function-that-returns-the-x-y-points-of-intersection-between-two-ci
@@ -143,7 +145,7 @@ export const add = () => {
 };
 
 export const remove = () => {
-    events.off('pointerup', listener);
-    removeClip(square);
+    //events.off('pointerup', listener);
+    //removeClip(square);
     removeClip(myClip);
 };

@@ -15,6 +15,7 @@ export const add = () => {
 
     snake = addClip();
 
+    /*
     square = addClip();
     square.draw = function (time) {
         this.x = width / 2;
@@ -30,6 +31,7 @@ export const add = () => {
     };
 
     events.on('pointerup', listener);
+    */
 
     let nPrints = Math.floor(Math.hypot(window.innerWidth * 2, height) / 32), prints = [];
 
@@ -90,7 +92,7 @@ export const add = () => {
 };
 
 export const remove = () => {
-    events.off('pointerup', listener);
-    removeClip(square);
+    //events.off('pointerup', listener);
+    //removeClip(square);
     removeClip(snake);
 };

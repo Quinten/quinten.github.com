@@ -42,6 +42,7 @@ export const add = () => {
         }
     }
 
+    /*
     square = addClip();
     square.rotation = Math.PI / 4;
     square.draw = function (time) {
@@ -58,11 +59,12 @@ export const add = () => {
     };
 
     events.on('pointerup', listener);
+    */
 };
 
 export const remove = () => {
-    events.off('pointerup', listener);
-    removeClip(square);
+    //events.off('pointerup', listener);
+    //removeClip(square);
     bigSquares.forEach((bigSquare) => {
         removeClip(bigSquare);
     });

@@ -70,6 +70,7 @@ export const add = () => {
         bigSquares.push(bigSquare);
     }
 
+    /*
     square = addClip();
     square.draw = function (time) {
         this.x = width / 2;
@@ -85,11 +86,12 @@ export const add = () => {
     };
 
     events.on('pointerup', listener);
+    */
 };
 
 export const remove = () => {
-    events.off('pointerup', listener);
-    removeClip(square);
+    //events.off('pointerup', listener);
+    //removeClip(square);
     bigSquares.forEach((bigSquare) => {
         removeClip(bigSquare);
     });
