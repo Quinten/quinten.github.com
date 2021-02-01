@@ -1,12 +1,22 @@
 var canvas, context, ctx, width, height, clips;
 
-canvas = document.querySelector('canvas');
+canvas = document.querySelector('.index-canvas');
 
 context = canvas.getContext('2d');
 ctx = context; // alias
 
+var canvas3d = document.querySelector('.webgl-canvas');
+canvas3d.width = window.innerWidth * 2;
+canvas3d.height = window.innerHeight * 2;
+window.addEventListener('resize', () => {
+    canvas3d.width = window.innerWidth * 2;
+    canvas3d.height = window.innerHeight * 2;
+});
+
+var gl = canvas3d.getContext('webgl');
+
 // documentation
-console.log(context);
+//console.log(context);
 
 clips = [];
 
@@ -17,6 +27,7 @@ function onF(time) {
     clips.forEach(function(clip) {
         clip.render(time);
     });
+    context.drawImage(canvas3d, window.innerWidth - width / 2, 0, width, height, 0, 0, width, height);
     window.requestAnimationFrame(onF);
 }
 onF(0);
