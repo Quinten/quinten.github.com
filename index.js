@@ -13,7 +13,7 @@ window.addEventListener('resize', () => {
     canvas3d.height = window.innerHeight * 2;
 });
 
-var gl = canvas3d.getContext('webgl');
+var gl = canvas3d.getContext('webgl', { preserveDrawingBuffer: true });
 
 // documentation
 //console.log(context);
