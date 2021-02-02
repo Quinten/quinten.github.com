@@ -6,12 +6,14 @@ context = canvas.getContext('2d');
 ctx = context; // alias
 
 var canvas3d = document.querySelector('.webgl-canvas');
-canvas3d.width = window.innerWidth * 2;
-canvas3d.height = window.innerHeight * 2;
+canvas3d.width = 2048;
+canvas3d.height = 1024;
+/*
 window.addEventListener('resize', () => {
-    canvas3d.width = window.innerWidth * 2;
-    canvas3d.height = window.innerHeight * 2;
+    canvas3d.width = window.innerWidth;
+    canvas3d.height = window.innerHeight;
 });
+*/
 
 var gl = canvas3d.getContext('webgl', { preserveDrawingBuffer: true });
 
@@ -27,7 +29,7 @@ function onF(time) {
     clips.forEach(function(clip) {
         clip.render(time);
     });
-    context.drawImage(canvas3d, window.innerWidth - width / 2, 0, width, height, 0, 0, width, height);
+    context.drawImage(canvas3d, 1024 - 1024 / height * width / 2, 0, 1024 / height * width, 1024, 0, 0, width, height);
     window.requestAnimationFrame(onF);
 }
 onF(0);
