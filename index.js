@@ -22,14 +22,39 @@ var gl = canvas3d.getContext('webgl', { preserveDrawingBuffer: true });
 
 clips = [];
 
+let globalTime = 0;
+let timeouts = [];
+
+function createTimeout(callback, duration, ...args) {
+    let end = globalTime + duration;
+    let timeout = {callback, end, args};
+    timeouts.push(timeout);
+    return timeout;
+}
+
+function destroyTimeout(timeout) {
+    timeouts.splice(timeouts.indexOf(timeout), 1);
+}
+
 function onF(time) {
     width = canvas.width = canvas.clientWidth * 2;
     height = canvas.height = canvas.clientHeight * 2;
     context.clearRect(0, 0, width, height);
+
+    globalTime = time;
+    for (let t = timeouts.length - 1; t >= 0; t--) {
+        if (timeouts[t].end <= globalTime) {
+            timeouts[t].callback(...timeouts[t].args);
+            destroyTimeout(timeouts[t]);
+        }
+    }
+
     clips.forEach(function(clip) {
         clip.render(time);
     });
+
     context.drawImage(canvas3d, 1024 - 1024 / height * width / 2, 0, 1024 / height * width, 1024, 0, 0, width, height);
+
     window.requestAnimationFrame(onF);
 }
 onF(0);
