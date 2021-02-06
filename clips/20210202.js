@@ -117,7 +117,8 @@ export const add = () => {
     let gridDepth = 9;
     let zOffset = 0; // 650?
 
-    let sentence = '_ five words made of cubes _';
+    //let sentence = '_ five words made of cubes _';
+    let sentence = 'five words made of cubes';
     let word = sentence.split(' ');
     let currentWord = 0;
 
@@ -139,7 +140,7 @@ export const add = () => {
             createTimeout(morfCharCubes, c * 300, charcube[c], charKey);
         }
         currentWord = (currentWord < (word.length - 1)) ? (currentWord + 1) : 0;
-        createTimeout(changeWord, nCharCubes * 2000);
+        createTimeout(changeWord, 4500);
     }
     changeWord();
 
