@@ -62,6 +62,12 @@ let program;
 
 let myClip;
 
+//let sentence = '_ five words made of cubes _';
+let sentence = 'five words made of cubes';
+let word = sentence.split(' ');
+let currentWord = 0;
+let changeTO = undefined;
+
 export const add = () => {
 
     canvas.style.backgroundColor = '#6D545D';
@@ -117,11 +123,6 @@ export const add = () => {
     let gridDepth = 9;
     let zOffset = 0; // 650?
 
-    //let sentence = '_ five words made of cubes _';
-    let sentence = 'five words made of cubes';
-    let word = sentence.split(' ');
-    let currentWord = 0;
-
     for (var c = 0; c < nCharCubes; c++) {
         charcube[c] = charCube.create();
         charcube[c].x = (c - ((nCharCubes - 1) / 2)) * gridSize * gridWidth;
@@ -140,7 +141,7 @@ export const add = () => {
             createTimeout(morfCharCubes, c * 300, charcube[c], charKey);
         }
         currentWord = (currentWord < (word.length - 1)) ? (currentWord + 1) : 0;
-        createTimeout(changeWord, 4500);
+        changeTO = createTimeout(changeWord, 4500);
     }
     changeWord();
 
@@ -206,6 +207,7 @@ export const remove = () => {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.deleteProgram(program);
     removeClip(myClip);
+    destroyTimeout(changeTO);
 };
 
 export const usesWebgl = true;
