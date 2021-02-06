@@ -145,6 +145,7 @@ export const add = () => {
     myClip.draw = () => {
         cameraMatrix = matrix.transform(cameraMatrix, {rx: .00541, ry: .00181, rz: .00317});
         drawCuboids(gl, n, cameraMatrix);
+        context.drawImage(canvas3d, 1024 - 1024 / height * width / 2, 0, 1024 / height * width, 1024, 0, 0, width, height);
     };
 };
 
