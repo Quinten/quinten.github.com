@@ -64,8 +64,10 @@ export const add = () => {
             context.strokeStyle = '#34495e';
             context.lineWidth = 2;
             context.translate(-bigSquare.x, -bigSquare.y);
-            line(bigSquare.x, bigSquare.y, bigSquares[1].x, bigSquares[1].y);
-            line(bigSquare.x, bigSquare.y, bigSquares[2].x, bigSquares[2].y);
+            if (bigSquares[1] && bigSquares[2]) {
+                line(bigSquare.x, bigSquare.y, bigSquares[1].x, bigSquares[1].y);
+                line(bigSquare.x, bigSquare.y, bigSquares[2].x, bigSquares[2].y);
+            }
         };
         bigSquares.push(bigSquare);
     }

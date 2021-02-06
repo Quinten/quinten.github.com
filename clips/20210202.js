@@ -205,3 +205,5 @@ export const remove = () => {
     gl.deleteProgram(program);
     removeClip(myClip);
 };
+
+export const usesWebgl = true;

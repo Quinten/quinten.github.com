@@ -106,22 +106,26 @@ function line(x1, y1, x2, y2) {
 var expanded = false;
 var expander = document.querySelector('.expander');
 
-expander.addEventListener('click', () => {
-    expanded = !expanded;
-    if (expanded) {
-        expander.textContent = '-';
-        canvas.classList.add('expanded');
-    } else {
-        expander.textContent = '+';
-        canvas.classList.remove('expanded');
-    }
-});
+if (expander) {
+    expander.addEventListener('click', () => {
+        expanded = !expanded;
+        if (expanded) {
+            expander.textContent = '-';
+            canvas.classList.add('expanded');
+        } else {
+            expander.textContent = '+';
+            canvas.classList.remove('expanded');
+        }
+    });
+}
 
 var skipper = document.querySelector('.skipper');
 
-skipper.addEventListener('click', () => {
-    nextModule();
-});
+if (skipper) {
+    skipper.addEventListener('click', () => {
+        nextModule();
+    });
+}
 
 var modules = [], currentModule, moduleIndex = -1;
 
@@ -143,12 +147,14 @@ async function nextModule() {
     currentModule = newModule;
 };
 
-fetch('./clips.json').then((response) => {
-    return response.json();
-}).then((data) => {
-    modules = data;
-    nextModule();
-});
+if (skipper || expander) {
+    fetch('./clips.json').then((response) => {
+        return response.json();
+    }).then((data) => {
+        modules = data;
+        nextModule();
+    });
+}
 
 var events = {
     listeners: {},
