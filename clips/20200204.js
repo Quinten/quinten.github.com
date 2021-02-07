@@ -1,3 +1,5 @@
+import colors from '../lib/color.js';
+
 let square;
 let listener = (e) => {
     let dx = width / 2 - e.x;
@@ -11,7 +13,10 @@ let listener = (e) => {
 let bigSquares = [];
 
 export const add = () => {
-    canvas.style.backgroundColor = "#16a085";
+    let color = colors.getRandomColorScheme();
+    let bgColor = color.lite.hsl;
+    let strokeColor = color.base.hsl;
+    canvas.style.backgroundColor = bgColor;
 
     bigSquares = [];
     for (let b = 0; b < 16; b++) {
@@ -23,7 +28,7 @@ export const add = () => {
             this.rotation = Math.sin((time + 1200 * this.phase) / 600) * Math.PI;
             this.rotation = Math.max(this.rotation, - Math.PI / 2);
             this.rotation = Math.min(this.rotation, Math.PI / 2);
-            context.fillStyle = '#1abc9c';
+            context.fillStyle = strokeColor;
             context.fillRect(-height / 30, - 8, height / 15, 16);
         };
         bigSquares.push(bigSquare);

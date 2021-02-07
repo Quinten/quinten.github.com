@@ -1,3 +1,5 @@
+import colors from '../lib/color.js';
+
 let square;
 let listener = (e) => {
     let dx = width / 2 - e.x;
@@ -17,7 +19,12 @@ const decay = .8;
 let bigSquares = [];
 
 export const add = () => {
-    canvas.style.backgroundColor = '#e74c3c';
+    let color = colors.getRandomColorScheme();
+    let bgColor = color.lite.hsl;
+    let strokeColor = color.base.hsl;
+    canvas.style.backgroundColor = bgColor;
+    //canvas.style.backgroundColor = '#e74c3c';
+
     bigSquares = [];
     let yes = true;
     for (let b = 0; b < 9; b++) {
@@ -45,24 +52,24 @@ export const add = () => {
                 if (step) {
                     this.scaleA = 0;
                     homeB = 1;
-                    context.fillStyle = '#c0392b';
+                    context.fillStyle = strokeColor;
                     context.fillRect(-size / 8 * scaleX * scale, - size / 8 * scaleY * scale, size / 4 * scaleX * scale, size / 4 * scaleY * scale);
                     this.changeA = ((homeA - this.scaleA) * springiness) + (this.changeA * decay);
                     this.scaleA += this.changeA;
                     this.changeB = ((homeB - this.scaleB) * springiness) + (this.changeB * decay);
                     this.scaleB += this.changeB;
-                    context.fillStyle = '#e74c3c';
+                    context.fillStyle = bgColor;
                     context.fillRect(-size / 8 * scaleX * this.scaleB, - size / 8 * scaleY * this.scaleB, size / 4 * scaleX * this.scaleB, size / 4 * scaleY * this.scaleB);
                 } else {
                     this.scaleB = 0;
                     homeA = 1;
-                    context.fillStyle = '#e74c3c';
+                    context.fillStyle = bgColor;
                     context.fillRect(-size / 8 * scaleX * scale, - size / 8 * scaleY * scale, size / 4 * scaleX * scale, size / 4 * scaleY * scale);
                     this.changeA = ((homeA - this.scaleA) * springiness) + (this.changeA * decay);
                     this.scaleA += this.changeA;
                     this.changeB = ((homeB - this.scaleB) * springiness) + (this.changeB * decay);
                     this.scaleB += this.changeB;
-                    context.fillStyle = '#c0392b';
+                    context.fillStyle = strokeColor;
                     context.fillRect(-size / 8 * scaleX * this.scaleA, - size / 8 * scaleY * this.scaleA, size / 4 * scaleX * this.scaleA, size / 4 * scaleY * this.scaleA);
                 }
 

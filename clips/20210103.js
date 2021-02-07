@@ -1,3 +1,5 @@
+import colors from '../lib/color.js';
+
 let square;
 let listener = (e) => {
     let dx = width / 2 - e.x;
@@ -11,7 +13,11 @@ let listener = (e) => {
 let snake;
 
 export const add = () => {
-    canvas.style.backgroundColor = '#c2b2b4';
+    let color = colors.getRandomColorScheme();
+    let invert = !!(Math.round(Math.random()));
+    let bgColor = (invert) ? color.pale.hsl : color.dark.hsl;
+    let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
+    canvas.style.backgroundColor = bgColor;
 
     snake = addClip();
 
@@ -69,7 +75,7 @@ export const add = () => {
 
     snake.draw = function (time) {
 
-        context.strokeStyle = '#84828F';
+        context.strokeStyle = strokeColor;
         context.lineWidth = 2;
 
         let vpX = width / 2;

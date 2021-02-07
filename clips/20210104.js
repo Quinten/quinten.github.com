@@ -1,3 +1,5 @@
+import colors from '../lib/color.js';
+
 let square;
 let listener = (e) => {
     let dx = width / 2 - e.x;
@@ -11,7 +13,12 @@ let listener = (e) => {
 let snake;
 
 export const add = () => {
-    canvas.style.backgroundColor = '#003554';
+    let color = colors.getRandomColorScheme();
+    let invert = !!(Math.round(Math.random()));
+    let bgColor = (invert) ? color.pale.hsl : color.dark.hsl;
+    let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
+    canvas.style.backgroundColor = bgColor;
+    //canvas.style.backgroundColor = '#003554';
 
     snake = addClip();
 
@@ -56,7 +63,7 @@ export const add = () => {
 
         let width = window.innerWidth * 2;
 
-        context.fillStyle = '#C2EBFF';
+        context.fillStyle = strokeColor;
         prints.forEach((print) => {
             print.x += print.vx;
             print.y += print.vy;
@@ -74,15 +81,15 @@ export const add = () => {
             }
             context.fillRect(print.x, print.y, print.w, print.h);
         });
-        context.fillStyle = '#003554';
+        context.fillStyle = bgColor;
         prints.forEach((print) => {
             context.fillRect(print.x + 2, print.y + 2, print.w - 4, print.h - 4);
         });
-        context.fillStyle = '#C2EBFF';
+        context.fillStyle = strokeColor;
         prints.forEach((print) => {
             context.fillRect(print.x + 12, print.y + 12, print.w - 24, print.h - 24);
         });
-        context.fillStyle = '#003554';
+        context.fillStyle = bgColor;
         prints.forEach((print) => {
             context.fillRect(print.x + 14, print.y + 14, print.w - 28, print.h - 28);
         });

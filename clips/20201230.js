@@ -1,3 +1,5 @@
+import colors from '../lib/color.js';
+
 let square;
 let listener = (e) => {
     let dx = width / 2 - e.x;
@@ -11,7 +13,11 @@ let listener = (e) => {
 let bigSquares = [];
 
 export const add = () => {
-    canvas.style.backgroundColor = '#2c3e50';
+    let color = colors.getRandomColorScheme();
+    let invert = !!(Math.round(Math.random()));
+    let bgColor = (invert) ? color.pale.hsl : color.dark.hsl;
+    let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
+    canvas.style.backgroundColor = bgColor;
 
     bigSquares = [];
     for (let b = 0; b < 64; b++) {
@@ -50,7 +56,7 @@ export const add = () => {
             if (this.y > height * 3 / 2) {
                 this.y = -height / 2;
             }
-            context.fillStyle = '#34495e';
+            context.fillStyle = strokeColor;
             quad(...bigSquare.quad);
             bigSquares.forEach((s) => {
                 s.dist = Math.hypot(bigSquare.x - s.x, bigSquare.y - s.y);
@@ -61,7 +67,7 @@ export const add = () => {
                 }
                 return -1;
             });
-            context.strokeStyle = '#34495e';
+            context.strokeStyle = strokeColor;
             context.lineWidth = 2;
             context.translate(-bigSquare.x, -bigSquare.y);
             if (bigSquares[1] && bigSquares[2]) {

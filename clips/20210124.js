@@ -1,3 +1,5 @@
+import colors from '../lib/color.js';
+
 let square;
 let listener = (e) => {
     let dx = width / 2 - e.x;
@@ -21,9 +23,10 @@ export const add = () => {
     let progress = 0; // 0 -> 1
     let bounce = 0; // 0 -> 1 -> 0
 
-    let bgColor = '#f3f4eb';
-    let strokeColor = '#030422';
-
+    let color = colors.getRandomColorScheme();
+    let invert = !!(Math.round(Math.random()));
+    let bgColor = (invert) ? color.pale.hsl : color.dark.hsl;
+    let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
 
     myClip = addClip();
@@ -136,7 +139,7 @@ export const add = () => {
 
         ctx.save();
 
-        ctx.strokeStyle = '#030422';
+        ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 1;
 
         let vpX = width / 2;

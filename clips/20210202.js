@@ -3,6 +3,7 @@ import matrix from '../lib/matrix.js';
 import shapes from '../lib/shapes.js';
 import charCube from '../lib/charCube.js';
 import fontArr from '../lib/fieldFont9by11Matrix.js';
+import colors from '../lib/color.js';
 
 let deg2rad = angle => Math.PI * angle / 180;
 
@@ -69,8 +70,8 @@ let currentWord = 0;
 let changeTO = undefined;
 
 export const add = () => {
-
-    canvas.style.backgroundColor = '#6D545D';
+    let color = colors.getRandomColorScheme();
+    canvas.style.backgroundColor = color.dark.hsl;
 
     program = webgl.compile(gl, vshader, fshader);
 
@@ -91,8 +92,8 @@ export const add = () => {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
     // Set cube color
-    var color = gl.getAttribLocation(program, 'color');
-    gl.vertexAttrib3f(color, 237/255, 155/255, 64/255);
+    var materialColor = gl.getAttribLocation(program, 'color');
+    gl.vertexAttrib3f(materialColor, color.base.r, color.base.g, color.base.b);
 
     // Set the clear color and enable the depth test
     //gl.clearColor(0, 0, 0, 1);
@@ -104,15 +105,14 @@ export const add = () => {
 
     // Set the point light color and position
     var lightColor = gl.getUniformLocation(program, 'lightColor');
-    gl.uniform3f(lightColor, 251/255, 254/255, 249/255);
+    gl.uniform3f(lightColor, color.pale.r, color.pale.g, color.pale.b);
 
     var lightPosition = gl.getUniformLocation(program, 'lightPosition');
     gl.uniform3f(lightPosition, 65, 65, 65);
 
     // Set the ambient light color
     var ambientLight = gl.getUniformLocation(program, 'ambientLight');
-    gl.uniform3f(ambientLight, 0.4, 0.5, 0.7);
-
+    gl.uniform3f(ambientLight, 0.4, 0.4, 0.4);
     //let charcube = charCube.create();
     let charcube = [];
     //console.log(charcube);

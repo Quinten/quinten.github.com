@@ -1,6 +1,7 @@
 import webgl from '../lib/webgl.js';
 import matrix from '../lib/matrix.js';
 import shapes from '../lib/shapes.js';
+import colors from '../lib/color.js';
 
 let deg2rad = angle => Math.PI * angle / 180;
 
@@ -61,8 +62,8 @@ let program;
 let myClip;
 
 export const add = () => {
-
-    canvas.style.backgroundColor = '#152528';
+    let color = colors.getRandomColorScheme();
+    canvas.style.backgroundColor = color.dark.hsl;
 
     program = webgl.compile(gl, vshader, fshader);
 
@@ -83,8 +84,8 @@ export const add = () => {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
     // Set cube color
-    var color = gl.getAttribLocation(program, 'color');
-    gl.vertexAttrib3f(color, 95/255, 159/255, 171/255);
+    var materialColor = gl.getAttribLocation(program, 'color');
+    gl.vertexAttrib3f(materialColor, color.base.r, color.base.g, color.base.b);
 
     // Set the clear color and enable the depth test
     //gl.clearColor(0, 0, 0, 1);
@@ -96,7 +97,7 @@ export const add = () => {
 
     // Set the point light color and position
     var lightColor = gl.getUniformLocation(program, 'lightColor');
-    gl.uniform3f(lightColor, 232/255, 224/255, 135/255);
+    gl.uniform3f(lightColor, color.pale.r, color.pale.g, color.pale.b);
 
     var lightPosition = gl.getUniformLocation(program, 'lightPosition');
     gl.uniform3f(lightPosition, 2.5, 2.5, 2.5);
