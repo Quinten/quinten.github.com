@@ -9,7 +9,7 @@ export const add = () => {
     let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
 
-    snake = addClip();
+    snake = addClip({unshift: true});
 
     let angleZ = (-0.005 + Math.random() / 100) * 2;
     let cosZ = Math.cos(angleZ);

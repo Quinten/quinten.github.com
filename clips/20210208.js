@@ -165,7 +165,7 @@ export const add = () => {
         });
     }
 
-    myClip = addClip();
+    myClip = addClip({unshift: true});
 
     myClip.draw = () => {
         //cameraMatrix = matrix.transform(cameraMatrix, {rx: .00541, ry: .00181, rz: .00317});

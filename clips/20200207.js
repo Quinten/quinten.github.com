@@ -31,7 +31,7 @@ export const add = () => {
         for (let c = 0; c < 9; c++) {
             yes = !yes;
             if (yes) {
-            let bigSquare = addClip();
+            let bigSquare = addClip({unshift: true});
             bigSquare.phase = Math.random();
             bigSquare.gX = b;
             bigSquare.gY = c;

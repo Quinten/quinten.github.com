@@ -60,7 +60,8 @@ onF(0);
 function addClip({
     x = 0,
     y = 0,
-    rotation = 0
+    rotation = 0,
+    unshift = false
 } = {}) {
 
     var clip = {x, y, rotation};
@@ -75,7 +76,11 @@ function addClip({
         context.restore();
     };
 
-    clips.push(clip);
+    if (unshift) {
+        clips.unshift(clip);
+    } else {
+        clips.push(clip);
+    }
 
     return clip;
 }
