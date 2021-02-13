@@ -20,17 +20,19 @@ export const add = () => {
     let p = [];
     let numPoints = 1024;
     let lineSize = 80;
-    var Lx = 0, Ly = 0, Lz = 0;
-    function plotOn() {
+    let Lx = 0, Ly = 0, Lz = 0;
+    let plotOn = () => {
         let d = Math.round(Math.random()) ? lineSize : -lineSize;
         let r = Math.random() * 3;
-        //if (r > 2) Lx = Lx + d;
-        //if (r < 1) Ly = Ly + d;
-        //if (r < 2 && r > 1) Lz = Lz + d;
-
-        if(r>2)Lx=(Lx+d>fl||Lx+d<-fl)?Lx-d:Lx+d;
-        if(r<1)Ly=(Ly+d>fl||Ly+d<-fl)?Ly-d:Ly+d;
-        if(r<2&&r>1)Lz=(Lz+d>fl||Lz+d<-fl)?Lz-d:Lz+d;
+        if (r > 2) {
+            Lx = (Lx + d > fl || Lx + d < -fl) ? Lx - d : Lx + d;
+        }
+        if (r < 1) {
+            Ly = (Ly + d > fl || Ly + d < -fl) ? Ly - d : Ly + d;
+        }
+        if (r < 2 && r > 1) {
+            Lz = (Lz + d > fl || Lz + d < -fl) ? Lz - d : Lz + d;
+        }
     };
     for (let i = 0; i < numPoints; i++) {
         p[i] = {};
@@ -40,7 +42,7 @@ export const add = () => {
         p[i].z = Lz;
     }
 
-    myClip.draw = function (time) {
+    myClip.draw = (time) => {
 
         context.fillStyle = strokeColor;
         context.strokeStyle = strokeColor;
@@ -68,7 +70,6 @@ export const add = () => {
         let prevP = p[0];
         for (let i = 3; i < numPoints; i++) {
             if (
-            //(p[i].z < fl) && (prevP.z < fl) &&
             (p[i].z > -fl) && (prevP.z > -fl) &&
             !(((prevP._x < 0) && (p[i]._x > width))
             || ((prevP._x > width) && (p[i]._x < 0))
@@ -86,8 +87,6 @@ export const add = () => {
         prevP.z = Lz;
         p.push(prevP);
     };
-
-
 };
 
 export const remove = () => {
