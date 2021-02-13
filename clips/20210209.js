@@ -1,6 +1,6 @@
 import colors from '../lib/color.js';
 
-let snake;
+let myClip;
 
 export const add = () => {
     let color = colors.getRandomColorScheme();
@@ -9,7 +9,7 @@ export const add = () => {
     let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
 
-    snake = addClip();
+    myClip = addClip();
 
     let p = [];
     let numPoints = 512;
@@ -50,7 +50,7 @@ export const add = () => {
         p[i].c = hsl;
     }
 
-    snake.draw = function (time) {
+    myClip.draw = function (time) {
 
         context.strokeStyle = strokeColor;
         context.lineWidth = 2;
@@ -82,5 +82,5 @@ export const add = () => {
 };
 
 export const remove = () => {
-    removeClip(snake);
+    removeClip(myClip);
 };

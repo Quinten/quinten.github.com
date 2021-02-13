@@ -10,7 +10,7 @@ let listener = (e) => {
     }
 };
 
-let snake;
+let myClip;
 
 export const add = () => {
     let color = colors.getRandomColorScheme();
@@ -19,7 +19,7 @@ export const add = () => {
     let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
 
-    snake = addClip();
+    myClip = addClip();
 
     /*
     square = addClip();
@@ -73,7 +73,7 @@ export const add = () => {
         p[i].z = Lz;
     }
 
-    snake.draw = function (time) {
+    myClip.draw = function (time) {
 
         context.strokeStyle = strokeColor;
         context.lineWidth = 2;
@@ -125,5 +125,5 @@ export const add = () => {
 export const remove = () => {
     //events.off('pointerup', listener);
     //removeClip(square);
-    removeClip(snake);
+    removeClip(myClip);
 };

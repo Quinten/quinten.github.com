@@ -1,6 +1,6 @@
 import colors from '../lib/color.js';
 
-let snake;
+let myClip;
 
 let rotate = (a, b, angle) => [
     Math.cos(angle) * a - Math.sin(angle) * b,
@@ -19,7 +19,7 @@ export const add = () => {
     let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
 
-    snake = addClip({unshift: true});
+    myClip = addClip({unshift: true});
 
     let fl = 400;
 
@@ -35,7 +35,7 @@ export const add = () => {
 
     let angleZ = (-0.005 + Math.random() / 100) * 2;
 
-    snake.draw = function (time) {
+    myClip.draw = function (time) {
 
         context.fillStyle = strokeColor;
 
@@ -66,5 +66,5 @@ export const add = () => {
 };
 
 export const remove = () => {
-    removeClip(snake);
+    removeClip(myClip);
 };

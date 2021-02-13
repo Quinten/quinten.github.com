@@ -10,7 +10,7 @@ let listener = (e) => {
     }
 };
 
-let snake;
+let myClip;
 
 export const add = () => {
     let color = colors.getRandomColorScheme();
@@ -20,7 +20,7 @@ export const add = () => {
     canvas.style.backgroundColor = bgColor;
     //canvas.style.backgroundColor = '#003554';
 
-    snake = addClip();
+    myClip = addClip();
 
     /*
     square = addClip();
@@ -59,7 +59,7 @@ export const add = () => {
         prints.push(print);
     }
 
-    snake.draw = function (time) {
+    myClip.draw = function (time) {
 
         let width = window.innerWidth * 2;
 
@@ -101,5 +101,5 @@ export const add = () => {
 export const remove = () => {
     //events.off('pointerup', listener);
     //removeClip(square);
-    removeClip(snake);
+    removeClip(myClip);
 };
