@@ -1,19 +1,8 @@
 import colors from '../lib/color.js';
 
-let square;
-let listener = (e) => {
-    let dx = width / 2 - e.x;
-    let dy = height * 3 / 4 - e.y;
-    let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 48) {
-        nextModule();
-    }
-};
 let myClip;
 
 export const remove = () => {
-    //events.off('pointerup', listener);
-    //removeClip(square);
     removeClip(myClip);
 };
 
@@ -31,24 +20,6 @@ export const add = () => {
 
     myClip = addClip();
 
-    /*
-    square = addClip();
-    square.draw = function (time) {
-        this.x = width / 2;
-        this.y = height * 3 / 4;
-        context.fillStyle = strokeColor;
-        context.fillRect(-16, -16, 32, 32);
-        context.strokeStyle = strokeColor;
-        let pulse = time % 2000;
-        pulse = pulse * pulse / 4000000;
-        context.globalAlpha = 1 - pulse;
-        pulse = 16 + pulse * 24;
-        context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
-    };
-    */
-
-    events.on('pointerup', listener);
-
     let fl = 512;
 
     let p = [];
@@ -56,7 +27,7 @@ export const add = () => {
     let s = [];
     let c = [];
 
-    function addPole(x, z) {
+    let addPole = (x, z) => {
         s.push({a: p.length, b: p.length + 1});
         p.push({x: x, y: -100, z: z});
         p.push({x: x, y: 100, z: z});
@@ -123,7 +94,7 @@ export const add = () => {
     let speedX = 256 / nFrames;
     let speedZ = - 256 / nFrames;
 
-    myClip.draw = function (time) {
+    myClip.draw = (time) => {
         let extraX = 0;
         let extraZ = 0;
         frameIndex = frameIndex + 1;
