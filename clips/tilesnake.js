@@ -15,7 +15,7 @@ export const add = () => {
     let numPoints = 512;
     let lineSize = 48;
     let Lx = 0, Ly = 0, sq = false, hsl;
-    function plotOn() {
+    let plotOn = () => {
         let d = Math.round(Math.random()) ? lineSize : -lineSize;
         let r = Math.random() * 2;
         sq = (Math.random() > 0.9);
@@ -50,7 +50,7 @@ export const add = () => {
         p[i].c = hsl;
     }
 
-    myClip.draw = function (time) {
+    myClip.draw = (time) => {
 
         context.strokeStyle = strokeColor;
         context.lineWidth = 2;
