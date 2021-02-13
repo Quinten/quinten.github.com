@@ -206,3 +206,10 @@ canvas.addEventListener('mouseup', function (e) {
     let y = (e.clientY - rect.top) * 2;
     events.emit('pointerup', {x, y});
 });
+
+// press f for fullscreen canvas
+window.addEventListener('keyup', e => {
+    if (e.keyCode === 70) {
+        canvas.requestFullscreen();
+    }
+});
