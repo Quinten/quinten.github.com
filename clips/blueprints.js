@@ -1,15 +1,5 @@
 import colors from '../lib/color.js';
 
-let square;
-let listener = (e) => {
-    let dx = width / 2 - e.x;
-    let dy = height * 3 / 4 - e.y;
-    let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 48) {
-        nextModule();
-    }
-};
-
 let myClip;
 
 export const add = () => {
@@ -18,27 +8,8 @@ export const add = () => {
     let bgColor = (invert) ? color.pale.hsl : color.dark.hsl;
     let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
-    //canvas.style.backgroundColor = '#003554';
 
     myClip = addClip();
-
-    /*
-    square = addClip();
-    square.draw = function (time) {
-        this.x = width / 2;
-        this.y = height * 3 / 4;
-        context.fillStyle = '#ecf0f1';
-        context.fillRect(-16, -16, 32, 32);
-        context.strokeStyle = '#ecf0f1';
-        let pulse = time % 2000;
-        pulse = pulse * pulse / 4000000;
-        context.globalAlpha = 1 - pulse;
-        pulse = 16 + pulse * 24;
-        context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
-    };
-
-    events.on('pointerup', listener);
-    */
 
     let nPrints = Math.floor(Math.hypot(window.innerWidth * 2, height) / 32), prints = [];
 
@@ -94,12 +65,8 @@ export const add = () => {
             context.fillRect(print.x + 14, print.y + 14, print.w - 28, print.h - 28);
         });
     };
-
-
 };
 
 export const remove = () => {
-    //events.off('pointerup', listener);
-    //removeClip(square);
     removeClip(myClip);
 };
