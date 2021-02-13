@@ -1,15 +1,5 @@
 import colors from '../lib/color.js';
 
-let square;
-let listener = (e) => {
-    let dx = width / 2 - e.x;
-    let dy = height / 4 - e.y;
-    let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 48) {
-        nextModule();
-    }
-};
-
 let myClip;
 
 export const add = () => {
@@ -26,25 +16,7 @@ export const add = () => {
 
     myClip = addClip();
 
-    /*
-    square = addClip();
-    square.draw = function (time) {
-        this.x = width / 2;
-        this.y = height / 4;
-        context.fillStyle = '#ecf0f1';
-        context.fillRect(-16, -16, 32, 32);
-        context.strokeStyle = '#ecf0f1';
-        let pulse = time % 2000;
-        pulse = pulse * pulse / 4000000;
-        context.globalAlpha = 1 - pulse;
-        pulse = 16 + pulse * 24;
-        context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
-    };
-
-    events.on('pointerup', listener);
-    */
-
-    function intersection(x0, y0, r0, x1, y1, r1) {
+    let intersection = (x0, y0, r0, x1, y1, r1) => {
         // https://stackoverflow.com/questions/12219802/a-javascript-function-that-returns-the-x-y-points-of-intersection-between-two-ci
         let a, dx, dy, d, h, rx, ry;
         let x2, y2;
@@ -121,7 +93,7 @@ export const add = () => {
             let newCircles = [];
             for (let t = circles.length - 1; t > 0; t--) {
                 for (let d = t - 1; d >= 0; d--) {
-                    var newPoints = intersection(circles[t].x, circles[t].y, circles[t].r, circles[d].x, circles[d].y, circles[d].r);
+                    let newPoints = intersection(circles[t].x, circles[t].y, circles[t].r, circles[d].x, circles[d].y, circles[d].r);
 
                     if (newPoints) {
                         newCircles.push({x: newPoints[0], y: newPoints[2], r: r});
@@ -141,12 +113,9 @@ export const add = () => {
         }
 
         ctx.restore();
-
     };
 };
 
 export const remove = () => {
-    //events.off('pointerup', listener);
-    //removeClip(square);
     removeClip(myClip);
 };
