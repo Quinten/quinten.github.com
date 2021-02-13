@@ -1,15 +1,5 @@
 import colors from '../lib/color.js';
 
-let square;
-let listener = (e) => {
-    let dx = width / 2 - e.x;
-    let dy = height / 3 - e.y;
-    let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 48) {
-        nextModule();
-    }
-};
-
 let myClip;
 
 export const add = () => {
@@ -20,24 +10,6 @@ export const add = () => {
     canvas.style.backgroundColor = bgColor;
 
     myClip = addClip();
-
-    /*
-    square = addClip();
-    square.draw = function (time) {
-        this.x = width / 2;
-        this.y = height / 3;
-        context.fillStyle = '#ecf0f1';
-        context.fillRect(-16, -16, 32, 32);
-        context.strokeStyle = '#ecf0f1';
-        let pulse = time % 2000;
-        pulse = pulse * pulse / 4000000;
-        context.globalAlpha = 1 - pulse;
-        pulse = 16 + pulse * 24;
-        context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
-    };
-
-    events.on('pointerup', listener);
-    */
 
     let angleY = (-0.005 + Math.random() / 100) * 2;
 
@@ -53,27 +25,30 @@ export const add = () => {
     let p = [];
     let numPoints = 256;
     let lineSize = 40;
-    var Lx = 0, Ly = 0, Lz = 0;
-    function plotOn() {
+    let Lx = 0, Ly = 0, Lz = 0;
+    let plotOn = () => {
         let d = Math.round(Math.random()) ? lineSize : -lineSize;
         let r = Math.random() * 3;
-        //if (r > 2) Lx = Lx + d;
-        //if (r < 1) Ly = Ly + d;
-        //if (r < 2 && r > 1) Lz = Lz + d;
 
-        if(r>2)Lx=(Lx+d>fl||Lx+d<-fl)?Lx-d:Lx+d;
-        if(r<1)Ly=(Ly+d>fl||Ly+d<-fl)?Ly-d:Ly+d;
-        if(r<2&&r>1)Lz=(Lz+d>fl||Lz+d<-fl)?Lz-d:Lz+d;
+        if (r > 2) {
+            Lx = (Lx + d > fl || Lx + d < -fl) ? Lx - d : Lx + d;
+        }
+        if (r < 1) {
+            Ly = (Ly + d > fl || Ly + d < -fl) ? Ly - d : Ly + d;
+        }
+        if (r < 2 && r > 1) {
+            Lz = (Lz + d > fl || Lz + d < -fl) ? Lz - d : Lz + d;
+        }
     };
     for (let i = 0; i < numPoints; i++) {
         p[i] = {};
         plotOn();
-        p[i].x =  Lx;
+        p[i].x = Lx;
         p[i].y = Ly;
         p[i].z = Lz;
     }
 
-    myClip.draw = function (time) {
+    myClip.draw = (time) => {
 
         context.strokeStyle = strokeColor;
         context.lineWidth = 2;
@@ -100,7 +75,6 @@ export const add = () => {
         let prevP = p[0];
         for (let i = 1; i < numPoints; i++) {
             if (
-            //(p[i].z < fl) && (prevP.z < fl) &&
             (p[i].z > -fl) && (prevP.z > -fl) &&
             !(((prevP._x < 0) && (p[i]._x > width))
             || ((prevP._x > width) && (p[i]._x < 0))
@@ -118,12 +92,8 @@ export const add = () => {
         prevP.z = Lz;
         p.push(prevP);
     };
-
-
 };
 
 export const remove = () => {
-    //events.off('pointerup', listener);
-    //removeClip(square);
     removeClip(myClip);
 };
