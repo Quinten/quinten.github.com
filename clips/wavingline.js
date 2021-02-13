@@ -1,15 +1,5 @@
 import colors from '../lib/color.js';
 
-let square;
-let listener = (e) => {
-    let dx = width / 2 - e.x;
-    let dy = height / 2 - e.y;
-    let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 48) {
-        nextModule();
-    }
-};
-
 let bigSquares = [];
 
 export const add = () => {
@@ -22,40 +12,20 @@ export const add = () => {
     for (let b = 0; b < 16; b++) {
         let bigSquare = addClip();
         bigSquare.phase = b / 15;
-        bigSquare.draw = function (time) {
-            this.x = width / 2;
-            this.y = height * this.phase;
-            this.rotation = Math.sin((time + 1200 * this.phase) / 600) * Math.PI;
-            this.rotation = Math.max(this.rotation, - Math.PI / 2);
-            this.rotation = Math.min(this.rotation, Math.PI / 2);
+        bigSquare.draw = (time) => {
+            bigSquare.x = width / 2;
+            bigSquare.y = height * bigSquare.phase;
+            bigSquare.rotation = Math.sin((time + 1200 * bigSquare.phase) / 600) * Math.PI;
+            bigSquare.rotation = Math.max(bigSquare.rotation, - Math.PI / 2);
+            bigSquare.rotation = Math.min(bigSquare.rotation, Math.PI / 2);
             context.fillStyle = strokeColor;
             context.fillRect(-height / 30, - 8, height / 15, 16);
         };
         bigSquares.push(bigSquare);
     }
-
-    /*
-    square = addClip();
-    square.draw = function (time) {
-        this.x = width / 2;
-        this.y = height / 2;
-        context.fillStyle = '#ecf0f1';
-        context.fillRect(-16, -16, 32, 32);
-        context.strokeStyle = '#ecf0f1';
-        let pulse = time % 2000;
-        pulse = pulse * pulse / 4000000;
-        context.globalAlpha = 1 - pulse;
-        pulse = 16 + pulse * 24;
-        context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
-    };
-    */
-
-    events.on('pointerup', listener);
 };
 
 export const remove = () => {
-    //events.off('pointerup', listener);
-    //removeClip(square);
     bigSquares.forEach((bigSquare) => {
         removeClip(bigSquare);
     });
