@@ -5,7 +5,7 @@ import colors from '../lib/color.js';
 
 let deg2rad = angle => Math.PI * angle / 180;
 
-var vshader = `
+let vshader = `
 attribute vec4 position;
 attribute vec4 color;
 attribute vec4 normal;
@@ -31,7 +31,7 @@ void main() {
 }`;
 
 // Fragment shader program
-var fshader = `
+let fshader = `
 precision mediump float;
 uniform vec3 lightColor;
 uniform vec3 lightPosition;
@@ -68,23 +68,23 @@ export const add = () => {
     program = webgl.compile(gl, vshader, fshader);
 
     // Initialize a cube
-    var vertices, normals, indices;
+    let vertices, normals, indices;
     [vertices, normals, indices] = shapes.cube();
 
     // Count vertices
-    var n = indices.length;
+    let n = indices.length;
 
     // Set position, normal buffers
     webgl.buffer(gl, vertices, program, 'position', 3, gl.FLOAT);
     webgl.buffer(gl, normals, program, 'normal', 3, gl.FLOAT);
 
     // Set indices
-    var indexBuffer = gl.createBuffer();
+    let indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
     // Set cube color
-    var materialColor = gl.getAttribLocation(program, 'color');
+    let materialColor = gl.getAttribLocation(program, 'color');
     gl.vertexAttrib3f(materialColor, color.base.r, color.base.g, color.base.b);
 
     // Set the clear color and enable the depth test
@@ -92,23 +92,23 @@ export const add = () => {
     gl.enable(gl.DEPTH_TEST);
 
     // Set the camera
-    var cameraMatrix = matrix.perspective({fov: deg2rad(30), aspect: canvas3d.width / canvas3d.height, near: 1, far: 100});
+    let cameraMatrix = matrix.perspective({fov: deg2rad(30), aspect: canvas3d.width / canvas3d.height, near: 1, far: 100});
     cameraMatrix = matrix.transform(cameraMatrix, {z: -15});
 
     // Set the point light color and position
-    var lightColor = gl.getUniformLocation(program, 'lightColor');
+    let lightColor = gl.getUniformLocation(program, 'lightColor');
     gl.uniform3f(lightColor, color.pale.r, color.pale.g, color.pale.b);
 
-    var lightPosition = gl.getUniformLocation(program, 'lightPosition');
+    let lightPosition = gl.getUniformLocation(program, 'lightPosition');
     gl.uniform3f(lightPosition, 2.5, 2.5, 2.5);
 
     // Set the ambient light color
-    var ambientLight = gl.getUniformLocation(program, 'ambientLight');
+    let ambientLight = gl.getUniformLocation(program, 'ambientLight');
     gl.uniform3f(ambientLight, 0.4, 0.4, 0.4);
 
-    var cuboids = [];
-    var nCuboids = 42;
-    while(nCuboids > 0) {
+    let cuboids = [];
+    let nCuboids = 42;
+    while (nCuboids > 0) {
         let cuboid = {
             x: 24 - Math.random() * 48,
             y: 24 - Math.random() * 48,
@@ -132,7 +132,7 @@ export const add = () => {
         gl.clear(gl.DEPTH_BUFFER_BIT);
 
         cuboids.forEach((cuboid) => {
-            var modelMatrix = matrix.identity();
+            let modelMatrix = matrix.identity();
             cuboid.rx += cuboid.vrx;
             cuboid.ry += cuboid.vry;
             cuboid.rz += cuboid.vrz;
