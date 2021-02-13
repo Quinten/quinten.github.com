@@ -2,14 +2,14 @@ import colors from '../lib/color.js';
 
 let myClip;
 
-let rotate = (a, b, angle) => [
-    Math.cos(angle) * a - Math.sin(angle) * b,
-    Math.sin(angle) * a + Math.cos(angle) * b
+let rotate = (a, b, angle, cos = Math.cos(angle), sin = Math.sin(angle)) => [
+    cos * a - sin * b,
+    sin * a + cos * b
 ];
 
-let project = (vpX, vpY, fl, x, y, z) => [
-    vpX + x * fl / (fl + z),
-    vpY + y * fl / (fl + z)
+let project = (vpX, vpY, fl, x, y, z, scale = fl / (fl + z)) => [
+    vpX + x * scale,
+    vpY + y * scale
 ];
 
 export const add = () => {
@@ -35,9 +35,9 @@ export const add = () => {
 
     let angleZ = (-0.005 + Math.random() / 100) * 2;
 
-    myClip.draw = function (time) {
+    myClip.draw = (time) => {
 
-        context.fillStyle = strokeColor;
+        ctx.fillStyle = strokeColor;
 
         quads.forEach((q) => {
             q.start -= 20;
