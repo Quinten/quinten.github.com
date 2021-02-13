@@ -1,15 +1,5 @@
 import colors from '../lib/color.js';
 
-let square;
-let listener = (e) => {
-    let dx = width / 2 - e.x;
-    let dy = height / 2 - e.y;
-    let d = Math.sqrt( dx * dx + dy * dy );
-    if (d < 48) {
-        nextModule();
-    }
-};
-
 const scaleX = Math.cos(Math.PI / 4);
 const scaleY = Math.sin(Math.PI / 4); // this is actually the same
 
@@ -47,30 +37,9 @@ export const add = () => {
             }
         }
     }
-
-    /*
-    square = addClip();
-    square.rotation = Math.PI / 4;
-    square.draw = function (time) {
-        this.x = width / 2;
-        this.y = height / 2;
-        context.fillStyle = '#ecf0f1';
-        context.fillRect(-16, -16, 32, 32);
-        context.strokeStyle = '#ecf0f1';
-        let pulse = time % 2000;
-        pulse = pulse * pulse / 4000000;
-        context.globalAlpha = 1 - pulse;
-        pulse = 16 + pulse * 24;
-        context.strokeRect(-pulse, -pulse, pulse * 2, pulse * 2);
-    };
-
-    events.on('pointerup', listener);
-    */
 };
 
 export const remove = () => {
-    //events.off('pointerup', listener);
-    //removeClip(square);
     bigSquares.forEach((bigSquare) => {
         removeClip(bigSquare);
     });
