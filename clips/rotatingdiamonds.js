@@ -21,16 +21,16 @@ export const add = () => {
             bigSquare.phase = Math.random();
             bigSquare.gX = b;
             bigSquare.gY = c;
-            bigSquare.draw = function (time) {
-            let size = Math.max(width, height);
-                this.x = this.gX / 8 * size + (width - size) / 2;
-                this.y = this.gY / 8 * size + (height - size) / 2;
-                //this.rotation = - Math.PI * 3 / 4;
-                this.rotation = Math.sin((time + 1200 * this.phase) / 600) * Math.PI * 2;
-                this.rotation = Math.max(this.rotation, - Math.PI * 3 / 4);
-                this.rotation = Math.min(this.rotation, Math.PI * 3 / 4);
+            bigSquare.draw = (time) => {
+                let size = Math.max(width, height);
+                bigSquare.x = bigSquare.gX / 8 * size + (width - size) / 2;
+                bigSquare.y = bigSquare.gY / 8 * size + (height - size) / 2;
+                //bigSquare.rotation = - Math.PI * 3 / 4;
+                bigSquare.rotation = Math.sin((time + 1200 * bigSquare.phase) / 600) * Math.PI * 2;
+                bigSquare.rotation = Math.max(bigSquare.rotation, - Math.PI * 3 / 4);
+                bigSquare.rotation = Math.min(bigSquare.rotation, Math.PI * 3 / 4);
                 context.fillStyle = strokeColor;
-                let scale = Math.abs(this.rotation / (Math.PI * 3 / 4));
+                let scale = Math.abs(bigSquare.rotation / (Math.PI * 3 / 4));
                 context.fillRect(-size / 8 * scaleX * scale, - size / 8 * scaleY * scale, size / 4 * scaleX * scale, size / 4 * scaleY * scale);
             };
             bigSquares.push(bigSquare);
