@@ -76,23 +76,23 @@ export const add = () => {
     program = webgl.compile(gl, vshader, fshader);
 
     // Initialize a cube
-    var vertices, normals, indices;
+    let vertices, normals, indices;
     [vertices, normals, indices] = shapes.cube();
 
     // Count vertices
-    var n = indices.length;
+    let n = indices.length;
 
     // Set position, normal buffers
     webgl.buffer(gl, vertices, program, 'position', 3, gl.FLOAT);
     webgl.buffer(gl, normals, program, 'normal', 3, gl.FLOAT);
 
     // Set indices
-    var indexBuffer = gl.createBuffer();
+    let indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
     // Set cube color
-    var materialColor = gl.getAttribLocation(program, 'color');
+    let materialColor = gl.getAttribLocation(program, 'color');
     gl.vertexAttrib3f(materialColor, color.base.r, color.base.g, color.base.b);
 
     // Set the clear color and enable the depth test
@@ -100,44 +100,40 @@ export const add = () => {
     gl.enable(gl.DEPTH_TEST);
 
     // Set the camera
-    var cameraMatrix = matrix.perspective({fov: deg2rad(30), aspect: canvas3d.width / canvas3d.height, near: 1, far: 100});
+    let cameraMatrix = matrix.perspective({fov: deg2rad(30), aspect: canvas3d.width / canvas3d.height, near: 1, far: 100});
     cameraMatrix = matrix.transform(cameraMatrix, {z: -65});
 
     // Set the point light color and position
-    var lightColor = gl.getUniformLocation(program, 'lightColor');
+    let lightColor = gl.getUniformLocation(program, 'lightColor');
     gl.uniform3f(lightColor, color.pale.r, color.pale.g, color.pale.b);
 
-    var lightPosition = gl.getUniformLocation(program, 'lightPosition');
+    let lightPosition = gl.getUniformLocation(program, 'lightPosition');
     gl.uniform3f(lightPosition, 65, 65, 65);
 
     // Set the ambient light color
-    var ambientLight = gl.getUniformLocation(program, 'ambientLight');
+    let ambientLight = gl.getUniformLocation(program, 'ambientLight');
     gl.uniform3f(ambientLight, 0.4, 0.4, 0.4);
-    //let charcube = charCube.create();
     let charcube = [];
-    //console.log(charcube);
-    //console.log(fontArr);
     let nCharCubes = 5;
-    let gridSize = 2; // 20?
+    let gridSize = 2;
     let gridWidth = 7;
     let gridDepth = 9;
-    let zOffset = 0; // 650?
+    let zOffset = 0;
 
-    for (var c = 0; c < nCharCubes; c++) {
+    for (let c = 0; c < nCharCubes; c++) {
         charcube[c] = charCube.create();
         charcube[c].x = (c - ((nCharCubes - 1) / 2)) * gridSize * gridWidth;
         charcube[c].z = ((gridDepth / 2) * gridSize) - zOffset;
-        //charcube[c].changeChar(fontArr.j);
     }
 
-    function morfCharCubes() {
-        var fontShape = (fontArr[arguments[1]]) ? fontArr[arguments[1]] : [[4,5]];
-        arguments[0].changeChar(fontShape);
+    let morfCharCubes = (...args) => {
+        let fontShape = (fontArr[args[1]]) ? fontArr[args[1]] : [[4,5]];
+        args[0].changeChar(fontShape);
     }
 
-    function changeWord () {
-        for (var c = 0; c < nCharCubes; c++ ) {
-            var charKey = word[currentWord].substr(c, 1);
+    let changeWord = () => {
+        for (let c = 0; c < nCharCubes; c++ ) {
+            let charKey = word[currentWord].substr(c, 1);
             createTimeout(morfCharCubes, c * 300, charcube[c], charKey);
         }
         currentWord = (currentWord < (word.length - 1)) ? (currentWord + 1) : 0;
@@ -145,48 +141,15 @@ export const add = () => {
     }
     changeWord();
 
-    /*
-    var cuboids = [];
-    var nCuboids = 1;
-    while (nCuboids > 0) {
-        let cuboid = {
-            x: 0,
-            y: 0,
-            z: 0,
-            rx: Math.random() * Math.PI,
-            ry: Math.random() * Math.PI,
-            rz: Math.random() * Math.PI,
-            vrx: deg2rad(1.5 - Math.random() * 3),
-            vry: deg2rad(1.5 - Math.random() * 3),
-            vrz: deg2rad(1.5 - Math.random() * 3)
-        };
-        cuboids.push(cuboid);
-        nCuboids -= 1;
-    }
-    */
-
     let drawCuboids = (gl, n, cameraMatrix) => {
 
         // Clear color and depth buffer
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        //gl.clear(gl.COLOR_BUFFER_BIT);
-        //gl.clear(gl.DEPTH_BUFFER_BIT);
-
-        /*
-        cuboids.forEach((cuboid) => {
-            var modelMatrix = matrix.identity();
-            cuboid.rx += cuboid.vrx;
-            cuboid.ry += cuboid.vry;
-            cuboid.rz += cuboid.vrz;
-            modelMatrix = matrix.transform(modelMatrix, cuboid);
-            shapes.drawShape(gl, program, cameraMatrix, modelMatrix, n);
-        });
-        */
 
         charcube.forEach((char) => {
             char.contract();
             char.cube.forEach((cuboid) => {
-                var modelMatrix = matrix.identity();
+                let modelMatrix = matrix.identity();
                 modelMatrix = matrix.transform(modelMatrix, char);
                 modelMatrix = matrix.transform(modelMatrix, cuboid);
                 shapes.drawShape(gl, program, cameraMatrix, modelMatrix, n);
@@ -197,7 +160,6 @@ export const add = () => {
     myClip = addClip();
 
     myClip.draw = () => {
-        //cameraMatrix = matrix.transform(cameraMatrix, {rx: .00541, ry: .00181, rz: .00317});
         drawCuboids(gl, n, cameraMatrix);
         context.drawImage(canvas3d, 1024 - 1024 / height * width / 2, 0, 1024 / height * width, 1024, 0, 0, width, height);
     };
