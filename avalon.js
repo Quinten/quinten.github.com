@@ -5,7 +5,7 @@ let shuffles = [];
 let webglContextBusy = false;
 
 
-async function shuffleModule() {
+let shuffleModule = async () => {
     if (!modules.length) {
         return;
     }
@@ -23,7 +23,7 @@ async function shuffleModule() {
     //console.log(clips.length);
 
     let randomIndex = Math.floor(Math.random() * modules.length);
-    var newModule = await import(
+    let newModule = await import(
         './clips/' + modules[randomIndex]
     );
     if (shuffles.indexOf(newModule) === -1 && !(newModule.usesWebgl && webglContextBusy)) {
