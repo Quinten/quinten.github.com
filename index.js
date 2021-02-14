@@ -1,21 +1,15 @@
-var canvas, context, ctx, width, height, clips;
+let canvas, context, ctx, width, height, clips;
 
 canvas = document.querySelector('.index-canvas');
 
 context = canvas.getContext('2d');
 ctx = context; // alias
 
-var canvas3d = document.querySelector('.webgl-canvas');
+let canvas3d = document.querySelector('.webgl-canvas');
 canvas3d.width = 2048;
 canvas3d.height = 1024;
-/*
-window.addEventListener('resize', () => {
-    canvas3d.width = window.innerWidth;
-    canvas3d.height = window.innerHeight;
-});
-*/
 
-var gl = canvas3d.getContext('webgl', { preserveDrawingBuffer: true });
+let gl = canvas3d.getContext('webgl', { preserveDrawingBuffer: true });
 
 // documentation
 //console.log(context);
@@ -25,18 +19,18 @@ clips = [];
 let globalTime = 0;
 let timeouts = [];
 
-function createTimeout(callback, duration, ...args) {
+let createTimeout = (callback, duration, ...args) => {
     let end = globalTime + duration;
     let timeout = {callback, end, args};
     timeouts.push(timeout);
     return timeout;
-}
+};
 
-function destroyTimeout(timeout) {
+let destroyTimeout = (timeout) => {
     timeouts.splice(timeouts.indexOf(timeout), 1);
-}
+};
 
-function onF(time) {
+let onF = (time) => {
     width = canvas.width = canvas.clientWidth * 2;
     height = canvas.height = canvas.clientHeight * 2;
     context.clearRect(0, 0, width, height);
@@ -49,30 +43,30 @@ function onF(time) {
         }
     }
 
-    clips.forEach(function(clip) {
+    clips.forEach((clip) => {
         clip.render(time);
     });
 
     window.requestAnimationFrame(onF);
-}
+};
 onF(0);
 
-function addClip({
+let addClip = ({
     x = 0,
     y = 0,
     rotation = 0,
     unshift = false
-} = {}) {
+} = {}) => {
 
-    var clip = {x, y, rotation};
+    let clip = {x, y, rotation};
 
-    clip.draw = function() {};
+    clip.draw = () => {};
 
-    clip.render = function(time) {
+    clip.render = (time) => {
         context.save();
-        context.translate(this.x, this.y);
-        context.rotate(this.rotation);
-        this.draw(time);
+        context.translate(clip.x, clip.y);
+        context.rotate(clip.rotation);
+        clip.draw(time);
         context.restore();
     };
 
@@ -83,13 +77,13 @@ function addClip({
     }
 
     return clip;
-}
+};
 
-function removeClip(clip) {
+let removeClip = (clip) => {
     clips.splice(clips.indexOf(clip), 1);
-}
+};
 
-function quad(x1, y1, x2, y2, x3, y3, x4, y4) {
+let quad = (x1, y1, x2, y2, x3, y3, x4, y4) => {
     context.beginPath();
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
@@ -97,17 +91,17 @@ function quad(x1, y1, x2, y2, x3, y3, x4, y4) {
     context.lineTo(x4, y4);
     context.closePath();
     context.fill();
-}
+};
 
-function line(x1, y1, x2, y2) {
+let line = (x1, y1, x2, y2) => {
     context.beginPath();
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
     context.stroke();
-}
+};
 
-var expanded = false;
-var expander = document.querySelector('.expander');
+let expanded = false;
+let expander = document.querySelector('.expander');
 
 if (expander) {
     expander.addEventListener('click', () => {
@@ -122,7 +116,7 @@ if (expander) {
     });
 }
 
-var skipper = document.querySelector('.skipper');
+let skipper = document.querySelector('.skipper');
 
 if (skipper) {
     skipper.addEventListener('click', () => {
@@ -130,9 +124,9 @@ if (skipper) {
     });
 }
 
-var modules = [], currentModule, moduleIndex = -1;
+let modules = [], currentModule, moduleIndex = -1;
 
-async function nextModule() {
+let nextModule = async () => {
     if (!modules.length) {
         return;
     }
@@ -143,7 +137,7 @@ async function nextModule() {
     if (moduleIndex >= modules.length) {
         moduleIndex = 0;
     }
-    var newModule = await import(
+    let newModule = await import(
         './clips/' + modules[moduleIndex]
     );
     newModule.add();
@@ -158,54 +152,6 @@ if (skipper || expander) {
         nextModule();
     });
 }
-
-var events = {
-    listeners: {},
-    on: function (type, callback) {
-        if (!this.listeners[type]) {
-            this.listeners[type] = [];
-        }
-        this.listeners[type].push(
-            callback
-        );
-    },
-    once: function (type, callback) {
-        var disposableCallback = (e) => {
-            callback(e);
-            this.off(type, disposableCallback);
-        };
-        this.on(type, disposableCallback);
-    },
-    off: function (type, callback) {
-        if (!this.listeners[type]) {
-            return;
-        }
-        if (!callback) {
-            this.listeners[type] = [];
-        }
-        this.listeners[type].splice(
-            this.listeners[type]
-                .indexOf(callback),
-            1
-        );
-    },
-    emit: function (type, e) {
-        if (!this.listeners[type]) {
-            return;
-        }
-        this.listeners[type].forEach(
-            (callback) => {
-                callback(e);
-        });
-    }
-};
-
-canvas.addEventListener('mouseup', function (e) {
-    let rect = canvas.getBoundingClientRect();
-    let x = (e.clientX - rect.left) * 2;
-    let y = (e.clientY - rect.top) * 2;
-    events.emit('pointerup', {x, y});
-});
 
 // press f for fullscreen canvas
 window.addEventListener('keyup', e => {
