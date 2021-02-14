@@ -1,0 +1,14 @@
+body {
+    background: #272D2D;
+    color: #F2FDFF;
+    margin: 0px;
+    font-family: monospace;
+}
+
+.index-canvas {
+    display: block;
+    height: 256px;
+    width: 256px;
+    transition: background-color .5s cubic-bezier(0, 0, 0.35, 1);
+    background-color: #272D2D;
+}

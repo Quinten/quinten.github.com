@@ -4,6 +4,8 @@ canvas = document.querySelector('.index-canvas');
 
 context = canvas.getContext('2d');
 ctx = context; // alias
+// documentation
+//console.log(context);
 
 let canvas3d = document.querySelector('.webgl-canvas');
 canvas3d.width = 2048;
@@ -11,8 +13,8 @@ canvas3d.height = 1024;
 
 let gl = canvas3d.getContext('webgl', { preserveDrawingBuffer: true });
 
-// documentation
-//console.log(context);
+let nFrames = -1;
+let frameIndex = 0;
 
 clips = [];
 

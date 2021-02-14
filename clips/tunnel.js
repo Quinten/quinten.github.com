@@ -33,18 +33,22 @@ export const add = () => {
         quads.push(q);
     }
 
-    let angleZ = (-0.005 + Math.random() / 100) * 2;
+    if (nFrames > -1) {
+        nFrames = 96;
+    }
+
+    let angleZ = (nFrames > -1) ? (Math.PI * 2 / nFrames): (-0.005 + Math.random() / 100) * 2;
 
     myClip.draw = (time) => {
 
         ctx.fillStyle = strokeColor;
 
         quads.forEach((q) => {
-            q.start -= 20;
+            q.start -= (nFrames > -1) ? fl * 8 / nFrames : 20;
             if (q.start < -fl + 2) {
-                q.length = fl + Math.random() * fl * 2;
+                q.length = (nFrames > -1) ? q.length : fl + Math.random() * fl * 2;
                 q.start = q.start + fl * 8;
-                q.rotation = Math.random() * Math.PI * 2;
+                q.rotation = (nFrames > -1) ? q.rotation : Math.random() * Math.PI * 2;
             }
             q.rotation = q.rotation + angleZ;
             let points = [
