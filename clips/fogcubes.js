@@ -155,10 +155,10 @@ export const add = () => {
 
         cuboids.forEach((cuboid) => {
             let modelMatrix = matrix.identity();
-            cuboid.z -= 0.1;
+            cuboid.z -= (nFrames > -1) ? 32 / nFrames : 0.1;
             if (cuboid.z < -24) {
                 cuboid.z += 32;
-                cuboid.y = -Math.random() * 8;
+                cuboid.y = (nFrames > -1) ? cuboid.y : -Math.random() * 8;
             }
             modelMatrix = matrix.transform(modelMatrix, cuboid);
             shapes.drawShape(gl, program, cameraMatrix, modelMatrix, n);
