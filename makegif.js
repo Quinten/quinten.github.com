@@ -3,7 +3,7 @@ nFrames = 64;
 let clip = window.location.search.substr(1);
 if (clip.length) {
     (async () => {
-        let newModule = await import('./clips/' + clip + '.js');
+        let newModule = await import('./clips/' + clip + '.js').catch(e => { statustext.innerHTML = 'Clip not found. Use url "makegif.html?clipname" without ".js"'; });
         newModule.add();
         let bg = addClip({unshift: true});
         bg.draw = (time) => {
@@ -22,6 +22,7 @@ if (clip.length) {
             img.src = URL.createObjectURL(blob);
             rendered = true;
             canvas.style.display = 'none';
+            statustext.innerHTML = 'Done. Right click on gif to save.';
         });
         let hook = addClip();
         hook.draw = (time) => {
@@ -35,6 +36,7 @@ if (clip.length) {
                 removeClip(hook);
                 newModule.remove();
                 gif.render();
+                statustext.innerHTML = 'Rendering gif...';
             }
         };
     })();
