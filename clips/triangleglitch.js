@@ -18,7 +18,7 @@ export const add = () => {
     let fl = 400;
 
     let p = [];
-    let numPoints = 1024;
+    let numPoints = 512;
     let lineSize = 80;
     let Lx = 0, Ly = 0, Lz = 0;
     let plotOn = () => {
