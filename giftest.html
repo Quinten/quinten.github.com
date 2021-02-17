@@ -9,7 +9,6 @@
         <canvas></canvas>
         <img />
         <script src="gif.js"></script>
-        <script src="gif.worker.js"></script>
         <script>
             let nFrames = 50;
             let width = 507;
@@ -31,7 +30,7 @@
                 quality: 10
             });
             gif.on('finished', (blob) => {
-                var img = document.querySelector('img');
+                let img = document.querySelector('img');
                 img.src = URL.createObjectURL(blob);
                 rendered = true;
                 canvas.style.display = 'none';
