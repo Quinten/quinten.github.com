@@ -14,6 +14,11 @@ export const add = () => {
     let strokeColor = color.base.hsl;
     canvas.style.backgroundColor = bgColor;
 
+    if (nFrames > -1) {
+        nFrames = 160;
+        startFrame = 81;
+    }
+
     bigSquares = [];
     let yes = true;
     for (let b = 0; b < 9; b++) {
@@ -28,6 +33,7 @@ export const add = () => {
                 bigSquare.scaleA = bigSquare.scaleB = 0;
                 bigSquare.changeA = bigSquare.changeB = 0;
                 bigSquare.draw = (time) => {
+                    time = (nFrames > -1) ? frameIndex * 40 : time;
                     let size = Math.max(width, height);
                     bigSquare.x = bigSquare.gX / 8 * size + (width - size) / 2;
                     bigSquare.y = bigSquare.gY / 8 * size + (height - size) / 2;

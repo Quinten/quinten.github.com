@@ -20,7 +20,6 @@ export const add = () => {
     canvas.style.backgroundColor = bgColor;
 
     myClip = addClip();
-    let frameIndex = 0;
 
     let fl = 512;
 
@@ -84,7 +83,6 @@ export const add = () => {
 
         let extraX = 0;
         let extraZ = 0;
-        frameIndex = frameIndex + 1;
         if (frameIndex > ((nFrames > -1) ? nFrames : 256)) {
             frameIndex = 0;
             extraX = -256;

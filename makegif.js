@@ -26,11 +26,12 @@ if (clip.length) {
         });
         let hook = addClip();
         hook.draw = (time) => {
-            frameIndex = frameIndex + 1;
-            gif.addFrame(canvas, {
-                copy: true,
-                delay: 40
-            });
+            if (frameIndex >= startFrame) {
+                gif.addFrame(canvas, {
+                    copy: true,
+                    delay: 40
+                });
+            }
             if (frameIndex >= nFrames) {
                 removeClip(bg);
                 removeClip(hook);
@@ -39,5 +40,6 @@ if (clip.length) {
                 statustext.innerHTML = 'Rendering gif...';
             }
         };
+        frameIndex = 0;
     })();
 }

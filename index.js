@@ -15,6 +15,7 @@ let gl = canvas3d.getContext('webgl', { preserveDrawingBuffer: true });
 
 let nFrames = -1;
 let frameIndex = 0;
+let startFrame = 0;
 
 clips = [];
 
@@ -37,6 +38,7 @@ let onF = (time) => {
     height = canvas.height = canvas.clientHeight * 2;
     context.clearRect(0, 0, width, height);
 
+    frameIndex = frameIndex + 1;
     globalTime = time;
     for (let t = timeouts.length - 1; t >= 0; t--) {
         if (timeouts[t].end <= globalTime) {
