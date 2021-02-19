@@ -3,10 +3,14 @@ import colors from '../lib/color.js';
 let myClip;
 
 export const add = () => {
-    let nFrames = 512;
-    let frameIndex = 0;
+    let nFramesC = 512;
+    let frameIndexC = 0;
     let progress = 0; // 0 -> 1
-    let bounce = 0; // 0 -> 1 -> 0
+
+    if (nFrames > -1) {
+        nFrames = 128;
+        nFramesC = nFrames;
+    }
 
     let color = colors.getRandomColorScheme();
     let invert = !!(Math.round(Math.random()));
@@ -64,12 +68,11 @@ export const add = () => {
     };
 
     myClip.draw = function (time) {
-        frameIndex = frameIndex + 1;
-        if (frameIndex > nFrames) {
-            frameIndex = 0;
+        frameIndexC = frameIndexC + 1;
+        if (frameIndexC > nFramesC) {
+            frameIndexC = 0;
         }
-        progress = frameIndex / nFrames;
-        bounce = 1 - Math.abs(1 - progress * 2);
+        progress = frameIndexC / nFramesC;
 
         ctx.save();
 
