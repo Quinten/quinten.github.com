@@ -10,6 +10,11 @@ export const add = () => {
     let bgColor = color.lite.hsl;
     let strokeColor = color.base.hsl;
     canvas.style.backgroundColor = bgColor;
+    
+    if (nFrames > -1) {
+        nFrames = 160;
+        startFrame = 81;
+    }
 
     bigSquares = [];
     let yes = true;
@@ -22,11 +27,11 @@ export const add = () => {
             bigSquare.gX = b;
             bigSquare.gY = c;
             bigSquare.draw = (time) => {
+                time = (nFrames > -1) ? frameIndex * 40 : time;
                 let size = Math.max(width, height);
                 bigSquare.x = bigSquare.gX / 8 * size + (width - size) / 2;
                 bigSquare.y = bigSquare.gY / 8 * size + (height - size) / 2;
-                //bigSquare.rotation = - Math.PI * 3 / 4;
-                bigSquare.rotation = Math.sin((time + 1200 * bigSquare.phase) / 600) * Math.PI * 2;
+                bigSquare.rotation = Math.sin((time + 3200 * bigSquare.phase) / 1600 * Math.PI) * Math.PI * 2;
                 bigSquare.rotation = Math.max(bigSquare.rotation, - Math.PI * 3 / 4);
                 bigSquare.rotation = Math.min(bigSquare.rotation, Math.PI * 3 / 4);
                 context.fillStyle = strokeColor;
