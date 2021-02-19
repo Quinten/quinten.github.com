@@ -12,6 +12,12 @@ export const remove = () => {
 };
 
 export const add = () => {
+    let nFramesC = 256;
+    let frameIndexC = 0;
+
+    if (nFrames > -1) {
+        nFramesC = nFrames;
+    }
 
     let color = colors.getRandomColorScheme();
     let invert = !!(Math.round(Math.random()));
@@ -76,15 +82,16 @@ export const add = () => {
     addPole(-512, 512);
     addPole(-768, 768);
 
-    let speedX = 256 / ((nFrames > -1) ? nFrames : 256);
-    let speedZ = - 256 / ((nFrames > -1) ? nFrames : 256);
+    let speedX = 256 / nFramesC;
+    let speedZ = -256 / nFramesC;
 
     myClip.draw = (time) => {
 
         let extraX = 0;
         let extraZ = 0;
-        if (frameIndex > ((nFrames > -1) ? nFrames : 256)) {
-            frameIndex = 0;
+        frameIndexC = frameIndexC + 1;
+        if (frameIndexC > nFramesC) {
+            frameIndexC = 0;
             extraX = -256;
             extraZ = 256;
         }
