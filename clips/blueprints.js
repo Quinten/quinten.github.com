@@ -9,6 +9,10 @@ export const add = () => {
     let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
 
+    if (nFrames > -1) {
+        nFrames = 128;
+    }
+
     myClip = addClip();
 
     let nPrints = Math.floor(Math.hypot(window.innerWidth * 2, height) / 32), prints = [];
@@ -24,7 +28,10 @@ export const add = () => {
             w: (32 + (Math.floor(Math.random() * 24) * 16)),
             h: (32 + (Math.floor(Math.random() * 24) * 16)),
             vx: Math.cos(dir) * speed,
-            vy: Math.sin(dir) * speed
+            vy: Math.sin(dir) * speed,
+            p: -0.5 + Math.random(),
+            f: 1,
+            dist: width * 2 + Math.random() * width
         };
 
         prints.push(print);
@@ -32,23 +39,32 @@ export const add = () => {
 
     myClip.draw = function (time) {
 
-        let width = window.innerWidth * 2;
+        let widthC = (nFrames > -1) ? width : window.innerWidth * 2;
+        let progress = frameIndex / nFrames;
 
         context.fillStyle = strokeColor;
         prints.forEach((print) => {
-            print.x += print.vx;
-            print.y += print.vy;
-            if (print.x + 12 + print.w < 0) {
-                print.x += width + 24 + print.w;
-            }
-            if (print.y + 12 + print.h < 0) {
-                print.y += height + 24 + print.h;
-            }
-            if (print.x - 12 > width) {
-                print.x -= width + 24 + print.w;
-            }
-            if (print.y - 12 > height) {
-                print.y -= height + 24 + print.h;
+            if (nFrames > -1) {
+                print.f = print.p + progress;
+                if (print.f > 0.5) {
+                    print.f -= 1;
+                }
+                print.x = print.dist * print.f;
+            } else {
+                print.x += print.vx;
+                print.y += print.vy;
+                if (print.x + 12 + print.w < 0) {
+                    print.x += widthC + 24 + print.w;
+                }
+                if (print.y + 12 + print.h < 0) {
+                    print.y += height + 24 + print.h;
+                }
+                if (print.x - 12 > widthC) {
+                    print.x -= widthC + 24 + print.w;
+                }
+                if (print.y - 12 > height) {
+                    print.y -= height + 24 + print.h;
+                }
             }
             context.fillRect(print.x, print.y, print.w, print.h);
         });
