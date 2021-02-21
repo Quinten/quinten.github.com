@@ -62,6 +62,11 @@ let program;
 let myClip;
 
 export const add = () => {
+
+    if (nFrames > -1) {
+        nFrames = 256;
+    }
+
     let color = colors.getRandomColorScheme();
     canvas.style.backgroundColor = color.dark.hsl;
 
