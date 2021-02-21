@@ -8,10 +8,14 @@ export const add = () => {
     let bgColor = (invert) ? color.pale.hsl : color.dark.hsl;
     let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
+    
+    if (nFrames > -1) {
+        nFrames = 128;
+    }
 
     myClip = addClip({unshift: true});
 
-    let angleZ = (-0.005 + Math.random() / 100) * 2;
+    let angleZ = (nFrames === -1) ? ((-0.005 + Math.random() / 100) * 2) : Math.PI * 2 / nFrames;
     let cosZ = Math.cos(angleZ);
     let sinZ = Math.sin(angleZ);
 
@@ -57,7 +61,7 @@ export const add = () => {
 
             p[i].x = x1;
             p[i].y = y1;
-            p[i].z = p[i].z - 1;
+            p[i].z = p[i].z - ((nFrames > -1) ? 6 : 1);
             if (p[i].z < -fl) {
                 p[i].z = fl;
             }
@@ -80,12 +84,14 @@ export const add = () => {
             }
             prevP = p[i];
         }
-        prevP = p.shift();
-        plotOn();
-        prevP.x =  Lx;
-        prevP.y = Ly;
-        prevP.z = Lz;
-        p.push(prevP);
+        if (nFrames === -1) {
+            prevP = p.shift();
+            plotOn();
+            prevP.x =  Lx;
+            prevP.y = Ly;
+            prevP.z = Lz;
+            p.push(prevP);
+        }
     };
 };
 
