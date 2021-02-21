@@ -70,6 +70,11 @@ let currentWord = 0;
 let changeTO = undefined;
 
 export const add = () => {
+    if (nFrames > -1) {
+        nFrames = 256;
+        sentence = 'cubes';
+        word = sentence.split(' ');
+    }
     let color = colors.getRandomColorScheme();
     canvas.style.backgroundColor = color.dark.hsl;
 
