@@ -2,11 +2,6 @@ import colors from '../lib/color.js';
 
 let myClip;
 
-let project = (vpX, vpY, fl, x, y, z, scale = 1, p = fl / (fl + z) * scale) => [
-    vpX + x * p,
-    vpY + y * p
-];
-
 export const remove = () => {
     removeClip(myClip);
 };

@@ -2,16 +2,6 @@ import colors from '../lib/color.js';
 
 let myClip;
 
-let rotate = (a, b, angle, cos = Math.cos(angle), sin = Math.sin(angle)) => [
-    cos * a - sin * b,
-    sin * a + cos * b
-];
-
-let project = (vpX, vpY, fl, x, y, z, scale = fl / (fl + z)) => [
-    vpX + x * scale,
-    vpY + y * scale
-];
-
 export const add = () => {
     let color = colors.getRandomColorScheme();
     let invert = !!(Math.round(Math.random()));
