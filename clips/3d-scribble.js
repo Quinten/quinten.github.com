@@ -2,6 +2,16 @@ import colors from '../lib/color.js';
 
 let myClip;
 
+let rotate = (a, b, angle, cos = Math.cos(angle), sin = Math.sin(angle)) => [
+    cos * a - sin * b,
+    sin * a + cos * b
+];
+
+let project = (vpX, vpY, fl, x, y, z, scale = 1, p = fl / (fl + z) * scale) => [
+    vpX + x * p,
+    vpY + y * p
+];
+
 export const add = () => {
     let color = colors.getRandomColorScheme();
     let invert = !!(Math.round(Math.random()));
@@ -13,12 +23,13 @@ export const add = () => {
 
     let angleY = (-0.005 + Math.random() / 100) * 2;
 
-    let cosY = Math.cos(angleY);
-    let sinY = Math.sin(angleY);
-
     let angleX = (-0.005 + Math.random() / 100) * 2;
-    let cosX = Math.cos(angleX);
-    let sinX = Math.sin(angleX);
+
+    if (nFrames > -1) {
+        nFrames = 100;
+        angleX = -Math.PI * 2 * Math.random();
+        angleY = -Math.PI * 2 * Math.random();
+    }
 
     let fl = 400;
 
@@ -47,29 +58,37 @@ export const add = () => {
         p[i].y = Ly;
         p[i].z = Lz;
     }
+    for (let i = 0; i < numPoints; i++) {
+        let [x1, z1] = rotate(p[i].x, p[i].z, angleY);
+        let [y1, z2] = rotate(p[i].y, z1, angleX);
+        p[i].x = x1;
+        p[i].y = y1;
+        p[i].z = z2;
+    }
+    if (nFrames > -1) {
+        angleX = 4.5 / nFrames;
+        angleY = 4.5 / nFrames;
+    }
 
     myClip.draw = (time) => {
-
-        context.strokeStyle = strokeColor;
-        context.lineWidth = 2;
+        ctx.save();
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = (nFrames > -1) ? 1 : 2;
 
         let vpX = width / 2;
         let vpY = height / 2;
         for (let i = 0; i < numPoints; i++) {
 
-            let x1 = p[i].x * cosY - p[i].z * sinY;
-            let z1 = p[i].z * cosY + p[i].x * sinY;
-
-            let y1 = p[i].y * cosX - z1 * sinX;
-            let z2 = z1 * cosX + p[i].y * sinX;
+            let [x1, z1] = rotate(p[i].x, p[i].z, angleY);
+            let [y1, z2] = rotate(p[i].y, z1, angleX);
 
             p[i].x = x1;
             p[i].y = y1;
             p[i].z = z2;
 
-            let scale = fl / (fl + p[i].z);
-            p[i]._x = vpX + p[i].x * scale;
-            p[i]._y = vpY + p[i].y * scale;
+            let [_x, _y] = project(vpX, vpY, fl, p[i].x, p[i].y, p[i].z, 1);
+            p[i]._x = _x;
+            p[i]._y = _y;
         }
 
         let prevP = p[0];
@@ -85,12 +104,16 @@ export const add = () => {
             }
             prevP = p[i];
         }
-        prevP = p.shift();
-        plotOn();
-        prevP.x =  Lx;
-        prevP.y = Ly;
-        prevP.z = Lz;
-        p.push(prevP);
+        if (nFrames === -1) {
+            prevP = p.shift();
+            plotOn();
+            prevP.x =  Lx;
+            prevP.y = Ly;
+            prevP.z = Lz;
+            p.push(prevP);
+        }
+
+        ctx.restore();
     };
 };
 
