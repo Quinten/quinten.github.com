@@ -4,9 +4,8 @@ let myClip;
 
 export const add = () => {
     let color = colors.getRandomColorScheme();
-    let invert = !!(Math.round(Math.random()));
-    let bgColor = (invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (!invert) ? color.pale.hsl : color.dark.hsl;
+    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
+    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
     canvas.style.backgroundColor = bgColor;
 
     myClip = addClip({unshift: true});

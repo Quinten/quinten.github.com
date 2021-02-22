@@ -4,8 +4,8 @@ let bigSquares = [];
 
 export const add = () => {
     let color = colors.getRandomColorScheme();
-    let bgColor = color.lite.hsl;
-    let strokeColor = color.base.hsl;
+    let bgColor = (!color.invert) ? color.lite.hsl : color.base.hsl;
+    let strokeColor = (color.invert) ? color.lite.hsl : color.base.hsl;
     canvas.style.backgroundColor = bgColor;
 
     bigSquares = [];
