@@ -8,12 +8,18 @@ export const add = () => {
     let strokeColor = color.base.hsl;
     canvas.style.backgroundColor = bgColor;
 
+    if (nFrames > -1) {
+        nFrames = 34;
+        startFrame = 4;
+    }
+
     bigSquares = [];
     for (let b = 0; b < 16; b++) {
         let bigSquare = addClip();
         bigSquare.phase = b / 15;
         bigSquare.twist = Math.random();
         bigSquare.draw = (time) => {
+            time = (nFrames > -1) ? frameIndex * 40 : time;
             bigSquare.x = width / 2;
             bigSquare.y = height * bigSquare.phase;
             context.fillStyle = strokeColor;
