@@ -11,7 +11,6 @@ export const add = () => {
     myClip = addClip();
 
     let angleY = (-0.005 + Math.random() / 100) * 2;
-
     let angleX = (-0.005 + Math.random() / 100) * 2;
 
     if (nFrames > -1) {
@@ -23,7 +22,7 @@ export const add = () => {
     let fl = 400;
 
     let p = [];
-    let numPoints = 256;
+    let numPoints = (nFrames > -1) ? nFrames : 256;
     let lineSize = 40;
     let Lx = 0, Ly = 0, Lz = 0;
     let plotOn = () => {
@@ -42,6 +41,7 @@ export const add = () => {
     };
     for (let i = 0; i < numPoints; i++) {
         p[i] = {};
+        p[i].i = i;
         plotOn();
         p[i].x = Lx;
         p[i].y = Ly;
@@ -80,9 +80,11 @@ export const add = () => {
             p[i]._y = _y;
         }
 
-        let prevP = p[0];
-        for (let i = 1; i < numPoints; i++) {
+        let startP = (nFrames > -1) ? Math.floor(numPoints / 2) : 0;
+        let prevP = p[startP];
+        for (let i = startP + 1; i < numPoints; i++) {
             if (
+            p[i].i !== 0 &&
             (p[i].z > -fl) && (prevP.z > -fl) &&
             !(((prevP._x < 0) && (p[i]._x > width))
             || ((prevP._x > width) && (p[i]._x < 0))
@@ -93,14 +95,14 @@ export const add = () => {
             }
             prevP = p[i];
         }
+        prevP = p.shift();
         if (nFrames === -1) {
-            prevP = p.shift();
             plotOn();
             prevP.x =  Lx;
             prevP.y = Ly;
             prevP.z = Lz;
-            p.push(prevP);
         }
+        p.push(prevP);
 
         ctx.restore();
     };
