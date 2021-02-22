@@ -48,6 +48,10 @@ let onF = (time) => {
     }
 
     clips.forEach((clip) => {
+        clip.step(time);
+    });
+
+    clips.forEach((clip) => {
         clip.render(time);
     });
 
@@ -63,6 +67,8 @@ let addClip = ({
 } = {}) => {
 
     let clip = {x, y, rotation};
+
+    clip.step = () => {};
 
     clip.draw = () => {};
 
