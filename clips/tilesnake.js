@@ -10,8 +10,12 @@ export const add = () => {
 
     myClip = addClip();
 
+    if (nFrames > -1) {
+        nFrames = 128;
+    }
+
     let p = [];
-    let numPoints = 512;
+    let numPoints = (nFrames > -1) ? nFrames : 512;
     let lineSize = 48;
     let Lx = 0, Ly = 0, sq = false, hsl;
     let plotOn = () => {
@@ -61,9 +65,12 @@ export const add = () => {
             p[i]._y = vpY + p[i].y;
         }
 
-        let prevP = p[0];
-        for (let i = 1; i < numPoints; i++) {
-            line(prevP._x, prevP._y, p[i]._x, p[i]._y);
+        let startP = (nFrames > -1) ? Math.floor(numPoints / 2) : 0;
+        let prevP = p[startP];
+        for (let i = startP + 1; i < numPoints; i++) {
+            if (prevP._x === p[i]._x || prevP._y === p[i]._y) {
+                line(prevP._x, prevP._y, p[i]._x, p[i]._y);
+            }
             if (p[i].sq) {
                 ctx.fillStyle = p[i].c;
                 ctx.fillRect(p[i]._x, p[i]._y, lineSize, lineSize);
@@ -71,11 +78,13 @@ export const add = () => {
             prevP = p[i];
         }
         prevP = p.shift();
-        plotOn();
-        prevP.x =  Lx;
-        prevP.y = Ly;
-        prevP.sq = sq;
-        prevP.c = hsl;
+        if (nFrames === -1) {
+            plotOn();
+            prevP.x =  Lx;
+            prevP.y = Ly;
+            prevP.sq = sq;
+            prevP.c = hsl;
+        }
         p.push(prevP);
     };
 };
