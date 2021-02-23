@@ -91,6 +91,7 @@ a:hover, a:active {
     width: 100vw;
 }
 
+.giffer,
 .chaoser,
 .fullscreener,
 .skipper,
@@ -113,6 +114,7 @@ a:hover, a:active {
     transition: transform .3s cubic-bezier(.24,1.34,.57,1.44);
 }
 
+.giffer:hover,
 .chaoser:hover,
 .fullscreener:hover,
 .skipper:hover,
@@ -130,4 +132,8 @@ a:hover, a:active {
 
 .chaoser {
     top: 136px;
+}
+
+.giffer {
+    top: 176px;
 }

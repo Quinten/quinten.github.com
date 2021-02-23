@@ -153,6 +153,7 @@ if (skipper) {
     skipper.addEventListener('click', () => {
         if (chaosMode) {
             chaoser.style.display = 'block';
+            giffer.style.display = 'block';
             destroyTimeout(chaosTO);
             chaosMode = false;
         }
@@ -189,6 +190,9 @@ let nextModule = async () => {
     }
     newModule.add();
     shuffles = [newModule];
+    if (giffer) {
+        giffer.setAttribute('href', '/makegif.html?' + modules[moduleIndex].substr(0, modules[moduleIndex].length - 3));
+    }
 };
 
 if (skipper || expander) {
@@ -250,8 +254,11 @@ if (chaoser) {
         chaosMode = true;
         shuffleModule();
         chaoser.style.display = 'none';
+        giffer.style.display = 'none';
     });
 }
+
+let giffer = document.querySelector('.giffer');
 
 // press f for fullscreen canvas
 window.addEventListener('keyup', e => {
