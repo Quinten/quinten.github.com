@@ -134,10 +134,14 @@ if (expander) {
     expander.addEventListener('click', () => {
         expanded = !expanded;
         if (expanded) {
-            expander.textContent = '-';
+            expander.setAttribute('title', 'Fold');
+            expander.classList.remove('icon-expand');
+            expander.classList.add('icon-fold');
             canvas.classList.add('expanded');
         } else {
-            expander.textContent = '+';
+            expander.setAttribute('title', 'Expand');
+            expander.classList.remove('icon-fold');
+            expander.classList.add('icon-expand');
             canvas.classList.remove('expanded');
         }
     });
@@ -148,6 +152,14 @@ let skipper = document.querySelector('.skipper');
 if (skipper) {
     skipper.addEventListener('click', () => {
         nextModule();
+    });
+}
+
+let fullscreener = document.querySelector('.fullscreener');
+
+if (fullscreener) {
+    fullscreener.addEventListener('click', () => {
+        canvas.requestFullscreen();
     });
 }
 

@@ -1,3 +1,48 @@
+@font-face {
+  font-family: 'icons';
+  src:
+    url('/fonts/icons.ttf?ps5ccf') format('truetype'),
+    url('/fonts/icons.woff?ps5ccf') format('woff'),
+    url('/fonts/icons.svg?ps5ccf#icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-gif:before {
+  content: "\e900";
+}
+.icon-chaos:before {
+  content: "\e901";
+}
+.icon-expand:before {
+  content: "\e902";
+}
+.icon-fold:before {
+  content: "\e903";
+}
+.icon-fullscreen:before {
+  content: "\e904";
+}
+.icon-skip:before {
+  content: "\e905";
+}
+
 body {
     background: #272D2D;
     color: #F2FDFF;
@@ -46,32 +91,37 @@ a:hover, a:active {
     width: 100vw;
 }
 
+.fullscreener,
 .skipper,
 .expander {
     position: fixed;
     z-index: 42;
-    top: 15px;
-    right: 15px;
+    top: 16px;
+    right: 16px;
     box-sizing: border-box;
     height: 32px;
     width: 32px;
     text-align: center;
-    line-height: 28px;
+    line-height: 30px;
     text-decoration: none!important;
     color: #F2FDFF!important;
     border: 1px #F2FDFF solid;
-    font-size: 24px;
+    font-size: 20px;
     border-radius: 50%;
     background: #272D2D;
     transition: transform .3s cubic-bezier(.24,1.34,.57,1.44);
 }
 
+.fullscreener:hover,
 .skipper:hover,
 .expander:hover {
     transform: scale(1.15, 1.15);
 }
 
+.fullscreener {
+    top: 56px;
+}
+
 .skipper {
-    top: 54px;
-    font-size: 16px;
+    top: 96px;
 }
