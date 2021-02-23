@@ -41,7 +41,7 @@ let onF = (time) => {
     frameIndex = frameIndex + 1;
     globalTime = time;
     for (let t = timeouts.length - 1; t >= 0; t--) {
-        if (timeouts[t].end <= globalTime) {
+        if (timeouts[t] !== undefined && timeouts[t].end <= globalTime) {
             timeouts[t].callback(...timeouts[t].args);
             destroyTimeout(timeouts[t]);
         }
@@ -151,6 +151,11 @@ let skipper = document.querySelector('.skipper');
 
 if (skipper) {
     skipper.addEventListener('click', () => {
+        if (chaosMode) {
+            chaoser.style.display = 'block';
+            destroyTimeout(chaosTO);
+            chaosMode = false;
+        }
         nextModule();
     });
 }
@@ -163,15 +168,15 @@ if (fullscreener) {
     });
 }
 
-let modules = [], currentModule, moduleIndex = -1;
+let modules = [], moduleIndex = -1;
 
 let nextModule = async () => {
     if (!modules.length) {
         return;
     }
-    if (currentModule && currentModule.remove) {
-        currentModule.remove();
-    }
+
+    purgeShuffles();
+
     moduleIndex++;
     if (moduleIndex >= modules.length) {
         moduleIndex = 0;
@@ -179,8 +184,11 @@ let nextModule = async () => {
     let newModule = await import(
         './clips/' + modules[moduleIndex]
     );
+    if (newModule.usesWebgl) {
+        webglContextBusy = true;
+    }
     newModule.add();
-    currentModule = newModule;
+    shuffles = [newModule];
 };
 
 if (skipper || expander) {
@@ -189,6 +197,59 @@ if (skipper || expander) {
     }).then((data) => {
         modules = data;
         nextModule();
+    });
+}
+
+let shuffleInterval = 4000;
+let shuffles = [];
+let webglContextBusy = false;
+let chaosMode = false;
+let chaosTO;
+
+let purgeShuffles = (max = 1) => {
+    while (shuffles.length >= max) {
+        let oldest = shuffles.shift();
+        if (oldest.remove) {
+            if (oldest.usesWebgl) {
+                webglContextBusy = false;
+            }
+            oldest.remove();
+        }
+    }
+};
+
+let shuffleModule = async () => {
+    if (!modules.length) {
+        return;
+    }
+
+    purgeShuffles(3);
+
+    let randomIndex = Math.floor(Math.random() * modules.length);
+    let newModule = await import(
+        './clips/' + modules[randomIndex]
+    );
+    if (!chaosMode) {
+        return;
+    }
+    if (shuffles.indexOf(newModule) === -1 && !(newModule.usesWebgl && webglContextBusy)) {
+        newModule.add();
+        if (newModule.usesWebgl) {
+            webglContextBusy = true;
+        }
+        shuffles.push(newModule);
+    }
+
+    chaosTO = createTimeout(shuffleModule, shuffleInterval);
+};
+
+let chaoser = document.querySelector('.chaoser');
+
+if (chaoser) {
+    chaoser.addEventListener('click', () => {
+        chaosMode = true;
+        shuffleModule();
+        chaoser.style.display = 'none';
     });
 }
 
