@@ -1,4 +1,5 @@
 import colors from '../lib/color.js';
+import two from '../lib/2d.js';
 
 let bigSquares = [];
 
@@ -112,7 +113,7 @@ export const add = () => {
         };
         bigSquare.draw = (time) => {
             ctx.fillStyle = strokeColor;
-            quad(...bigSquare.quad);
+            two.quad(ctx, ...bigSquare.quad);
             bigSquares.forEach((s) => {
                 s.dist = Math.hypot(bigSquare.x - s.x, bigSquare.y - s.y);
             });
@@ -127,10 +128,10 @@ export const add = () => {
             ctx.strokeStyle = strokeColor;
             ctx.lineWidth = (nFrames > -1) ? 1 : 2;
             if (copySquares[1]) {
-                line(0, 0, copySquares[1].x - bigSquare.x, copySquares[1].y - bigSquare.y);
+                two.line(ctx, 0, 0, copySquares[1].x - bigSquare.x, copySquares[1].y - bigSquare.y);
             }
             if (copySquares[2]) {
-                line(0, 0, copySquares[2].x - bigSquare.x, copySquares[2].y - bigSquare.y);
+                two.line(ctx, 0, 0, copySquares[2].x - bigSquare.x, copySquares[2].y - bigSquare.y);
             }
         };
         bigSquares.push(bigSquare);

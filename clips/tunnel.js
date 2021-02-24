@@ -1,4 +1,6 @@
 import colors from '../lib/color.js';
+import two from '../lib/2d.js';
+import three from '../lib/3d.js';
 
 let myClip;
 
@@ -49,11 +51,11 @@ export const add = () => {
 
             let arg = [];
             points.forEach((p) => {
-                let [x, y] = rotate(p.x, p.y, q.rotation);
-                arg.push(...project(width/2, height/2, fl, x, y, p.z));
+                let [x, y] = three.rotate(p.x, p.y, q.rotation);
+                arg.push(...three.project(width/2, height/2, fl, x, y, p.z));
             });
             // draw
-            quad(...arg);
+            two.quad(ctx, ...arg);
         });
     };
 };

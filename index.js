@@ -93,40 +93,6 @@ let removeClip = (clip) => {
     clips.splice(clips.indexOf(clip), 1);
 };
 
-let quad = (x1, y1, x2, y2, x3, y3, x4, y4) => {
-    context.beginPath();
-    context.moveTo(x1, y1);
-    context.lineTo(x2, y2);
-    context.lineTo(x3, y3);
-    context.lineTo(x4, y4);
-    context.closePath();
-    context.fill();
-};
-
-let line = (x1, y1, x2, y2) => {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-};
-
-let curve = (x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2) => {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.bezierCurveTo(cpx1, cpy1, cpx2, cpy2, x2, y2);
-    ctx.stroke();
-};
-
-let rotate = (a, b, angle, cos = Math.cos(angle), sin = Math.sin(angle)) => [
-    cos * a - sin * b,
-    sin * a + cos * b
-];
-
-let project = (vpX, vpY, fl, x, y, z, scale = 1, p = fl / (fl + z) * scale) => [
-    vpX + x * p,
-    vpY + y * p
-];
-
 let expanded = false;
 let expander = document.querySelector('.expander');
 

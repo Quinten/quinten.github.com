@@ -1,4 +1,5 @@
 import colors from '../lib/color.js';
+import two from '../lib/2d.js';
 
 let myClip;
 
@@ -69,7 +70,7 @@ export const add = () => {
         let prevP = p[startP];
         for (let i = startP + 1; i < numPoints; i++) {
             if (prevP._x === p[i]._x || prevP._y === p[i]._y) {
-                line(prevP._x, prevP._y, p[i]._x, p[i]._y);
+                two.line(ctx, prevP._x, prevP._y, p[i]._x, p[i]._y);
             }
             if (p[i].sq) {
                 ctx.fillStyle = p[i].c;

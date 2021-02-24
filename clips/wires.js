@@ -1,4 +1,6 @@
 import colors from '../lib/color.js';
+import two from '../lib/2d.js';
+import three from '../lib/3d.js';
 
 let myClip;
 
@@ -103,7 +105,7 @@ export const add = () => {
             p[i].y = p[i].y;
             p[i].z = p[i].z + speedZ + extraZ;
 
-            let [_x, _y] = project(vpX, vpY, fl, p[i].x, p[i].y, p[i].z, scale);
+            let [_x, _y] = three.project(vpX, vpY, fl, p[i].x, p[i].y, p[i].z, scale);
             p[i]._x = _x;
             p[i]._y = _y;
         }
@@ -116,7 +118,7 @@ export const add = () => {
             let cp = p[c[i].c];
             let d = p[c[i].d];
             if (((a.z * scale > -fl * scale) || (b.z * scale > -fl * scale)) && (b._x < a._x)) {
-                curve(a._x, a._y, cp._x, cp._y, d._x, d._y, b._x, b._y);
+                two.curve(ctx, a._x, a._y, cp._x, cp._y, d._x, d._y, b._x, b._y);
             }
         }
 
@@ -126,7 +128,7 @@ export const add = () => {
             let a = p[s[i].a];
             let b = p[s[i].b];
             if ((a.z * scale > -fl * scale) || (b.z * scale > -fl * scale)) {
-                line(b._x, b._y, a._x, a._y);
+                two.line(ctx, b._x, b._y, a._x, a._y);
             }
         }
 

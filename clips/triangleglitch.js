@@ -1,4 +1,6 @@
 import colors from '../lib/color.js';
+import two from '../lib/2d.js';
+import three from '../lib/3d.js';
 
 let myClip;
 
@@ -15,8 +17,6 @@ export const add = () => {
     myClip = addClip({unshift: true});
 
     let angleZ = (nFrames === -1) ? ((-0.005 + Math.random() / 100) * 2) : Math.PI * 2 / nFrames;
-    let cosZ = Math.cos(angleZ);
-    let sinZ = Math.sin(angleZ);
 
     let fl = 400;
 
@@ -55,19 +55,19 @@ export const add = () => {
         let vpY = height / 2;
         for (let i = 0; i < numPoints; i++) {
 
-            let x1 = p[i].x * cosZ + p[i].y * sinZ;
-            let y1 = p[i].y * cosZ - p[i].x * sinZ;
+            let [x1, y1] = three.rotate(p[i].x, p[i].y, angleZ);
 
             p[i].x = x1;
             p[i].y = y1;
+
             p[i].z = p[i].z - ((nFrames > -1) ? 6 : 1);
             if (p[i].z < -fl) {
                 p[i].z = fl;
             }
 
-            let scale = fl / (fl + p[i].z);
-            p[i]._x = vpX + p[i].x * scale;
-            p[i]._y = vpY + p[i].y * scale;
+            let [_x, _y] = three.project(vpX, vpY, fl, p[i].x, p[i].y, p[i].z);
+            p[i]._x = _x;
+            p[i]._y = _y;
         }
 
         let prevP = p[0];
@@ -79,7 +79,7 @@ export const add = () => {
             || ((prevP._y < 0) && (p[i]._y > height))
             || ((prevP._y > height) && (p[i]._y < 0))))
             {
-                quad(p[i]._x, p[i]._y, p[i - 1]._x, p[i - 1]._y, p[i - 2]._x, p[i - 2]._y, p[i - 3]._x, p[i - 3]._y);
+                two.quad(ctx, p[i]._x, p[i]._y, p[i - 1]._x, p[i - 1]._y, p[i - 2]._x, p[i - 2]._y, p[i - 3]._x, p[i - 3]._y);
             }
             prevP = p[i];
         }

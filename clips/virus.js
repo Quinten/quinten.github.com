@@ -1,4 +1,6 @@
 import colors from '../lib/color.js';
+import two from '../lib/2d.js';
+import three from '../lib/3d.js';
 
 let myClip;
 
@@ -37,8 +39,8 @@ export const add = () => {
 
         pt.forEach(function (t) {
 
-            let [x1, z1] = rotate(t.x, t.z, angleY);
-            let [y1, z2] = rotate(t.y, z1, angleX);
+            let [x1, z1] = three.rotate(t.x, t.z, angleY);
+            let [y1, z2] = three.rotate(t.y, z1, angleX);
 
             t.x = x1;
             t.y = y1;
@@ -64,14 +66,14 @@ export const add = () => {
         let vpY = height / 2;
         for (let i = 0; i < p.length; i++) {
 
-            let [x1, z1] = rotate(p[i].x, p[i].z, angleY);
-            let [y1, z2] = rotate(p[i].y, z1, angleX);
+            let [x1, z1] = three.rotate(p[i].x, p[i].z, angleY);
+            let [y1, z2] = three.rotate(p[i].y, z1, angleX);
 
             p[i].x = x1;
             p[i].y = y1;
             p[i].z = z2;
 
-            let [_x, _y] = project(vpX, vpY, fl, p[i].x, p[i].y, p[i].z, (nFrames > -1) ? 1 : 2);
+            let [_x, _y] = three.project(vpX, vpY, fl, p[i].x, p[i].y, p[i].z, (nFrames > -1) ? 1 : 2);
             p[i]._x = _x;
             p[i]._y = _y;
         }
@@ -86,7 +88,7 @@ export const add = () => {
             || ((b._y < 0) && (a._y > height))
             || ((b._y > height) && (a._y < 0))))
             {
-                line(b._x, b._y, a._x, a._y);
+                two.line(ctx, b._x, b._y, a._x, a._y);
             }
         }
 
