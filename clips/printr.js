@@ -6,18 +6,37 @@ export const add = () => {
     let color = colors.getRandomColorScheme();
     let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
     let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = bgColor;
+    canvas.style.backgroundColor = color.base.hsl;
 
     let printb = (prints, s) => {
+        let x1, x2, y1, y2, w1, w2, h1, h2;
         ctx.fillStyle = strokeColor;
         prints.forEach((print) => {
-            ctx.fillRect(print.x - 10 - s * 20, print.y - 187, 20 + s * 40, 374);
-            ctx.fillRect(print.x - 30 - s * 20, print.y - 30 - s * 20, 60 + s * 40, 60 + s * 40);
+            x1 = print.x - 10 - s * 20;
+            x2 = x1 - 20;
+            y1 = print.y - 187;
+            y2 = print.y - 30 - s * 20;
+            w1 = 20 + s * 40;
+            w2 = w1 + 40;
+            h1 = 374;
+            h2 = w2;
+
+            ctx.fillRect(x1 - 1, Math.floor(y1), w1 + 2, h1);
+            ctx.fillRect(x2 - 1, Math.floor(y2 - 1), w2 + 2, h2 + 2);
         });
         ctx.fillStyle = bgColor;
         prints.forEach((print) => {
-            ctx.fillRect(print.x - 10 - s * 20 + 2, print.y - 188, 20 + s * 40 - 4, 376);
-            ctx.fillRect(print.x - 30 - s * 20 + 2, print.y - 30 - s * 20 + 2, 60 + s * 40 - 4, 60 + s * 40 - 4);
+            x1 = print.x - 10 - s * 20;
+            x2 = x1 - 20;
+            y1 = print.y - 187;
+            y2 = print.y - 30 - s * 20;
+            w1 = 20 + s * 40;
+            w2 = w1 + 40;
+            h1 = 374;
+            h2 = w2;
+
+            ctx.fillRect(x1 + 1, Math.floor(y1), w1 - 2, h1);
+            ctx.fillRect(x2 + 1, Math.floor(y2 + 1), w2 - 2, h2 - 2);
         });
     };
 
@@ -63,40 +82,17 @@ export const add = () => {
             }
         });
         ctx.fillStyle = strokeColor;
-        prints.forEach((print) => {
-            ctx.fillRect(print.x - 50, 0, 100, height);
-            //ctx.fillRect(print.x - 66, print.y - 66, 132, 132);
-        });
-        ctx.fillStyle = bgColor;
-        prints.forEach((print) => {
-            ctx.fillRect(print.x - 48, 0, 96, height);
-            //ctx.fillRect(print.x - 64, print.y - 64, 128, 128);
-        });
-        ctx.fillStyle = strokeColor;
-        prints.forEach((print) => {
-            ctx.fillRect(print.x - 30, 0, 60, height);
-            //ctx.fillRect(print.x - 50, print.y - 50, 100, 100);
-        });
-        ctx.fillStyle = bgColor;
-        prints.forEach((print) => {
-            ctx.fillRect(print.x - 28, 0, 56, height);
-            //ctx.fillRect(print.x - 48, print.y - 48, 96, 96);
-        });
-        ctx.fillStyle = strokeColor;
-        prints.forEach((print) => {
-            ctx.fillRect(print.x - 10, 0, 20, height);
-            //ctx.fillRect(print.x - 30, print.y - 30, 60, 60);
-        });
-        ctx.fillStyle = bgColor;
-        prints.forEach((print) => {
-            ctx.fillRect(print.x - 8, 0, 16, height);
-            //ctx.fillRect(print.x - 28, print.y - 28, 56, 56);
-        });
+        let x = 10;
+        while (x < width) {
+            ctx.fillRect(x - 1, 0, 2, height);
+            x += 20;
+        }
+
         printb(prints, 7);
         printb(prints, 6);
-        printb(prints, 5.1);
-        printb(prints, 4.1);
-        printb(prints, 3.1);
+        printb(prints, 5);
+        printb(prints, 4);
+        printb(prints, 3);
         printb(prints, 2);
         printb(prints, 1);
         printb(prints, 0);
