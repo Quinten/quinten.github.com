@@ -1,12 +1,10 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 let myClip;
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     if (nFrames > -1) {
         nFrames = 128;
@@ -41,7 +39,7 @@ export const add = () => {
         let widthC = (nFrames > -1) ? width : window.innerWidth * 2;
         let progress = frameIndex / nFrames;
 
-        context.fillStyle = strokeColor;
+        context.fillStyle = color.current.stroke;
         prints.forEach((print) => {
             if (nFrames > -1) {
                 print.f = print.p + progress;
@@ -67,15 +65,15 @@ export const add = () => {
             }
             context.fillRect(print.x, print.y, print.w, print.h);
         });
-        context.fillStyle = bgColor;
+        context.fillStyle = color.current.bg;
         prints.forEach((print) => {
             context.fillRect(print.x + 2, print.y + 2, print.w - 4, print.h - 4);
         });
-        context.fillStyle = strokeColor;
+        context.fillStyle = color.current.stroke;
         prints.forEach((print) => {
             context.fillRect(print.x + 12, print.y + 12, print.w - 24, print.h - 24);
         });
-        context.fillStyle = bgColor;
+        context.fillStyle = color.current.bg;
         prints.forEach((print) => {
             context.fillRect(print.x + 14, print.y + 14, print.w - 28, print.h - 28);
         });

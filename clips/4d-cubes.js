@@ -1,7 +1,7 @@
 import webgl from '../lib/webgl.js';
 import matrix from '../lib/matrix.js';
 import shapes from '../lib/shapes.js';
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 let deg2rad = angle => Math.PI * angle / 180;
 
@@ -67,8 +67,8 @@ export const add = () => {
         nFrames = 256;
     }
 
-    let color = colors.getRandomColorScheme();
-    canvas.style.backgroundColor = color.dark.hsl;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     program = webgl.compile(gl, vshader, fshader);
 
@@ -90,7 +90,7 @@ export const add = () => {
 
     // Set cube color
     let materialColor = gl.getAttribLocation(program, 'color');
-    gl.vertexAttrib3f(materialColor, color.base.r, color.base.g, color.base.b);
+    gl.vertexAttrib3f(materialColor, color.current.base.r, color.current.base.g, color.current.base.b);
 
     // Set the clear color and enable the depth test
     //gl.clearColor(0, 0, 0, 1);
@@ -102,7 +102,7 @@ export const add = () => {
 
     // Set the point light color and position
     let lightColor = gl.getUniformLocation(program, 'lightColor');
-    gl.uniform3f(lightColor, color.pale.r, color.pale.g, color.pale.b);
+    gl.uniform3f(lightColor, color.current.pale.r, color.current.pale.g, color.current.pale.b);
 
     let lightPosition = gl.getUniformLocation(program, 'lightPosition');
     gl.uniform3f(lightPosition, 2.5, 2.5, 2.5);
@@ -149,6 +149,8 @@ export const add = () => {
     myClip = addClip({unshift: true});
 
     myClip.draw = () => {
+        gl.vertexAttrib3f(materialColor, color.current.base.r, color.current.base.g, color.current.base.b);
+        gl.uniform3f(lightColor, color.current.pale.r, color.current.pale.g, color.current.pale.b);
         cameraMatrix = matrix.transform(cameraMatrix, {rx: .00541, ry: .00181, rz: .00317});
         drawCuboids(gl, n, cameraMatrix);
         context.drawImage(canvas3d, 1024 - 1024 / height * width / 2, 0, 1024 / height * width, 1024, 0, 0, width, height);

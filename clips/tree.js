@@ -1,14 +1,12 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 import two from '../lib/2d.js';
 import three from '../lib/3d.js';
 
 let myClip;
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     myClip = addClip();
 
@@ -62,7 +60,7 @@ export const add = () => {
 
     myClip.draw = (time) => {
 
-        ctx.strokeStyle = strokeColor;
+        ctx.strokeStyle = color.current.stroke;
         ctx.lineWidth = (nFrames > -1) ? 1 : 2;
 
         let vpX = width / 2;

@@ -1,13 +1,11 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 import two from '../lib/2d.js';
 
 let bigSquares = [];
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     if (nFrames > -1) {
         nFrames = 128;
@@ -112,7 +110,7 @@ export const add = () => {
             }
         };
         bigSquare.draw = (time) => {
-            ctx.fillStyle = strokeColor;
+            ctx.fillStyle = color.current.stroke;
             two.quad(ctx, ...bigSquare.quad);
             bigSquares.forEach((s) => {
                 s.dist = Math.hypot(bigSquare.x - s.x, bigSquare.y - s.y);
@@ -125,7 +123,7 @@ export const add = () => {
                 }
                 return -1;
             });
-            ctx.strokeStyle = strokeColor;
+            ctx.strokeStyle = color.current.stroke;
             ctx.lineWidth = (nFrames > -1) ? 1 : 2;
             if (copySquares[1]) {
                 two.line(ctx, 0, 0, copySquares[1].x - bigSquare.x, copySquares[1].y - bigSquare.y);

@@ -1,4 +1,4 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 const scaleX = Math.cos(Math.PI / 4);
 const scaleY = Math.sin(Math.PI / 4); // this is actually the same
@@ -6,11 +6,9 @@ const scaleY = Math.sin(Math.PI / 4); // this is actually the same
 let bigSquares = [];
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = color.lite.hsl;
-    let strokeColor = color.base.hsl;
-    canvas.style.backgroundColor = bgColor;
-    
+    bgKey = 'fill';
+    canvas.style.backgroundColor = color.current[bgKey];
+
     if (nFrames > -1) {
         nFrames = 160;
         startFrame = 81;
@@ -34,7 +32,7 @@ export const add = () => {
                 bigSquare.rotation = Math.sin((time + 3200 * bigSquare.phase) / 1600 * Math.PI) * Math.PI * 2;
                 bigSquare.rotation = Math.max(bigSquare.rotation, - Math.PI * 3 / 4);
                 bigSquare.rotation = Math.min(bigSquare.rotation, Math.PI * 3 / 4);
-                context.fillStyle = strokeColor;
+                context.fillStyle = color.current.shade;
                 let scale = Math.abs(bigSquare.rotation / (Math.PI * 3 / 4));
                 context.fillRect(-size / 8 * scaleX * scale, - size / 8 * scaleY * scale, size / 4 * scaleX * scale, size / 4 * scaleY * scale);
             };

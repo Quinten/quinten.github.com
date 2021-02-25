@@ -1,12 +1,10 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 let bigSquares = [];
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.lite.hsl : color.base.hsl;
-    let strokeColor = (color.invert) ? color.lite.hsl : color.base.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'fill';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     if (nFrames > -1) {
         nFrames = 98;
@@ -24,7 +22,7 @@ export const add = () => {
             bigSquare.rotation = Math.sin((time + 1200 * bigSquare.phase) / 600) * Math.PI;
             bigSquare.rotation = Math.max(bigSquare.rotation, - Math.PI / 2);
             bigSquare.rotation = Math.min(bigSquare.rotation, Math.PI / 2);
-            context.fillStyle = strokeColor;
+            context.fillStyle = color.current.shade;
             context.fillRect(-height / 30, - 4, height / 15, 8);
         };
         bigSquares.push(bigSquare);

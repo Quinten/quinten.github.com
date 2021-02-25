@@ -1,4 +1,4 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 const scaleX = Math.cos(Math.PI / 4);
 const scaleY = Math.sin(Math.PI / 4); // this is actually the same
@@ -9,10 +9,8 @@ const decay = .8;
 let bigSquares = [];
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = color.lite.hsl;
-    let strokeColor = color.base.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'fill';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     if (nFrames > -1) {
         nFrames = 160;
@@ -44,24 +42,24 @@ export const add = () => {
                     if (step) {
                         bigSquare.scaleA = 0;
                         homeB = 1;
-                        context.fillStyle = strokeColor;
+                        context.fillStyle = color.current.shade;
                         context.fillRect(-size / 8 * scaleX * scale, - size / 8 * scaleY * scale, size / 4 * scaleX * scale, size / 4 * scaleY * scale);
                         bigSquare.changeA = ((homeA - bigSquare.scaleA) * springiness) + (bigSquare.changeA * decay);
                         bigSquare.scaleA += bigSquare.changeA;
                         bigSquare.changeB = ((homeB - bigSquare.scaleB) * springiness) + (bigSquare.changeB * decay);
                         bigSquare.scaleB += bigSquare.changeB;
-                        context.fillStyle = bgColor;
+                        context.fillStyle = color.current.fill;
                         context.fillRect(-size / 8 * scaleX * bigSquare.scaleB, - size / 8 * scaleY * bigSquare.scaleB, size / 4 * scaleX * bigSquare.scaleB, size / 4 * scaleY * bigSquare.scaleB);
                     } else {
                         bigSquare.scaleB = 0;
                         homeA = 1;
-                        context.fillStyle = bgColor;
+                        context.fillStyle = color.current.fill;
                         context.fillRect(-size / 8 * scaleX * scale, - size / 8 * scaleY * scale, size / 4 * scaleX * scale, size / 4 * scaleY * scale);
                         bigSquare.changeA = ((homeA - bigSquare.scaleA) * springiness) + (bigSquare.changeA * decay);
                         bigSquare.scaleA += bigSquare.changeA;
                         bigSquare.changeB = ((homeB - bigSquare.scaleB) * springiness) + (bigSquare.changeB * decay);
                         bigSquare.scaleB += bigSquare.changeB;
-                        context.fillStyle = strokeColor;
+                        context.fillStyle = color.current.shade;
                         context.fillRect(-size / 8 * scaleX * bigSquare.scaleA, - size / 8 * scaleY * bigSquare.scaleA, size / 4 * scaleX * bigSquare.scaleA, size / 4 * scaleY * bigSquare.scaleA);
                     }
                 };

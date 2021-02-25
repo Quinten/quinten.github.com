@@ -1,16 +1,14 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 let myClip;
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = color.base.hsl;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     let printb = (prints, s) => {
         let x1, x2, y1, y2, w1, w2, h1, h2;
-        ctx.fillStyle = strokeColor;
+        ctx.fillStyle = color.current.stroke;
         prints.forEach((print) => {
             x1 = print.x - 10 - s * 20;
             x2 = x1 - 20;
@@ -24,7 +22,7 @@ export const add = () => {
             ctx.fillRect(x1 - 1, Math.floor(y1), w1 + 2, h1);
             ctx.fillRect(x2 - 1, Math.floor(y2 - 1), w2 + 2, h2 + 2);
         });
-        ctx.fillStyle = bgColor;
+        ctx.fillStyle = color.current.bg;
         prints.forEach((print) => {
             x1 = print.x - 10 - s * 20;
             x2 = x1 - 20;
@@ -67,7 +65,7 @@ export const add = () => {
 
     myClip.draw = function (time) {
         ctx.save();
-        ctx.fillStyle = bgColor;
+        ctx.fillStyle = color.current.bg;
         ctx.fillRect(0, 0, width, height);
         if (nFrames === -1) {
             ctx.scale(2, 2);
@@ -81,7 +79,7 @@ export const add = () => {
                 print.y -= print.L;
             }
         });
-        ctx.fillStyle = strokeColor;
+        ctx.fillStyle = color.current.stroke;
         let x = 10;
         while (x < width) {
             ctx.fillRect(x - 1, 0, 2, height);

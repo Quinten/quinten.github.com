@@ -1,7 +1,7 @@
 import webgl from '../lib/webgl.js';
 import matrix from '../lib/matrix.js';
 import shapes from '../lib/shapes.js';
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 let deg2rad = angle => Math.PI * angle / 180;
 
@@ -75,8 +75,8 @@ let program;
 let myClip;
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    canvas.style.backgroundColor = color.pale.hsl;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     program = webgl.compile(gl, vshader, fshader);
 
@@ -98,10 +98,10 @@ export const add = () => {
 
     // Set cube color
     let materialColor = gl.getAttribLocation(program, 'color');
-    gl.vertexAttrib3f(materialColor, color.base.r, color.base.g, color.base.b);
+    gl.vertexAttrib3f(materialColor, color.current.base.r, color.current.base.g, color.current.base.b);
 
     // Set the clear color and enable the depth test
-    gl.clearColor(color.pale.r, color.pale.g, color.pale.b, 1);
+    gl.clearColor(color.current.pale.r, color.current.pale.g, color.current.pale.b, 1);
     gl.enable(gl.DEPTH_TEST);
 
     // Set the camera
@@ -111,7 +111,7 @@ export const add = () => {
 
     // Set the point light color and position
     let lightColor = gl.getUniformLocation(program, 'lightColor');
-    gl.uniform3f(lightColor, color.pale.r, color.pale.g, color.pale.b);
+    gl.uniform3f(lightColor, color.current.pale.r, color.current.pale.g, color.current.pale.b);
 
     let lightPosition = gl.getUniformLocation(program, 'lightPosition');
     gl.uniform3f(lightPosition, -64, 128, -64);
@@ -123,12 +123,11 @@ export const add = () => {
     let fogColorLocation = gl.getUniformLocation(program, "u_fogColor");
     let fogNearLocation = gl.getUniformLocation(program, "u_fogNear");
     let fogFarLocation = gl.getUniformLocation(program, "u_fogFar");
-    let fogColor = [color.pale.r, color.pale.g, color.pale.b, 1];
     let settings = {
         fogNear: 2,
         fogFar: 24
     };
-    gl.uniform4fv(fogColorLocation, fogColor);
+    gl.uniform4fv(fogColorLocation, [color.current.pale.r, color.current.pale.g, color.current.pale.b, 1]);
     gl.uniform1f(fogNearLocation, settings.fogNear);
     gl.uniform1f(fogFarLocation, settings.fogFar);
 
@@ -149,6 +148,7 @@ export const add = () => {
     let drawCuboids = (gl, n, cameraMatrix) => {
 
         // Clear color and depth buffer
+        gl.clearColor(color.current.pale.r, color.current.pale.g, color.current.pale.b, 1);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         //gl.clear(gl.COLOR_BUFFER_BIT);
         //gl.clear(gl.DEPTH_BUFFER_BIT);
@@ -168,6 +168,9 @@ export const add = () => {
     myClip = addClip({unshift: true});
 
     myClip.draw = () => {
+        gl.vertexAttrib3f(materialColor, color.current.base.r, color.current.base.g, color.current.base.b);
+        gl.uniform3f(lightColor, color.current.pale.r, color.current.pale.g, color.current.pale.b);
+        gl.uniform4fv(fogColorLocation, [color.current.pale.r, color.current.pale.g, color.current.pale.b, 1]);
         //cameraMatrix = matrix.transform(cameraMatrix, {rx: .00541, ry: .00181, rz: .00317});
         drawCuboids(gl, n, cameraMatrix);
         context.drawImage(canvas3d, 1024 - 1024 / height * width / 2, 0, 1024 / height * width, 1024, 0, 0, width, height);

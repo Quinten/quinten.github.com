@@ -1,4 +1,4 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 let myClip;
 
@@ -12,10 +12,8 @@ export const add = () => {
         nFramesC = nFrames;
     }
 
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     myClip = addClip();
 
@@ -106,7 +104,7 @@ export const add = () => {
             circles = circles.concat(newCircles);
         }
 
-        ctx.strokeStyle = strokeColor;
+        ctx.strokeStyle = color.current.stroke;
         for (let circle of circles) {
             ctx.beginPath();
             ctx.arc(circle.x, circle.y, circle.r, 0 , Math.PI * 2, false)

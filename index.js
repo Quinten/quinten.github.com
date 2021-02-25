@@ -59,6 +59,17 @@ let onF = (time) => {
 };
 onF(0);
 
+let bgKey = 'bg';
+
+import('./lib/color.js').then((color) => {
+    let updateColor = () => {
+        color.default.updateCurrent();
+        canvas.style.backgroundColor = color.default.current[bgKey];
+        createTimeout(updateColor, 5000);
+    };
+    updateColor();
+});
+
 let addClip = ({
     x = 0,
     y = 0,

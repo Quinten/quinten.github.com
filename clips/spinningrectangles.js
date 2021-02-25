@@ -1,12 +1,10 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 
 let bigSquares = [];
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = color.lite.hsl;
-    let strokeColor = color.base.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'fill';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     if (nFrames > -1) {
         nFrames = 34;
@@ -22,7 +20,7 @@ export const add = () => {
             time = (nFrames > -1) ? frameIndex * 40 : time;
             bigSquare.x = width / 2;
             bigSquare.y = height * bigSquare.phase;
-            context.fillStyle = strokeColor;
+            context.fillStyle = color.current.shade;
             context.fillRect(
                 Math.abs(Math.sin((time + 1200 * bigSquare.twist) / 1200 * Math.PI)) *  -width / 4,
                 -height / 30,

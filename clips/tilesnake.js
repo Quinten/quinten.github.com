@@ -1,13 +1,11 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 import two from '../lib/2d.js';
 
 let myClip;
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     myClip = addClip();
 
@@ -23,7 +21,7 @@ export const add = () => {
         let d = Math.round(Math.random()) ? lineSize : -lineSize;
         let r = Math.random() * 2;
         sq = (Math.random() > 0.9);
-        hsl = 'hsl(' + color.pale.h + ',' + Math.floor(color.pale.s * 100) + '%,' + Math.floor(Math.random() * 100) + '%)';
+        hsl = 'hsl(' + color.current.pale.h + ',' + Math.floor(color.current.pale.s * 100) + '%,' + Math.floor(Math.random() * 100) + '%)';
         if (r < 1) {
             Lx = Lx + d;
             if (Lx + d > width / 2) {
@@ -56,7 +54,7 @@ export const add = () => {
 
     myClip.draw = (time) => {
 
-        context.strokeStyle = strokeColor;
+        context.strokeStyle = color.current.stroke;
         context.lineWidth = 2;
 
         let vpX = width / 2;

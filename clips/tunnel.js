@@ -1,14 +1,12 @@
-import colors from '../lib/color.js';
+import color from '../lib/color.js';
 import two from '../lib/2d.js';
 import three from '../lib/3d.js';
 
 let myClip;
 
 export const add = () => {
-    let color = colors.getRandomColorScheme();
-    let bgColor = (!color.invert) ? color.pale.hsl : color.dark.hsl;
-    let strokeColor = (color.invert) ? color.pale.hsl : color.dark.hsl;
-    canvas.style.backgroundColor = bgColor;
+    bgKey = 'bg';
+    canvas.style.backgroundColor = color.current[bgKey];
 
     myClip = addClip({unshift: true});
 
@@ -32,7 +30,7 @@ export const add = () => {
 
     myClip.draw = (time) => {
 
-        ctx.fillStyle = strokeColor;
+        ctx.fillStyle = color.current.stroke;
 
         quads.forEach((q) => {
             q.start -= (nFrames > -1) ? fl * 8 / nFrames : 20;
