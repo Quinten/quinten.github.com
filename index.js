@@ -177,6 +177,7 @@ if (skipper || expander) {
         return response.json();
     }).then((data) => {
         modules = data;
+        moduleIndex = Math.floor(Math.random() * modules.length);
         nextModule();
     });
 }
