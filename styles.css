@@ -67,6 +67,10 @@ a:hover, a:active {
     color: #21B0D4;
 }
 
+.block {
+    margin-bottom: 40px;
+}
+
 .dib {
     display: inline-block;
 }
