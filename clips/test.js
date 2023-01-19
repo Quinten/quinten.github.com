@@ -80,22 +80,6 @@ export const add = () => {
 
     program = webgl.compile(gl, vshader, fshader);
 
-    // Initialize a cube
-    let vertices, normals, indices;
-    [vertices, normals, indices] = shapes.roof();
-
-    // Count vertices
-    let n = indices.length;
-
-    // Set position, normal buffers
-    webgl.buffer(gl, vertices, program, 'position', 3, gl.FLOAT);
-    webgl.buffer(gl, normals, program, 'normal', 3, gl.FLOAT);
-
-    // Set indices
-    let indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-
     // Set cube color
     let materialColor = gl.getAttribLocation(program, 'color');
     gl.vertexAttrib3f(materialColor, color.current.base.r, color.current.base.g, color.current.base.b);
@@ -135,20 +119,38 @@ export const add = () => {
     let nCuboids = 1;
     while(nCuboids > 0) {
         let cuboid = {
-            x: 0,
+            x: -2,
             y: 0,
             z: 0,
             ry: Math.PI / 4,
             rx: Math.PI / 4,
             sy: 0.2,
             sx: 1,
-            sz: 1
+            sz: 1,
+            type: 'roof'
         };
         cuboids.push(cuboid);
         nCuboids -= 1;
     }
 
-    let drawCuboids = (gl, n, cameraMatrix) => {
+    nCuboids = 1;
+    while(nCuboids > 0) {
+        let cuboid = {
+            x: 2,
+            y: 0,
+            z: 0,
+            ry: Math.PI / 4,
+            rx: Math.PI / 4,
+            sy: 0.2,
+            sx: 1,
+            sz: 1,
+            type: 'cube'
+        };
+        cuboids.push(cuboid);
+        nCuboids -= 1;
+    }
+
+    let drawCuboids = (gl, cameraMatrix) => {
 
         // Clear color and depth buffer
         gl.clearColor(color.current.pale.r, color.current.pale.g, color.current.pale.b, 1);
@@ -169,7 +171,7 @@ export const add = () => {
             cuboid.ry -= 0.02;
             cuboid.rx += 0.01;
             modelMatrix = matrix.transform(modelMatrix, cuboid);
-            shapes.drawShape(gl, program, cameraMatrix, modelMatrix, n);
+            shapes.renderShape(cuboid.type, gl, program, cameraMatrix, modelMatrix);
         });
     }
 
@@ -180,7 +182,7 @@ export const add = () => {
         gl.uniform3f(lightColor, color.current.pale.r, color.current.pale.g, color.current.pale.b);
         gl.uniform4fv(fogColorLocation, [color.current.pale.r, color.current.pale.g, color.current.pale.b, 1]);
         //cameraMatrix = matrix.transform(cameraMatrix, {rx: .00541, ry: .00181, rz: .00317});
-        drawCuboids(gl, n, cameraMatrix);
+        drawCuboids(gl, cameraMatrix);
         context.drawImage(canvas3d, 1024 - 1024 / height * width / 2, 0, 1024 / height * width, 1024, 0, 0, width, height);
     };
 };
