@@ -11,49 +11,75 @@ export const add = () => {
     myClip = addClip({unshift: true});
 
     let fl = 400;
+    let bgDropWidth = width;
+    let bgDropHeight = -height / 2;
 
     let quads = [];
-    let numQuads = 11;
-    for (let i = 0; i < numQuads; i++) {
-        let start = Math.random() * fl * 7;
-        let length = fl + Math.random() * fl * 2;
-        let rotation = Math.random() * Math.PI * 2;
-        let q = { start, length, rotation };
+    let peakX = -bgDropWidth;
+    let peakY = bgDropHeight;
+    let z = 200;
+    while (peakX < bgDropWidth) {
+        let q = {peakX, peakY, z};
         quads.push(q);
+        peakX = peakX + bgDropWidth / 16 + Math.random() * bgDropWidth / 8;
+        peakY = Math.random() * bgDropHeight;
     }
+
+    let fquads = [];
+    peakX = -bgDropWidth;
+    peakY = bgDropHeight / 2;
+    z = 100;
+    while (peakX < bgDropWidth) {
+        let q = {peakX, peakY, z};
+        fquads.push(q);
+        peakX = peakX + bgDropWidth / 16 + Math.random() * bgDropWidth / 8;
+        peakY = -bgDropHeight / 2 + Math.random() * bgDropHeight / 2;
+    }
+
+    let renderItems = [
+        {quads, color: color.current.fill},
+        {quads: fquads, color: color.current.shade}
+    ];
 
     if (nFrames > -1) {
         nFrames = 96;
     }
 
-    let angleZ = (nFrames > -1) ? (Math.PI * 2 / nFrames): (-0.005 + Math.random() / 100) * 2;
+    let delta = 1;
+    let prevTime = 0;
 
     myClip.draw = (time) => {
-
-        ctx.fillStyle = color.current.stroke;
-
-        quads.forEach((q) => {
-            q.start -= (nFrames > -1) ? fl * 8 / nFrames : 20;
-            if (q.start < -fl + 2) {
-                q.length = (nFrames > -1) ? q.length : fl + Math.random() * fl * 2;
-                q.start = q.start + fl * 8;
-                q.rotation = (nFrames > -1) ? q.rotation : Math.random() * Math.PI * 2;
-            }
-            q.rotation = q.rotation + angleZ;
-            let points = [
-                {x: -10, y: 80, z: q.start},
-                {x: 10, y: 80, z: q.start},
-                {x: 10, y: 80, z: Math.max(q.start - q.length, -fl + 1)},
-                {x: -10, y: 80, z: Math.max(q.start - q.length, -fl + 1)}
-            ];
-
-            let arg = [];
-            points.forEach((p) => {
-                let [x, y] = three.rotate(p.x, p.y, q.rotation);
-                arg.push(...three.project(width/2, height/2, fl, x, y, p.z));
+        delta = Math.min(time - prevTime, 40);
+        prevTime = time;
+        renderItems.forEach((item) => {
+            item.quads.forEach((q) => {
+                q.peakX = q.peakX - 5 * delta / 17;
+                if (q.peakX < -bgDropWidth) {
+                    q.peakX = bgDropWidth;
+                }
             });
-            // draw
-            two.quad(ctx, ...arg);
+            item.quads.sort((a, b) => a.peakX - b.peakX);
+            ctx.fillStyle = item.color;
+            let prevPeakX = -bgDropWidth;
+            let prevPeakY = bgDropHeight;
+            item.quads.forEach((q) => {
+                let points = [
+                    {x: prevPeakX, y: prevPeakY, z: q.z},
+                    {x: q.peakX, y: q.peakY, z: q.z},
+                    {x: q.peakX, y: height, z: q.z},
+                    {x: prevPeakX, y: height, z: q.z}
+                ];
+                prevPeakX = q.peakX;
+                prevPeakY = q.peakY;
+
+                let arg = [];
+                points.forEach((p) => {
+                    arg.push(...three.project(width/2, height/2, fl, p.x, p.y, p.z));
+                });
+                arg = arg.map((a) => Math.round(a));
+                // draw
+                two.quad(ctx, ...arg);
+            });
         });
     };
 };
