@@ -11,7 +11,7 @@ export const add = () => {
     myClip = addClip({unshift: true});
 
     let fl = 400;
-    let bgDropWidth = width;
+    let bgDropWidth = Math.max(width, 4096);
     let bgDropHeight = -height / 2;
 
     let quads = [];
