@@ -1,4 +1,4 @@
-fetch('./clips.json').then((response) => {
+fetch('./transmissions.json').then((response) => {
     return response.json();
 }).then((data) => {
     modules = data;
