@@ -1,1 +1,9 @@
-{}
+[
+  "bomen.js",
+  "printr.js",
+  "tree.js",
+  "wires.js",
+  "circle-constellations.js",
+  "blueprints.js",
+  "3d-scribble.js",
+]
