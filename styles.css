@@ -68,7 +68,12 @@ a:hover, a:active {
 }
 
 .block {
+    /* TODO: change this to rem, but figure out the font size first */
     margin-bottom: 40px;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
 }
 
 .dib {
