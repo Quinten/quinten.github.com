@@ -10,12 +10,30 @@
             html, body {
                 padding: 0;
                 margin: 0;
+                overflow: hidden;
             }
-            textarea, input {
-                padding: .5em 1em;
+            * {
                 box-sizing: border-box;
                 font-family: monospace;
                 font-size: 16px;
+                line-height: 1.5;
+                border: 0;
+                border-radius: 0;
+                background: #0F1A24;
+                color: #F0E5DB;
+            }
+            *:focus {
+                outline: none;
+            }
+            textarea {
+                resize: none;
+            }
+            button {
+                cursor: pointer;
+                background: #000000;
+            }
+            button:hover, button:focus, button:active {
+                background: #4A81B5;
             }
             .flat, .upright {
                 display: flex;
@@ -27,29 +45,45 @@
                 flex: 1;
                 min-width: 0;
             }
-            .tall {
-                min-height: 100vh;
+            .squeeze {
+                padding: .5em 1em;
+            }
+            .deep {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                left: 0;
+            }
+            .hump {
+                margin-bottom: 2.5em;
+            }
+            .above {
+                top: 0;
             }
         </style>
     </head>
     <body>
-        <form id="form" class="tall upright">
-            <div class="flat">
+        <form id="form">
+            <textarea
+                id="content"
+                name="content"
+                placeholder="BMM - BookMark Machine&NewLine;&NewLine;Write notes in urls, browser history and bookmarks.&NewLine;&NewLine;Pro tip: don't store sensitive information!"
+                class="squeeze deep hump above"
+            ></textarea>
+            <div class="flat deep">
                 <input
                     id="title"
                     name="title"
                     type="text"
                     placeholder="Document title"
-                    class="spread"
+                    class="spread squeeze"
                 >
-                <button id="submit" type="submit">Write url</button>
+                <button
+                    id="submit"
+                    type="submit"
+                    class="squeeze"
+                >Write url</button>
             </div>
-            <textarea
-                id="content"
-                name="content"
-                placeholder="BMM - BookMark Machine&NewLine;&NewLine;Write notes in urls, browser history and bookmarks.&NewLine;&NewLine;Pro tip: don't store sensitive information!"
-                class="spread"
-            ></textarea>
         </form>
         <script>
             const params = new URLSearchParams(location.search);
