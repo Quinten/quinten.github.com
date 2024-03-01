@@ -60,6 +60,7 @@
             };
             window.visualViewport.addEventListener('resize', onSqueeze);
             onSqueeze();
+            window.visualViemport.addEventListener('scroll', e => e.preventDefault());
         </script>
     </body>
 </html>
