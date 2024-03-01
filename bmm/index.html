@@ -1,8 +1,11 @@
 <!doctype html>
-<html lang="en" class="squeezable">
+<html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
+        >
         <style>
             html, body {
                 padding: 0;
@@ -26,11 +29,11 @@
                 min-width: 0;
             }
             .tall {
-                height: 100%;
+                min-height: 100vh;
             }
         </style>
     </head>
-    <body class="squeezable">
+    <body>
         <form id="form" class="tall upright">
             <textarea
                 id="content"
@@ -53,14 +56,6 @@
             const params = new URLSearchParams(location.search);
             title.value = document.title = params.get('title') || '';
             content.value = params.get('content') || '';
-            const onSqueeze = e => {
-                document.querySelectorAll('.squeezable').forEach(
-                    el => el.style.height = window.visualViewport.height + 'px'
-                );
-            };
-            window.visualViewport.addEventListener('resize', onSqueeze);
-            onSqueeze();
-            window.visualViewport.addEventListener('scroll', e => e.preventDefault());
         </script>
     </body>
-</html>
+</html
