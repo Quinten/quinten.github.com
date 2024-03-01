@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget: resizes-content">
         <style>
             html, body {
                 padding: 0;
@@ -50,9 +50,6 @@
             const params = new URLSearchParams(location.search);
             title.value = document.title = params.get('title') || '';
             content.value = params.get('content') || '';
-            const onR = e => form.style.height = window.innerHeight + 'px';
-            window.addEventListener('resize', onR);
-            onR();
         </script>
     </body>
 </html>
