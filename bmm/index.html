@@ -24,13 +24,10 @@
                 flex: 1;
                 min-width: 0;
             }
-            .tall {
-                min-height: 100vh;
-            }
         </style>
     </head>
     <body>
-        <form id="form" class="tall upright">
+        <form id="form" class="upright squeezable">
             <textarea
                 id="content"
                 name="content"
@@ -52,6 +49,8 @@
             const params = new URLSearchParams(location.search);
             title.value = document.title = params.get('title') || '';
             content.value = params.get('content') || '';
+            (const onSqueeze = e => document.querySelectorAll('.squeezable').forEach(el => el.style.height = window.visualViewport.height + 'px'))();
+            window.visualViewport.addEventListener('resize', onSqueeze);
         </script>
     </body>
 </html>
