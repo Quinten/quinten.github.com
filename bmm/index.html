@@ -4,13 +4,12 @@
         <meta charset="utf-8">
         <meta
             name="viewport"
-            content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
+            content="width=device-width, initial-scale=1"
         >
         <style>
             html, body {
                 padding: 0;
                 margin: 0;
-                height: 100vh;
             }
             textarea, input {
                 padding: .5em 1em;
@@ -35,12 +34,6 @@
     </head>
     <body>
         <form id="form" class="tall upright">
-            <textarea
-                id="content"
-                name="content"
-                placeholder="BMM - BookMark Machine&NewLine;&NewLine;Write notes in urls, browser history and bookmarks.&NewLine;&NewLine;Pro tip: don't store sensitive information!"
-                class="spread"
-            ></textarea>
             <div class="flat">
                 <input
                     id="title"
@@ -51,6 +44,12 @@
                 >
                 <button id="submit" type="submit">Write url</button>
             </div>
+            <textarea
+                id="content"
+                name="content"
+                placeholder="BMM - BookMark Machine&NewLine;&NewLine;Write notes in urls, browser history and bookmarks.&NewLine;&NewLine;Pro tip: don't store sensitive information!"
+                class="spread"
+            ></textarea>
         </form>
         <script>
             const params = new URLSearchParams(location.search);
