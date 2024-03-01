@@ -49,8 +49,13 @@
             const params = new URLSearchParams(location.search);
             title.value = document.title = params.get('title') || '';
             content.value = params.get('content') || '';
-            (const onSqueeze = e => document.querySelectorAll('.squeezable').forEach(el => el.style.height = window.visualViewport.height + 'px'))();
+            const onSqueeze = e => {
+                document.querySelectorAll('.squeezable').forEach(
+                    el => el.style.height = window.visualViewport.height + 'px'
+                );
+            };
             window.visualViewport.addEventListener('resize', onSqueeze);
+            onSqueeze();
         </script>
     </body>
 </html>
