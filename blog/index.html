@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="https://quinten.github.io/styles.css" />
+<!--\/-->
+        <title>Quinten's blog</title>
+        <meta name="description" content="I think i have more blogs than actual blog posts." />
+<!--/\-->
+    </head>
+    <body>
+        <div class="block"></div>
+        <nav>
+            <noscript><a href="#menu">Skip to menu</a></noscript>
+            <script>
+                let skipToMenu = () => {
+                    menu.scrollIntoView({'behavior': 'smooth'});
+                    firstmenulink.focus();
+                };
+                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
+            </script>
+        </nav>
+        <div class="block"></div>
+        <main>
+<!--\/-->
+            <h1>Quinten's blog</h1>
+            <p>I think i have more blogs than actual blog posts.</p>
+            <p>
+                <a href="fyi-ideas-are-shapeshifters.html">FYI: ideas are shapeshifters</a> <small>27-02-2024</small><br />
+                When I leave an idea in my drawer for a while and I pick it up again, the idea has changed.
+            </p>
+            <p>
+                <a href="reanimating-the-blog.html">Reanimating the blog</a> <small>08-02-2024</small><br />
+                After almost five years of inactivity, i'm trying to reanimate this blog.
+            </p>
+            <p>
+                <a href="writing-webpages-by-hand.html">Writing webpages by hand</a> <small>20-03-2019</small><br />
+                A plea for text based first
+            </p>
+            <p>
+                <a href="generative-art-on-the-raspberry-pi.html">Generative art on the Rasberry Pi</a> <small>19-03-2019</small><br />
+                A small project to make a generative art piece on the Rasberry Pi
+            </p>
+            <p>
+                <a href="the-first-incomplete-blogpost.html">The first incomplete blogpost</a> <small>19-03-2019</small><br />
+                Why start another blog?
+            </p>
+<!--/\-->
+        </main>
+        <div class="block"></div>
+        <nav id="menu" title="Menu">
+            <ul>
+                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
+                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+            </ul>
+        </nav>
+    </body>
+</html>

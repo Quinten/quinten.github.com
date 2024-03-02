@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="https://quinten.github.io/styles.css" />
+<!--\/-->
+        <title>Scratch</title>
+        <meta name="description" content="A scratch page for quick notes and tests." />
+<!--/\-->
+    </head>
+    <body>
+        <div class="block"></div>
+        <nav>
+            <noscript><a href="#menu">Skip to menu</a></noscript>
+            <script>
+                let skipToMenu = () => {
+                    menu.scrollIntoView({'behavior': 'smooth'});
+                    firstmenulink.focus();
+                };
+                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
+            </script>
+        </nav>
+        <div class="block"></div>
+        <main>
+<!--\/-->
+            <h1>Scratch</h1>
+            <p>A scratch page for quick notes and tests.</p>
+            <pre><code>
+# Start a simple web server in the current directory
+while true; do { echo -e 'HTTP/1.1 200 OK\r\n'; cat index.html; } | nc -l 8000; done
+# Open the web server in lynx
+lynx http://127.0.0.1:8000
+# The html is not parsed, you see the source code
+# But nc outputs the request, so you can see the request headers
+GET / HTTP/1.0
+Host: 127.0.0.1:8000
+Accept: text/html, text/plain, text/sgml, text/css, application/xhtml+xml, */*;q=0.01
+Accept-Encoding: gzip, compress, bzip2
+Accept-Language: en
+User-Agent: Lynx/2.8.9rel.1 libwww-FM/2.14 SSL-MM/1.4.1 OpenSSL/3.2.1
+            </code></pre>
+            <p>qrportal links? tips.?</p>
+<!--/\-->
+        </main>
+        <div class="block"></div>
+        <nav id="menu" title="Menu">
+            <ul>
+                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
+                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+            </ul>
+        </nav>
+    </body>
+</html>

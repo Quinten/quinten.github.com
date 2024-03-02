@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="https://quinten.github.io/styles.css" />
+<!--\/-->
+        <title>The first incomplete blogpost</title>
+        <meta name="description" content="Why start another blog?" />
+<!--/\-->
+    </head>
+    <body>
+        <div class="block"></div>
+        <nav>
+            <noscript><a href="#menu">Skip to menu</a></noscript>
+            <script>
+                let skipToMenu = () => {
+                    menu.scrollIntoView({'behavior': 'smooth'});
+                    firstmenulink.focus();
+                };
+                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
+            </script>
+        </nav>
+        <div class="block"></div>
+        <main>
+<!--\/-->
+            <h1>The first incomplete blogpost</h1>
+            <p>19-03-2019</p>
+            <p>I think i have written more blog systems in my life, than actual blog posts. So why start another one? Each time i think i have found the best system to work in or the best subject and now i am starting one in plain html. That's right no PHP, ASP, node.js, mySQL, graphQL or other backend problems. There are a couple of reasons for this, but they will have to wait until <a href="./writing-webpages-by-hand.html">the next blogpost</a> --cliffhanger-- </p>
+            <p>After all <a href="./index.html">this blog</a> will always be incomplete!</p>
+<!--/\-->
+        </main>
+        <div class="block"></div>
+        <nav id="menu" title="Menu">
+            <ul>
+                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
+                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+            </ul>
+        </nav>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="https://quinten.github.io/styles.css" />
+<!--\/-->
+        <title>Reanimating the blog</title>
+        <meta name="description" content="After almost five years of inactivity, i'm trying to reanimate this blog." />
+<!--/\-->
+    </head>
+    <body>
+        <div class="block"></div>
+        <nav>
+            <noscript><a href="#menu">Skip to menu</a></noscript>
+            <script>
+                let skipToMenu = () => {
+                    menu.scrollIntoView({'behavior': 'smooth'});
+                    firstmenulink.focus();
+                };
+                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
+            </script>
+        </nav>
+        <div class="block"></div>
+        <main>
+<!--\/-->
+            <h1>Reanimating the blog</h1>
+            <p>08-02-2024</p>
+            <p>After almost five years of inactivity, i'm trying to reanimate this blog.</p>
+            <p>Yesterday and the day before, i was coding a small bashscript to apply changes made to one common.html file to all other files in a directory. There was not really a website to apply it to, but i was thinking about reanimating this blog.</p>
+            <p>Today i tried applying it to this dead blog. There are still some problems. For example when i made a change to the commonn.html and run the script, i immediatelty have to commit all the changes before making new changes. So when the changes aren't any good, i have to make a commit with stupid code. Also if i have uncommitted changes in the other files, the conflicts end up in the common.html file. I have to think about a way to solve this.</p>
+            <p>The script looks like this for the moment:</p>
+            <pre><code>
+jfcommon() {
+    git stash push common.html
+    for file in *.html; do
+        if [[ $file != common.html ]]; then
+            cp $file common.html
+            git add common.html
+            git commit -m "Add common.html"
+            git stash apply
+            cp common.html $file
+            git reset HEAD~1
+        fi
+    done
+    git checkout common.html
+    git stash pop
+}
+            </code></pre>
+            <p>I also have to mark lines with html comments to indicate if the changes apply only to the file or to all files. They are needed to stop the diffs from interfering. There is no way around it, i think. But it is not that bad to know where you can make changes.</p>
+            <p>Anyway i need to take the trash out now and go to bed. I hope i remember how to continue in five years.</p>
+        </main>
+        <div class="block"></div>
+        <nav id="menu" title="Menu">
+            <ul>
+                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
+                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+            </ul>
+        </nav>
+    </body>
+</html>
