@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="https://quinten.github.io/styles.css" />
+<!--\/-->
+        <title>BMM - BookMark Machine</title>
+        <meta name="description" content="Keep notes in your browsers history." />
+<!--/\-->
+    </head>
+    <body>
+        <div class="block"></div>
+        <nav>
+            <noscript><a href="#menu">Skip to menu</a></noscript>
+            <script>
+                let skipToMenu = () => {
+                    menu.scrollIntoView({'behavior': 'smooth'});
+                    firstmenulink.focus();
+                };
+                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
+            </script>
+        </nav>
+        <div class="block"></div>
+        <main>
+<!--\/-->
+            <h1>BMM - BookMark Machine</h1>
+            <p>02-03-2024</p>
+            <p>Keep notes in your browsers history.</p>
+<!--/\-->
+        </main>
+        <div class="block"></div>
+        <nav id="menu" title="Menu">
+            <ul>
+                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
+                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+            </ul>
+        </nav>
+    </body>
+</html>
