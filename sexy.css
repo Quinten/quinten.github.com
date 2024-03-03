@@ -1,0 +1,55 @@
+.flat, .upright {
+    display: flex;
+}
+
+.upright {
+    flex-direction: column;
+}
+
+.spread {
+    flex: 1;
+    min-width: 0;
+}
+
+.tall {
+    min-height: 100vh;
+}
+
+.tight {
+    max-width: 48.25em; /* 80 characters wrapping */
+}
+
+.hump--up {
+    margin-bottom: 2.5rem;
+}
+
+.hump--down {
+    margin-top: 2.5rem;
+}
+
+.hump--up-a-bit {
+    margin-bottom: 0.5rem;
+}
+
+.hump--down-a-bit {
+    margin-top: 0.5rem;
+}
+
+.squeeze {
+    padding: .5em 1em;
+}
+
+.deep {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.above {
+    top: 0;
+}
+
+.hump {
+    margin-bottom: 2.5em;
+}
