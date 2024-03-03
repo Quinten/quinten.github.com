@@ -72,6 +72,22 @@ a:hover, a:active {
     margin-bottom: 40px;
 }
 
+.hump--up {
+    margin-bottom: 2.5rem;
+}
+
+.hump--down {
+    margin-top: 2.5rem;
+}
+
+.hump--up-a-bit {
+    margin-bottom: 0.5rem;
+}
+
+.hump--down-a-bit {
+    margin-top: 0.5rem;
+}
+
 .dib {
     display: inline-block;
 }
