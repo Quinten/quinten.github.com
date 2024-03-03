@@ -1,13 +1,13 @@
 body {
-    padding: 0;
+    padding: 0 1rem;
     margin: 0;
 }
 
 * {
     box-sizing: border-box;
     font-family: monospace;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.5;
     border: 0;
     border-radius: 0;
     background: #272D2D;
@@ -24,6 +24,11 @@ textarea {
 
 pre {
     overflow-x: scroll;
+    background: #313a3a;
+    padding: 0.5em 1em;
+}
+
+code {
     background: #313a3a;
 }
 
