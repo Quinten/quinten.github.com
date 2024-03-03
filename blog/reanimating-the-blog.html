@@ -10,18 +10,7 @@
 <!--/\-->
     </head>
     <body>
-        <div class="block"></div>
-        <nav>
-            <noscript><a href="#menu">Skip to menu</a></noscript>
-            <script>
-                let skipToMenu = () => {
-                    menu.scrollIntoView({'behavior': 'smooth'});
-                    firstmenulink.focus();
-                };
-                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
-            </script>
-        </nav>
-        <div class="block"></div>
+        <nav class="hump--up hump--down"><a href="#menu">Skip to menu</a></nav>
         <main>
 <!--\/-->
             <h1>Reanimating the blog</h1>
@@ -50,12 +39,20 @@ jfcommon() {
             <p>I also have to mark lines with html comments to indicate if the changes apply only to the file or to all files. They are needed to stop the diffs from interfering. There is no way around it, i think. But it is not that bad to know where you can make changes.</p>
             <p>Anyway i need to take the trash out now and go to bed. I hope i remember how to continue in five years.</p>
         </main>
-        <div class="block"></div>
-        <nav id="menu" title="Menu">
+        <nav id="menu" title="Menu" class="hump--up hump--down">
             <ul>
-                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
-                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+                <li class="hump--up-a-bit">
+                    <a href="./index.html" id="firstmenulink">
+                        Blog Index
+                    </a>
+                </li>
+                <li class="hump--up-a-bit">
+                    <a href="https://quinten.github.io/">
+                        Project Index (home)
+                    </a>
+                </li>
             </ul>
         </nav>
+        <script src="skiptomenu.js"></script>
     </body>
 </html>

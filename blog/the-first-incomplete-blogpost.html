@@ -10,18 +10,7 @@
 <!--/\-->
     </head>
     <body>
-        <div class="block"></div>
-        <nav>
-            <noscript><a href="#menu">Skip to menu</a></noscript>
-            <script>
-                let skipToMenu = () => {
-                    menu.scrollIntoView({'behavior': 'smooth'});
-                    firstmenulink.focus();
-                };
-                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
-            </script>
-        </nav>
-        <div class="block"></div>
+        <nav class="hump--up hump--down"><a href="#menu">Skip to menu</a></nav>
         <main>
 <!--\/-->
             <h1>The first incomplete blogpost</h1>
@@ -30,12 +19,20 @@
             <p>After all <a href="./index.html">this blog</a> will always be incomplete!</p>
 <!--/\-->
         </main>
-        <div class="block"></div>
-        <nav id="menu" title="Menu">
+        <nav id="menu" title="Menu" class="hump--up hump--down">
             <ul>
-                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
-                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+                <li class="hump--up-a-bit">
+                    <a href="./index.html" id="firstmenulink">
+                        Blog Index
+                    </a>
+                </li>
+                <li class="hump--up-a-bit">
+                    <a href="https://quinten.github.io/">
+                        Project Index (home)
+                    </a>
+                </li>
             </ul>
         </nav>
+        <script src="skiptomenu.js"></script>
     </body>
 </html>

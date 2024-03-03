@@ -10,18 +10,7 @@
 <!--/\-->
     </head>
     <body>
-        <div class="block"></div>
-        <nav>
-            <noscript><a href="#menu">Skip to menu</a></noscript>
-            <script>
-                let skipToMenu = () => {
-                    menu.scrollIntoView({'behavior': 'smooth'});
-                    firstmenulink.focus();
-                };
-                document.write('<a href="javascript:skipToMenu()">Skip to menu</a>');
-            </script>
-        </nav>
-        <div class="block"></div>
+        <nav class="hump--up hump--down"><a href="#menu">Skip to menu</a></nav>
         <main>
 <!--\/-->
             <h1>Generative art on the Raspberry Pi</h1>
@@ -29,12 +18,20 @@
             <p>So the idea for this project is to have a very small computer unit, that automatically generates unique and random images and animations. By automatically i mean: the only technical requirement to start the flow of imagery is that you power on the computer and you connect it with a hdmi to a tv. A little bit like dvd player, only that it generates and computes the animations live, making images that are different each time.</p>
 <!--/\-->
         </main>
-        <div class="block"></div>
-        <nav id="menu" title="Menu">
+        <nav id="menu" title="Menu" class="hump--up hump--down">
             <ul>
-                <li class="mb-2"><a href="./index.html" id="firstmenulink">Blog Index</a></li>
-                <li class="mb-2"><a href="https://quinten.github.io/">Project Index (home)</a></li>
+                <li class="hump--up-a-bit">
+                    <a href="./index.html" id="firstmenulink">
+                        Blog Index
+                    </a>
+                </li>
+                <li class="hump--up-a-bit">
+                    <a href="https://quinten.github.io/">
+                        Project Index (home)
+                    </a>
+                </li>
             </ul>
         </nav>
+        <script src="skiptomenu.js"></script>
     </body>
 </html>
