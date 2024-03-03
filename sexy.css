@@ -45,6 +45,10 @@ ul {
     list-style-type: circle;
 }
 
+li {
+    margin-bottom: 1.5rem;
+}
+
 a:link {
     color: #4FC6E3;
 }
