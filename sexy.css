@@ -1,3 +1,57 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    border: 0;
+    border-radius: 0;
+    background: #272D2D;
+    color: #F2FDFF;
+}
+
+*:focus {
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+pre {
+    overflow-x: scroll;
+    background: #313a3a;
+}
+
+button {
+    cursor: pointer;
+    background: #4FC6E3;
+}
+
+button:hover, button:focus, button:active {
+    background: #21B0D4;
+}
+
+ul {
+    list-style-type: circle;
+}
+
+a:link {
+    color: #4FC6E3;
+}
+
+a:visited {
+    color: #D6C2CF;
+}
+
+a:hover, a:active {
+    color: #21B0D4;
+}
+
 .flat, .upright {
     display: flex;
 }
@@ -16,7 +70,7 @@
 }
 
 .tight {
-    max-width: 48.25em; /* 80 characters wrapping */
+    max-width: 48.25em;
 }
 
 .hump--up {
@@ -27,16 +81,8 @@
     margin-top: 2.5rem;
 }
 
-.hump--up-a-bit {
-    margin-bottom: 0.5rem;
-}
-
-.hump--down-a-bit {
-    margin-top: 0.5rem;
-}
-
 .squeeze {
-    padding: .5em 1em;
+    padding: 0.5em 1em;
 }
 
 .deep {
