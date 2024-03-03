@@ -34,16 +34,16 @@
             <p>I decided to start with something simple: a note taking app which can store the notes in your bookmarks manager. So not on a server and not in cookies or local storage.</p>
             <p>It's actually very simple. In it's most basic form it looks like this:</p>
             <pre><code>
-<lt;form>
-    <lt;textarea id="content" name="content"><lt;/textarea>
-    <lt;input id="title" name="title" type="text">
-    <lt;button type="submit">Write url<lt;/button>
-<lt;/form>
-<lt;script>
+&lt;form>
+    &lt;textarea id="content" name="content">&lt;/textarea>
+    &lt;input id="title" name="title" type="text">
+    &lt;button type="submit">Write url<lt;/button>
+&lt;/form>
+&lt;script>
     const params = new URLSearchParams(location.search);
     title.value = document.title = params.get('title') || '';
     content.value = params.get('content') || '';
-<lt;/script>
+&lt;/script>
             </code></pre>
             <p>The form element doesn't have an action attribute, which means when it is submitted, it will submit the data to the current url.</p>
             <p>It also doesn't have a method attribute, so it will default to GET. This will send the data of the fields along with the url, appending a search query with '?'.</p>
