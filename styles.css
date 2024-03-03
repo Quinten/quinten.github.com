@@ -49,7 +49,6 @@ body {
     padding: 0px 15px;
     margin: 0px;
     font-family: monospace;
-    line-height: 1.5;
 }
 
 ul {
@@ -68,29 +67,9 @@ a:hover, a:active {
     color: #21B0D4;
 }
 
-.tight {
-    max-width: 48.25em; /* 80 characters wrapping */
-}
-
 .block {
     /* TODO: change this to rem, but figure out the font size first */
     margin-bottom: 40px;
-}
-
-.hump--up {
-    margin-bottom: 2.5rem;
-}
-
-.hump--down {
-    margin-top: 2.5rem;
-}
-
-.hump--up-a-bit {
-    margin-bottom: 0.5rem;
-}
-
-.hump--down-a-bit {
-    margin-top: 0.5rem;
 }
 
 .dib {
