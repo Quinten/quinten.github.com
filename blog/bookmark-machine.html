@@ -22,8 +22,7 @@
             <p>Seeing this similarity I was pondering wether it could be possible to develop an entire operating system that lives in your bookmark folders. Probably one will have to find a way for bookmarks to manipulate other bookmarks, which is not really possible via the webpages themselves. But there is a js api for bookmarks which can be used by browser extensions. So maybe with the help of an extension it could work.</p>
             <p>I decided to start with something simple: a note taking app which can store the notes in your bookmarks manager. So not on a server and not in cookies or local storage.</p>
             <p>It's actually very simple. In it's most basic form it looks like this:</p>
-            <pre style="white-space: pre-wrap;"><code>
-&lt;form>
+            <pre><code>&lt;form>
     &lt;textarea id="content" name="content">&lt;/textarea>
     &lt;input id="title" name="title" type="text">
     &lt;button type="submit">Write url&lt;/button>
@@ -32,8 +31,7 @@
     const params = new URLSearchParams(location.search);
     title.value = document.title = params.get('title') || '';
     content.value = params.get('content') || '';
-&lt;/script>
-            </code></pre>
+&lt;/script></code></pre>
             <p>The form element doesn't have an action attribute, which means when it is submitted, it will submit the data to the current url.</p>
             <p>It also doesn't have a method attribute, so it will default to GET. This will send the data of the fields along with the url, appending a search query with '?'.</p>
             <p>The 3 lines of javascipt parse the url search query and use the data to populate the fields again. So the form now acts as a display of the content. Plus the title parameter is used as the document title, which can then be used as the name of the bookmark, when you save it as a bookmark.</p>
