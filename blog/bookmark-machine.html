@@ -6,7 +6,7 @@
         <link rel="stylesheet" type="text/css" href="https://quinten.github.io/styles.css" />
 <!--\/-->
         <title>BMM - BookMark Machine</title>
-        <meta name="description" content="Keep notes in your browsers history." />
+        <meta name="description" content="Keep notes in your browser history." />
 <!--/\-->
     </head>
     <body>
@@ -25,8 +25,33 @@
         <main>
 <!--\/-->
             <h1>BMM - BookMark Machine</h1>
-            <p>02-03-2024</p>
-            <p>Keep notes in your browsers history.</p>
+            <p>03-03-2024</p>
+            <p>Keep notes in your browser history.</p>
+            <p>The other day I was reorganising my bookmarks. Weeding out dead links and sorting them in a tight folder structure.</p>
+            <p>I was applying the same structure I use for personal files in my cloud storage and system document folders. Suddenly I saw more similarities between the bookmark manager and a regular file system, than I ever realised before. Both have only 3 entities: folders for a nested tree, names or labels for the folders and the items they contain and last the items themselves. In the case of the file system the content of the items is text or bytes and in the case of the bookmarks they are urls, so actually also text.</p>
+            <p>Urls can be bytes as well, like a data url that represents a jpg or png image. They can even be executable in the case of bookmarklets, which start with javascript: instead of http: or https:. The http 1.1 specification even states that the number of characters in a url is not limited.</p>
+            <p>Seeing this similarity I was pondering wether it could be possible to develop an entire operating system that lives in your bookmark folders. Probably one will have to find a way for bookmarks to manipulate other bookmarks, which is not really possible via the webpages themselves. But there is a js api for bookmarks which can be used by browser extensions. So maybe with the help of an extension it could work.</p>
+            <p>I decided to start with something simple: a note taking app which can store the notes in your bookmarks manager. So not on a server and not in cookies or local storage.</p>
+            <p>It's actually very simple. In it's most basic form it looks like this:</p>
+            <pre><code>
+<form>
+    <textarea id="content" name="content"></textarea>
+    <input id="title" name="title" type="text">
+    <button type="submit">Write url</button>
+</form>
+<script>
+    const params = new URLSearchParams(location.search);
+    title.value = document.title = params.get('title') || '';
+    content.value = params.get('content') || '';
+</script>
+            </code></pre>
+            <p>The form element doesn't have an action attribute, which means when it is submitted, it will submit the data to the current url.</p>
+            <p>It also doesn't have a method attribute, so it will default to GET. This will send the data of the fields along with the url, appending a search query with '?'.</p>
+            <p>The 3 lines of javascipt parse the url search query and use the data to populate the fields again. So the form now acts as a display of the content. Plus the title parameter is used as the document title, which can then be used as the name of the bookmark, when you save it as a bookmark.</p>
+            <p>However there is one problem. If you open your bookmark note again and make a change to the content, the url also changes. The bookmark manager thinks you are now on a different page. So when you save your note again, it will make a new (second) bookmark and the old one will not be replaced. You still have to manually remove the old one.</p>
+            <p>But no stress! There is another mechanism in your internet browser which works with urls: the browser history. If you open your browser history, you will see that every revision of your note is there. So we basically also have a versioning system!</p>
+            <p>So you only have to store the note in your bookmarks, when you know you will not touch it in the near future, but you want to quickly find it again some day.</p>
+            <p>You can <a href="https://quinten.github.io/bmm/">try the BMM editor</a> yourself.</p>
 <!--/\-->
         </main>
         <div class="block"></div>
