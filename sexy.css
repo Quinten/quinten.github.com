@@ -77,6 +77,10 @@ h1, h2, h3 {
     margin-bottom: 1.5rem;
 }
 
+time {
+    opacity: 0.85;
+}
+
 .flat, .upright {
     display: flex;
 }
