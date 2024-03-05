@@ -61,6 +61,12 @@ a:hover, a:active {
     color: #21B0D4;
 }
 
+a:focus {
+    color: #F2FDFF;
+    background: #4FC6E3;
+    text-decoration: none;
+}
+
 h1 {
     font-size: 2.5rem;
 }
