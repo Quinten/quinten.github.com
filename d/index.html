@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+        >
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+            * {
+                box-sizing: border-box;
+                font-family: monospace;
+                font-size: 16px;
+                line-height: 1.5;
+                border: 0;
+                border-radius: 0;
+                background: #0F1A24;
+                color: #F0E5DB;
+            }
+            *:focus {
+                outline: none;
+            }
+            textarea {
+                resize: none;
+            }
+            button {
+                cursor: pointer;
+                background: #000000;
+            }
+            button:hover, button:focus, button:active {
+                background: #4A81B5;
+            }
+            .flat, .upright {
+                display: flex;
+            }
+            .upright {
+                flex-direction: column;
+            }
+            .spread {
+                flex: 1;
+                min-width: 0;
+            }
+            .squeeze {
+                padding: .5em 1em;
+            }
+            .deep {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                left: 0;
+            }
+            .hump {
+                margin-bottom: 2.5em;
+            }
+            .above {
+                top: 0;
+            }
+            #svg {
+                position: fixed;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                max-width: 100%;
+                width: calc(100vh - 6.5em);
+                height: auto;
+                z-index: -1;
+                background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAJ0lEQVQoU2N89+7dfwYkICgoiMxlYKSDgv///6O44f3796huoL0CAPpyKx1ry0n4AAAAAElFTkSuQmCC') repeat top left;
+            }
+        </style>
+    </head>
+    <body>
+        <form id="form">
+            <svg
+                width="1024"
+                height="1024"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                id="svg"
+            >
+                <path
+                    stroke="none"
+                    fill="black"
+                    fill-rule="nonzero"
+                    id="path"
+                    d=""
+                />
+            </svg>
+            <textarea
+                id="content"
+                name="content"
+                placeholder="d"
+                class="squeeze deep hump"
+            ></textarea>
+            <div class="flat deep">
+                <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    placeholder="Document title"
+                    class="spread squeeze"
+                >
+                <button
+                    id="submit"
+                    type="submit"
+                    class="squeeze"
+                >Write url</button>
+            </div>
+        </form>
+        <script>
+            const params = new URLSearchParams(location.search);
+            title.value = document.title = params.get('title') || '';
+            content.value = params.get('content') || '';
+            let keys = {
+                M: 1,
+                //L: 1,
+                //Q: 2,
+                //T: 1,
+                C: 3,
+                //S: 2,
+                Z: 0
+            };
+            let replaceKeys = {
+                //M: 'L',
+                M: 'C',
+                Z: 'M'
+            };
+            let lastKey = 'M';
+            let wants = 0;
+            let setPaths = _ => {
+                let paths = content.value.split('Z');
+                svg.innerHTML = '';
+                paths.forEach(p => {
+                    if (p === '') {
+                        return;
+                    }
+                    svg.innerHTML = svg.innerHTML + `<path stroke="none" fill="black" fill-rule="nonzero" id="path" d="${p + 'Z'}"/>`;
+                    //let [offsetX, offsetY] = p.trim().split(' ').pop().split(',');
+                    //console.log(offsetX, offsetY);
+                    //cursor.style.left = (Number(offsetX) + 160) + 'px';
+                    //cursor.style.top = (Number(offsetY) + 160) + 'px';
+                });
+            };
+            let updatePath = p => {
+                content.value = content.value + ' ' + p;
+                content.value = content.value.trim();
+                if (wants === 0) {
+                    setPaths();
+                }
+            };
+            svg.addEventListener('click', e => {
+                if (wants === 0) {
+                    wants = keys[lastKey];
+                    updatePath(lastKey);
+                }
+                let {offsetX, offsetY} = e;
+                let zoom = 1024 / svg.clientWidth;
+                offsetX = Math.round(offsetX * zoom);
+                offsetY = Math.round(offsetY * zoom);
+                wants = wants - 1;
+                updatePath(offsetX + ',' + offsetY);
+                if (lastKey === 'M') {
+                    lastKey = 'C';
+                }
+            });
+            form.addEventListener('submit', e => {
+                lastKey = 'Z';
+                wants = 0;
+                updatePath(lastKey);
+                e.preventDefault();
+                let url = new URL(location.href);
+                url.search = new URLSearchParams({
+                    title: title.value,
+                    content: content.value
+                });
+                location.href = url;
+            });
+        </script>
+    </body>
+</html>
