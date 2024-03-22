@@ -118,7 +118,7 @@
             content.value = params.get('content') || '';
             let keys = {
                 M: 1,
-                //L: 1,
+                L: 1,
                 //Q: 2,
                 //T: 1,
                 C: 3,
@@ -126,8 +126,8 @@
                 Z: 0
             };
             let replaceKeys = {
-                //M: 'L',
-                M: 'C',
+                M: 'L',
+                //M: 'C',
                 Z: 'M'
             };
             let lastKey = 'M';
@@ -165,7 +165,7 @@
                 wants = wants - 1;
                 updatePath(offsetX + ',' + offsetY);
                 if (lastKey === 'M') {
-                    lastKey = 'C';
+                    lastKey = 'L';
                 }
             });
             form.addEventListener('submit', e => {
