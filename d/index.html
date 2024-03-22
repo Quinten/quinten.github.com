@@ -84,7 +84,7 @@
                 id="svg"
             >
                 <path
-                    stroke="none"
+                    stroke="black"
                     fill="black"
                     fill-rule="nonzero"
                     id="path"
@@ -139,7 +139,7 @@
                     if (p === '') {
                         return;
                     }
-                    svg.innerHTML = svg.innerHTML + `<path stroke="none" fill="black" fill-rule="nonzero" id="path" d="${p + 'Z'}"/>`;
+                    svg.innerHTML = svg.innerHTML + `<path stroke="black" fill="black" fill-rule="nonzero" id="path" d="${p + 'Z'}"/>`;
                     //let [offsetX, offsetY] = p.trim().split(' ').pop().split(',');
                     //console.log(offsetX, offsetY);
                     //cursor.style.left = (Number(offsetX) + 160) + 'px';
