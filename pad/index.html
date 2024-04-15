@@ -8,6 +8,24 @@
         <link href="style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        pad
+        <img
+            id="svgimg"
+            width="256"
+            height="256"
+            src=""
+        />
+        <form>
+            <textarea id="svgcode"></textarea>
+            <button type="submit">save</button>
+        </form>
+        <script>
+            const svgimg = document.getElementById('svgimg');
+            const svgcode = document.getElementById('svgcode');
+            const form = document.querySelector('form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(svgcode.value);
+            });
+        </script>
     </body>
 </html>
