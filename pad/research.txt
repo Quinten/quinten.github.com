@@ -5,3 +5,5 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Getting_Started
 in textarea, click "save", richt-click "save image as"...
 
 chrome os x = OK
+
+chrome iphone = OK, but via new tab, otherwise rasterized
