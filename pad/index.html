@@ -8,24 +8,37 @@
         <link href="style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <img
-            id="svgimg"
-            width="256"
-            height="256"
-            src=""
-        />
-        <form>
-            <textarea id="svgcode"></textarea>
-            <button type="submit">save</button>
+        <div>
+            <img
+                id="svgimg"
+                width="1024"
+                height="1024"
+                src=""
+            />
+        </div>
+        <form id="codeform">
+            <textarea id="svgcode">
+<svg version="1.1" width="1024" height="1024" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" fill="#fff" />
+    <circle cx="512" cy="512" r="256" fill="#000" />
+</svg>
+</textarea>
+            <div>
+                <button type="submit">save</button>
+            </div>
         </form>
         <script>
-            const svgimg = document.getElementById('svgimg');
-            const svgcode = document.getElementById('svgcode');
-            const form = document.querySelector('form');
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
+            let svgimg = document.getElementById('svgimg');
+            let svgcode = document.getElementById('svgcode');
+            let codeToImg = () => {
                 svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(svgcode.value);
+            };
+            let form = document.getElementById('codeform');
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                codeToImg();
             });
+            codeToImg();
         </script>
     </body>
 </html>
