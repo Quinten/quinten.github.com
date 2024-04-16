@@ -111,4 +111,11 @@ let openEditor = () => {
     gallery.style.display = 'none';
 };
 
+window.downloadSvg = e => {
+    let a = document.createElement('a');
+    a.href = 'data:image/svg+xml,' + encodeURIComponent(svgcode.value);
+    a.download = 'drawing.svg';
+    a.click();
+};
+
 })();
