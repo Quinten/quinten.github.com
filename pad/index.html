@@ -19,8 +19,10 @@
         </div>
         <div class="view" id="editor" style="display: none;">
             <nav>
-                <button onclick="openGallery()">gallery</button>
-                <button onclick="openView('source')">source</button>
+                <button onclick="openGallery()">list</button>
+                <button onclick="alert('comming soon')">tools</button>
+                <button onclick="openView('source')">code</button>
+                <button onclick="exportSvg()">export</button>
             </nav>
             <div>
                 <img
@@ -33,8 +35,8 @@
         </div>
         <div class="view" id="source" style="display: none;">
             <nav>
-                <button onclick="saveSource()">save</button>
-                <button onclick="exportSvg()">export</button>
+                <button onclick="applySource()">apply</button>
+                <button onclick="discardSource()">discard</button>
             </nav>
             <div>
                 <textarea id="svgcode"></textarea>

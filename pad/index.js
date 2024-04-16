@@ -1,43 +1,42 @@
 (function() {
 
 let svgKey = undefined;
+let defaultSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+    width="1024" height="1024" viewBox="0 0 1024 1024">
+    <rect width="100%" height="100%" fill="#fff" />
+    <circle cx="512" cy="512" r="256" fill="#000" />
+</svg>`;
+let currentSvg = defaultSvg;
 
 let dbName = "pad";
 let dbVersion = 1;
 let request = indexedDB.open(dbName, dbVersion);
-request.onerror = e => {};
 request.onupgradeneeded = e => {
     // v1
     let db = e.target.result;
     let objectStore = db.createObjectStore("drawings", { autoIncrement: true });
     objectStore.createIndex("name", "name", { unique: false });
     objectStore.createIndex("content", "content", { unique: false });
-    //objectStore.transaction.oncomplete = e => {};
 };
 let updateList = db => {
     let transaction = db.transaction("drawings", "readwrite");
     let objectStore = transaction.objectStore("drawings");
     let list = document.getElementById('list');
-    let newList = document.createElement('div');
-    list.parentNode.replaceChild(newList, list);
-    newList.id = 'list';
+    list.innerHTML = '';
     objectStore.openCursor().onsuccess = e => {
         let cursor = e.target.result;
         if (cursor) {
             let drawing = cursor.value;
             let img = document.createElement('img');
             img.src = 'data:image/svg+xml,' + encodeURIComponent(drawing.content);
-            //img.setAttribute('width', '128');
-            //img.setAttribute('height', '128');
             img.dataset.key = cursor.key;
             img.onclick = e => {
                 svgKey = Number(e.target.dataset.key);
-                let svgcode = document.getElementById('svgcode');
-                svgcode.value = drawing.content;
+                currentSvg = drawing.content;
                 codeToImg();
                 openView('editor');
             };
-            newList.prepend(img);
+            list.prepend(img);
             cursor.continue();
         }
     };
@@ -47,22 +46,15 @@ request.onsuccess = e => {
     updateList(db);
 };
 
-let svg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-    width="1024" height="1024" viewBox="0 0 1024 1024">
-    <rect width="100%" height="100%" fill="#fff" />
-    <circle cx="512" cy="512" r="256" fill="#000" />
-</svg>`;
-
-let svgimg = document.getElementById('svgimg');
-let svgcode = document.getElementById('svgcode');
-svgcode.value = svg;
-
 let codeToImg = () => {
-    svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(svgcode.value);
+    let svgimg = document.getElementById('svgimg');
+    let svgcode = document.getElementById('svgcode');
+    svgcode.value = currentSvg;
+    svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
 };
+codeToImg();
 
-window.saveSource = () => {
-    codeToImg();
+let saveSvg = () => {
     let request = indexedDB.open(dbName, dbVersion);
     request.onsuccess = e => {
         let db = e.target.result;
@@ -71,26 +63,38 @@ window.saveSource = () => {
         if (svgKey) {
             objectStore.put({
                 name: "Untitled",
-                content: svgcode.value
+                content: currentSvg
             }, svgKey);
         } else {
             let addRequest = objectStore.add({
                 name: "Untitled",
-                content: svgcode.value
+                content: currentSvg
             });
             addRequest.onsuccess = e => {
                 svgKey = addRequest.result;
             };
         }
     };
+};
+
+window.applySource = () => {
+    let svgcode = document.getElementById('svgcode');
+    currentSvg = svgcode.value;
+    codeToImg();
+    saveSvg();
     openView('editor');
 };
-codeToImg();
+
+window.discardSource = () => {
+    codeToImg();
+    openView('editor');
+};
 
 window.newSvg = e => {
     svgKey = undefined;
-    svgcode.value = svg;
+    currentSvg = defaultSvg;
     codeToImg();
+    saveSvg();
     openView('editor');
 };
 
@@ -105,7 +109,7 @@ window.openGallery = e => {
 
 window.exportSvg = e => {
     let a = document.createElement('a');
-    a.href = 'data:image/svg+xml,' + encodeURIComponent(svgcode.value);
+    a.href = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
     a.download = 'drawing.svg';
     a.click();
 };
@@ -118,7 +122,9 @@ window.importSvg = e => {
         let file = input.files[0];
         let reader = new FileReader();
         reader.onload = e => {
-            svgcode.value = reader.result;
+            svgKey = undefined;
+            currentSvg = reader.result;
+            saveSvg();
             codeToImg();
             openView('editor');
         };
