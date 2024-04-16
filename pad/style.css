@@ -42,3 +42,9 @@ button {
 button:hover, button:focus, button:active {
     background-color: #222;
 }
+
+#list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, clamp(64px, 240px, calc(50% - 0.5rem)));
+    grid-gap: 0.5rem;
+}
