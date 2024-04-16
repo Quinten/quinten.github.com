@@ -111,11 +111,27 @@ let openEditor = () => {
     gallery.style.display = 'none';
 };
 
-window.downloadSvg = e => {
+window.exportSvg = e => {
     let a = document.createElement('a');
     a.href = 'data:image/svg+xml,' + encodeURIComponent(svgcode.value);
     a.download = 'drawing.svg';
     a.click();
+};
+
+window.importSvg = e => {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.svg';
+    input.onchange = e => {
+        let file = input.files[0];
+        let reader = new FileReader();
+        reader.onload = e => {
+            svgcode.value = reader.result;
+            codeToImg();
+        };
+        reader.readAsText(file);
+    };
+    input.click();
 };
 
 })();
