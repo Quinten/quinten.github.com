@@ -5,13 +5,30 @@ body, html {
 }
 
 .view {
-    margin-top: 3.5rem;
-    overflow-y: auto;
+    overflow: hidden;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     top: 0;
+}
+
+nav {
+    padding: 0.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.inner-view {
+    overflow-y: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 3.5rem;    
 }
 
 * {
@@ -27,15 +44,6 @@ body, html {
 
 *:focus {
     outline: none;
-}
-
-nav {
-    padding: 0.5rem;
-    position: fixed;
-    z-index: 100;
-    top: 0;
-    left: 0;
-    width: 100%;
 }
 
 img {

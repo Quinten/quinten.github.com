@@ -15,7 +15,7 @@
                 <button onclick="newSvg()">new</button>
                 <button onclick="importSvg()">import</button>
             </nav>
-            <div id="list"></div>
+            <div id="list" class="inner-view"></div>
         </div>
         <div class="view" id="editor" style="display: none;">
             <nav>
@@ -24,7 +24,7 @@
                 <button onclick="openView('source')">code</button>
                 <button onclick="exportSvg()">export</button>
             </nav>
-            <div>
+            <div class="inner-view">
                 <img
                     id="svgimg"
                     width="1024"
@@ -38,7 +38,9 @@
                 <button onclick="applySource()">apply</button>
                 <button onclick="discardSource()">discard</button>
             </nav>
-            <textarea id="svgcode"></textarea>
+            <div class="inner-view">
+                <textarea id="svgcode"></textarea>
+            </div> 
         </div>
         <script src="index.js"></script>
     </body>
