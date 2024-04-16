@@ -1,12 +1,17 @@
 body, html {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .view {
     margin-top: 3.5rem;
-    height: calc(100vh - 3.5rem);
     overflow-y: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
 }
 
 * {
@@ -44,11 +49,12 @@ textarea {
     padding: .5em 1em;
     resize: none;
     width: 100%;
-    height: calc(100vh - 3.5rem);
+    height: 100%;
 }
 
 button {
     background-color: #000;
+    cursor: pointer;
     padding: .5em 1em;
 }
 
