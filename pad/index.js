@@ -35,9 +35,9 @@ let updateList = db => {
                 let svgcode = document.getElementById('svgcode');
                 svgcode.value = drawing.content;
                 codeToImg();
-                openEditor();
+                openView('editor');
             };
-            newList.appendChild(img);
+            newList.prepend(img);
             cursor.continue();
         }
     };
@@ -56,12 +56,12 @@ let svg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
 let svgimg = document.getElementById('svgimg');
 let svgcode = document.getElementById('svgcode');
 svgcode.value = svg;
+
 let codeToImg = () => {
     svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(svgcode.value);
 };
-let form = document.getElementById('codeform');
-form.addEventListener('submit', e => {
-    e.preventDefault();
+
+window.saveSource = () => {
     codeToImg();
     let request = indexedDB.open(dbName, dbVersion);
     request.onsuccess = e => {
@@ -83,33 +83,24 @@ form.addEventListener('submit', e => {
             };
         }
     };
-});
+    openView('editor');
+};
 codeToImg();
 
 window.newSvg = e => {
     svgKey = undefined;
     svgcode.value = svg;
     codeToImg();
-    openEditor();
+    openView('editor');
 };
 
 window.openGallery = e => {
-    let editor = document.getElementById('editor');
-    let gallery = document.getElementById('gallery');
-    editor.style.display = 'none';
-    gallery.style.display = 'block';
     let request = indexedDB.open(dbName, dbVersion);
     request.onsuccess = e => {
         let db = e.target.result;
         updateList(db);
     };
-};
-
-let openEditor = () => {
-    let editor = document.getElementById('editor');
-    let gallery = document.getElementById('gallery');
-    editor.style.display = 'block';
-    gallery.style.display = 'none';
+    openView('gallery');
 };
 
 window.exportSvg = e => {
@@ -129,10 +120,20 @@ window.importSvg = e => {
         reader.onload = e => {
             svgcode.value = reader.result;
             codeToImg();
+            openView('editor');
         };
         reader.readAsText(file);
     };
     input.click();
+};
+
+window.openView = view => {
+    let views = document.getElementsByClassName('view');
+    for (let i = 0; i < views.length; i++) {
+        views[i].style.display = 'none';
+    }
+    let viewToShow = document.getElementById(view);
+    viewToShow.style.display = 'block';
 };
 
 })();

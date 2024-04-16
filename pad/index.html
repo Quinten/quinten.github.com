@@ -10,15 +10,17 @@
         <link href="style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div id="gallery">
+        <div class="view" id="gallery">
             <nav>
-                <button type="button" onclick="newSvg()">new</button>
+                <button onclick="newSvg()">new</button>
+                <button onclick="importSvg()">import</button>
             </nav>
             <div id="list"></div>
         </div>
-        <div id="editor" style="display: none;">
+        <div class="view" id="editor" style="display: none;">
             <nav>
-                <button type="button" onclick="openGallery()">gallery</button>
+                <button onclick="openGallery()">gallery</button>
+                <button onclick="openView('source')">source</button>
             </nav>
             <div>
                 <img
@@ -28,14 +30,15 @@
                     src=""
                 />
             </div>
-            <form id="codeform">
+        </div>
+        <div class="view" id="source" style="display: none;">
+            <nav>
+                <button onclick="saveSource()">save</button>
+                <button onclick="exportSvg()">export</button>
+            </nav>
+            <div>
                 <textarea id="svgcode"></textarea>
-                <div>
-                    <button type="submit">save</button>
-                    <button type="button" onclick="exportSvg()">export</button>
-                    <button type="button" onclick="importSvg()">import</button>
-                </div>
-            </form>
+            </div>
         </div>
         <script src="index.js"></script>
     </body>
