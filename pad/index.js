@@ -11,25 +11,15 @@ request.onupgradeneeded = e => {
     let objectStore = db.createObjectStore("drawings", { autoIncrement: true });
     objectStore.createIndex("name", "name", { unique: false });
     objectStore.createIndex("content", "content", { unique: false });
-    objectStore.transaction.oncomplete = e => {
-/*        let drawingObjectStore = db*/
-            /*.transaction("drawings", "readwrite")*/
-            /*.objectStore("drawings");*/
-        /*drawingObjectStore.add({*/
-            /*name: "Untitled",*/
-            /*content: `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"*/
-                /*width="1024" height="1024" viewBox="0 0 1024 1024">*/
-                /*<rect width="100%" height="100%" fill="#fff" />*/
-                /*<circle cx="512" cy="512" r="256" fill="#000" />*/
-            /*</svg>`*/
-        /*});*/
-    };
+    //objectStore.transaction.oncomplete = e => {};
 };
-request.onsuccess = e => {
-    let db = e.target.result;
+let updateList = db => {
     let transaction = db.transaction("drawings", "readwrite");
     let objectStore = transaction.objectStore("drawings");
-    let gallery = document.getElementById('gallery');
+    let list = document.getElementById('list');
+    let newList = document.createElement('div');
+    list.parentNode.replaceChild(newList, list);
+    newList.id = 'list';
     objectStore.openCursor().onsuccess = e => {
         let cursor = e.target.result;
         if (cursor) {
@@ -45,10 +35,14 @@ request.onsuccess = e => {
                 codeToImg();
                 openEditor();
             };
-            gallery.appendChild(img);
+            newList.appendChild(img);
             cursor.continue();
         }
     };
+};
+request.onsuccess = e => {
+    let db = e.target.result;
+    updateList(db);
 };
 
 let svg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -102,6 +96,11 @@ window.openGallery = e => {
     let gallery = document.getElementById('gallery');
     editor.style.display = 'none';
     gallery.style.display = 'block';
+    let request = indexedDB.open(dbName, 1);
+    request.onsuccess = e => {
+        let db = e.target.result;
+        updateList(db);
+    };
 };
 
 let openEditor = () => {
