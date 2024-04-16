@@ -3,7 +3,8 @@
 let svgKey = undefined;
 
 let dbName = "pad";
-let request = indexedDB.open(dbName, 1);
+let dbVersion = 1;
+let request = indexedDB.open(dbName, dbVersion);
 request.onerror = e => {};
 request.onupgradeneeded = e => {
     // v1
@@ -62,7 +63,7 @@ let form = document.getElementById('codeform');
 form.addEventListener('submit', e => {
     e.preventDefault();
     codeToImg();
-    let request = indexedDB.open(dbName, 1);
+    let request = indexedDB.open(dbName, dbVersion);
     request.onsuccess = e => {
         let db = e.target.result;
         let transaction = db.transaction("drawings", "readwrite");
@@ -97,7 +98,7 @@ window.openGallery = e => {
     let gallery = document.getElementById('gallery');
     editor.style.display = 'none';
     gallery.style.display = 'block';
-    let request = indexedDB.open(dbName, 1);
+    let request = indexedDB.open(dbName, dbVersion);
     request.onsuccess = e => {
         let db = e.target.result;
         updateList(db);
