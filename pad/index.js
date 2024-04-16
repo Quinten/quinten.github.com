@@ -28,8 +28,9 @@ let updateList = db => {
             img.src = 'data:image/svg+xml,' + encodeURIComponent(drawing.content);
             img.setAttribute('width', '128');
             img.setAttribute('height', '128');
+            img.dataset.key = cursor.key;
             img.onclick = e => {
-                svgKey = cursor.key;
+                svgKey = Number(e.target.dataset.key);
                 let svgcode = document.getElementById('svgcode');
                 svgcode.value = drawing.content;
                 codeToImg();
