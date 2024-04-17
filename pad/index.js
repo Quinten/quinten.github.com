@@ -158,10 +158,10 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     };
     updatePosition(0, 0);
     let zoom = 1;
+    let lastWidth = inner.clientWidth;
     let updateScale = scale => {
-        let w = inner.clientWidth;
         inner.style.width = (window.innerWidth * zoom * scale) + 'px';
-        return inner.clientWidth - w;
+        return inner.clientWidth - lastWidth;
     };
 
     let touchId1 = undefined;
@@ -182,7 +182,8 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             touch2 = touches[1];
             lastX = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
             lastY = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
-            lastScale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);   
+            lastScale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);
+            lastWidth = inner.clientWidth;
         }
     });
     container.addEventListener('touchmove', e => {
@@ -197,15 +198,13 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                     touch2 = touch;
                 }
             }
-            let x = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
-            let y = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
-            let dX = x - lastX;
-            let dY = y - lastY;
             let scale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);
             let dScale = scale / lastScale;
             let dW = updateScale(dScale);
-            dX -= dW / 2;
-            dY -= dW / 2;
+            let x = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
+            let y = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
+            let dX = x - lastX - dW / 2;
+            let dY = y - lastY - dW / 2;
             updatePosition(dX, dY);
         }
     });
