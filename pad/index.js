@@ -135,6 +135,8 @@ window.importSvg = e => {
     input.click();
 };
 
+window.onViewOpen = e => {};
+
 window.openView = view => {
     let views = document.getElementsByClassName('view');
     for (let i = 0; i < views.length; i++) {
@@ -142,6 +144,7 @@ window.openView = view => {
     }
     let viewToShow = document.getElementById(view);
     viewToShow.style.display = 'block';
+    window.onViewOpen({view});
 };
 
 document.querySelectorAll('.custom-touch').forEach(container => {
@@ -162,6 +165,19 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     let updateScale = scale => {
         inner.style.width = (window.innerWidth * zoom * scale) + 'px';
         return inner.clientWidth - lastWidth;
+    };
+    updateScale(1);
+
+    let oldOnViewOpen = window.onViewOpen;
+    window.onViewOpen = e => {
+        oldOnViewOpen(e);
+        if (e.view === 'editor') {
+            left = 0;
+            top = 0;
+            updatePosition(0, 0);
+            zoom = 1;
+            updateScale(1);
+        }
     };
 
     let touchId1 = undefined;
