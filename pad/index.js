@@ -181,9 +181,6 @@ document.querySelectorAll('.custom-touch').forEach(container => {
 
     container.addEventListener('touchstart', e => {
         e.preventDefault();
-        if (e.target !== e.currentTarget) {
-            return;
-        }
         let touches = e.touches;
         if (touches.length > 1 && touchId1 === undefined && touchId2 === undefined) {
             touchId1 = touches[0].identifier;
@@ -199,9 +196,6 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     });
     container.addEventListener('touchmove', e => {
         e.preventDefault();
-        if (e.target !== e.currentTarget) {
-            return;
-        }
         let touches = e.touches;
         if (touches.length > 1 && touchId1 !== undefined && touchId2 !== undefined) {
             for (let i = 0; i < touches.length; i++) {
@@ -229,9 +223,6 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     });
     container.addEventListener('touchend', e => {
         e.preventDefault();
-        if (e.target !== e.currentTarget) {
-            return;
-        }
         let touches = e.chengedTouches;
         for (let i = 0; i < touches.length; i++) {
             let touch = touches[i];
