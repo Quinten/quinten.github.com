@@ -153,10 +153,8 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     let top = 0;
     let left = 0;
     let updatePosition = (x, y) => {
-        top = y;
-        left = x;
-        inner.style.top = top + 'px';
-        inner.style.left = left + 'px';
+        inner.style.top = (top + x) + 'px';
+        inner.style.left = (left + y) + 'px';
     };
     let zoom = 1;
     let width = window.innerWidth;
@@ -187,11 +185,9 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             touchId2 = touches[1].identifier;
             touch1 = touches[0];
             touch2 = touches[1];
-            lastX = (touch1.clientX + touch2.clientX) / 2;
-            lastY = (touch1.clientY + touch2.clientY) / 2;
+            lastX = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
+            lastY = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
             lastScale = zoom;
-            lastDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-            lastCenter = { x: lastX, y: lastY };
         }
     });
     container.addEventListener('touchmove', e => {
@@ -206,19 +202,11 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                     touch2 = touch;
                 }
             }
-            let x = (touch1.clientX + touch2.clientX) / 2;
-            let y = (touch1.clientY + touch2.clientY) / 2;
-            let distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-            let center = { x: x, y: y };
-            let scale = lastScale * distance / lastDistance;
-            updateScale(scale);
-            let dx = center.x - lastCenter.x;
-            let dy = center.y - lastCenter.y;
-            updatePosition(left + dx, top + dy);
-            lastX = x;
-            lastY = y;
-            lastDistance = distance;
-            lastCenter = center;
+            let x = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
+            let y = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
+            let dX = x - lastX;
+            let dY = y - lastY;
+            updatePosition(dX, dY);
         }
     });
     container.addEventListener('touchend', e => {
@@ -229,6 +217,8 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             if (touch.identifier === touchId1 || touch.identifier === touchId2) {
                 touchId1 = undefined;
                 touchId2 = undefined;
+                top = Number(inner.style.top.replace('px', ''));
+                left = Number(inner.style.left.replace('px', ''));
             }
         }
     });
