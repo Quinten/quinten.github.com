@@ -63,23 +63,28 @@ svg * {
 }
 
 @keyframes dash {
+    0% {
+        stroke-dashoffset: 0;
+        stroke: #0ff;
+    }
     50% {
         stroke-dashoffset: 12;
-        stroke: #000;
+        stroke: #f0f;
     }
     100% {
         stroke-dashoffset: 24;
-        stroke: #fff;
+        stroke: #0ff;
     }
 }
 
 #svgcursors svg * {
     fill: none !important;
-    stroke: #fff;
+    stroke: #0ff;
     stroke-dashoffset: 0;
-    stroke-width: 3;
+    stroke-width: 4;
     stroke-dasharray: 12;
-    animation: dash 1s linear infinite;
+    vector-effect: non-scaling-stroke;
+    animation: dash 2s linear infinite;
 }
 
 

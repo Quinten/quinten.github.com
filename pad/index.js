@@ -1,5 +1,4 @@
 (function() {
-
 // start
 
 let svgKey = undefined;
@@ -51,11 +50,25 @@ request.onsuccess = e => {
 let codeToImg = () => {
     let svgimg = document.getElementById('svgimg');
     let svgcode = document.getElementById('svgcode');
+    currentSvg = currentSvg.replace(/<\?[^>]*\?>/g, '');
     svgcode.value = currentSvg;
     //svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
     svgimg.innerHTML = currentSvg;
+    let cursorsvg = document.getElementById('svgcursors').querySelector('svg');
+    let imgsvg = svgimg.querySelector('svg');
+    let width = imgsvg.getAttribute('width');
+    let height = imgsvg.getAttribute('height');
+    let viewBox = imgsvg.getAttribute('viewBox');
+    if (width) {
+        cursorsvg.setAttribute('width', width);
+    }
+    if (height) {
+        cursorsvg.setAttribute('height', height);
+    }
+    if (viewBox) {
+        cursorsvg.setAttribute('viewBox', viewBox);
+    }
 };
-codeToImg();
 
 let saveSvg = () => {
     let request = indexedDB.open(dbName, dbVersion);
@@ -80,18 +93,7 @@ let saveSvg = () => {
     };
 };
 
-window.applySource = () => {
-    let svgcode = document.getElementById('svgcode');
-    currentSvg = svgcode.value;
-    codeToImg();
-    saveSvg();
-    openView('editor');
-};
-
-window.discardSource = () => {
-    codeToImg();
-    openView('editor');
-};
+// button actions
 
 window.newSvg = e => {
     svgKey = undefined;
@@ -99,22 +101,6 @@ window.newSvg = e => {
     codeToImg();
     saveSvg();
     openView('editor');
-};
-
-window.openGallery = e => {
-    let request = indexedDB.open(dbName, dbVersion);
-    request.onsuccess = e => {
-        let db = e.target.result;
-        updateList(db);
-    };
-    openView('gallery');
-};
-
-window.exportSvg = e => {
-    let a = document.createElement('a');
-    a.href = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
-    a.download = 'drawing.svg';
-    a.click();
 };
 
 window.importSvg = e => {
@@ -136,6 +122,35 @@ window.importSvg = e => {
     input.click();
 };
 
+window.openGallery = e => {
+    let request = indexedDB.open(dbName, dbVersion);
+    request.onsuccess = e => {
+        let db = e.target.result;
+        updateList(db);
+        openView('gallery');
+    };
+};
+
+window.exportSvg = e => {
+    let a = document.createElement('a');
+    a.href = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
+    a.download = 'drawing.svg';
+    a.click();
+};
+
+window.applySource = () => {
+    let svgcode = document.getElementById('svgcode');
+    currentSvg = svgcode.value;
+    codeToImg();
+    saveSvg();
+    openView('editor');
+};
+
+window.discardSource = () => {
+    codeToImg();
+    openView('editor');
+};
+
 window.onViewOpen = e => {};
 
 window.openView = view => {
@@ -150,12 +165,50 @@ window.openView = view => {
 
 let selectedElements = [];
 let selectedCursors = [];
+let deselectAllElements = () => {
+    while (selectedElements.length > 0) {
+        selectedElements.pop();
+        selectedCursors.pop().remove();
+    }
+};
+let selectElement = el => {
+    let svgcursors = document.getElementById('svgcursors').querySelector('svg');
+    if (el.closest('#svgimg')) {
+        if (selectedElements.includes(el)) {
+            let i = selectedElements.indexOf(el);
+            selectedElements.splice(i, 1);
+            selectedCursors[i].remove();
+            selectedCursors.splice(i, 1);
+        } else {
+            selectedElements.push(el);
+            let cursor = el.cloneNode(true);
+            svgcursors.appendChild(cursor);
+            selectedCursors.push(cursor);
+        }
+    } else {
+        deselectAllElements();
+    }
+};
 
 document.querySelectorAll('.custom-touch').forEach(container => {
 
+    let handleTaps = e => {
+        nTaps++;
+        if (nTaps === 1) {
+            setTimeout(() => {
+                if (nTaps === 1) {
+                }
+                if (nTaps === 2) {
+                    let el = e.target;
+                    selectElement(el);
+                }
+                nTaps = 0;
+            }, 300);
+        }
+    };
+
     // two finger panning and pinch zooming
 
-    // absolute positioned child
     let inner = container.querySelector('.custom-touch-inner');
     let left = 0;
     let top = 0;
@@ -181,6 +234,8 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             updatePosition(0, 0);
             zoom = 1;
             updateScale(1);
+        } else {
+            deselectAllElements();
         }
     };
 
@@ -208,44 +263,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             lastWidth = inner.clientWidth;
         }
         if (touches.length === 1) {
-            nTaps++;
-            if (nTaps === 1) {
-                setTimeout(() => {
-                    if (nTaps === 1) {
-                    }
-                    if (nTaps === 2) {
-                        let el = e.target;
-                        let svgcursors = document.getElementById('svgcursors').querySelector('svg');
-                        if (el.closest('#svgimg')) {
-                            /*
-                            if (el.classList.contains('touch-selected')) {
-                                el.classList.remove('touch-selected');
-                            } else {
-                                el.classList.add('touch-selected');
-                            }
-                            */
-                            if (selectedElements.includes(el)) {
-                                let i = selectedElements.indexOf(el);
-                                selectedElements.splice(i, 1);
-                                selectedCursors[i].remove();
-                                selectedCursors.splice(i, 1);
-                            } else {
-                                selectedElements.push(el);
-                                let cursor = el.cloneNode(true);
-                                svgcursors.appendChild(cursor);
-                                selectedCursors.push(cursor);
-                            }
-                        } else {
-                            /*
-                            document.querySelectorAll('.touch-selected').forEach(ts => {
-                                ts.classList.remove('touch-selected');
-                            });
-                            */
-                        }
-                    }
-                    nTaps = 0;
-                }, 300);
-            }
+            handleTaps(e);  
         }
     });
     container.addEventListener('touchmove', e => {
@@ -278,10 +296,84 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             if (touch.identifier === touchId1 || touch.identifier === touchId2) {
                 touchId1 = undefined;
                 touchId2 = undefined;
-                top = Number(inner.style.top.replace('px', ''));
                 left = Number(inner.style.left.replace('px', ''));
+                top = Number(inner.style.top.replace('px', ''));
                 zoom = inner.clientWidth / window.innerWidth;
             }
+        }
+    });
+
+    // desktop
+    let spaceDown = false;
+    let panStarted = false;
+    window.addEventListener('keydown', e => {
+        if (e.keyCode === 32) {
+            spaceDown = true;
+            container.style.cursor = 'grab';
+        }
+    });
+    window.addEventListener('keyup', e => {
+        if (e.keyCode === 32) {
+            spaceDown = false;
+            container.style.cursor = 'auto';
+        }
+    });
+    container.addEventListener('mousedown', e => {
+        e.preventDefault();
+        if (spaceDown) {
+            lastX = e.screenX;
+            lastY = e.screenY;
+            panStarted = true;
+            container.style.cursor = 'grabbing';
+        } else {
+            handleTaps(e);
+        }
+    });
+    container.addEventListener('mousemove', e => {
+        e.preventDefault();
+        if (spaceDown && panStarted) {
+            let dX = e.screenX - lastX;
+            let dY = e.screenY - lastY;
+            updatePosition(dX, dY);
+        }
+    });
+    container.addEventListener('mouseup', e => {
+        e.preventDefault();
+        if (panStarted) {
+            top = Number(inner.style.top.replace('px', ''));
+            left = Number(inner.style.left.replace('px', ''));
+            panStarted = false;
+            container.style.cursor = spaceDown ? 'grab' : 'auto';
+        }
+    });
+    container.addEventListener('mouseleave', e => {
+        e.preventDefault();
+        if (panStarted) {
+            top = Number(inner.style.top.replace('px', ''));
+            left = Number(inner.style.left.replace('px', ''));
+            panStarted = false;
+            container.style.cursor = spaceDown ? 'grab' : 'auto';
+        }
+    });
+    let wheelTO = undefined;
+    container.addEventListener('wheel', e => {
+        e.preventDefault();
+        if (e.ctrlKey) {
+            if (wheelTO) {
+                clearTimeout(wheelTO);
+            } else {
+                lastScale = 1;
+                lastWidth = inner.clientWidth;
+            }
+            lastScale -= e.deltaY / 100;
+            let dW = updateScale(lastScale);
+            updatePosition(-dW / 2, -dW / 2);
+            wheelTO = setTimeout(() => {
+                left = Number(inner.style.left.replace('px', ''));
+                top = Number(inner.style.top.replace('px', ''));
+                zoom = inner.clientWidth / window.innerWidth;
+                wheelTO = undefined;
+            }, 100);
         }
     });
 });
