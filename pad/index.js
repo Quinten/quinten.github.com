@@ -1,5 +1,7 @@
 (function() {
 
+// start
+
 let svgKey = undefined;
 let defaultSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
     width="1024" height="1024" viewBox="0 0 1024 1024">
@@ -142,4 +144,74 @@ window.openView = view => {
     viewToShow.style.display = 'block';
 };
 
+document.querySelectorAll('.custom-touch').forEach(container => {
+
+    // two finger panning and pinch zooming
+
+    // absolute positioned child
+    let inner = container.querySelector('.custom-touch-inner');
+    let top = 0;
+    let left = 0;
+    let updatePosition = (x, y) => {
+        top = y;
+        left = x;
+        inner.style.top = top + 'px';
+        inner.style.left = left + 'px';
+    };
+    let zoom = 1;
+    let width = window.innerWidth;
+    let updateScale = scale => {
+        zoom = scale;
+        width = window.innerWidth * zoom;
+        inner.style.width = width + 'px';
+    };
+
+    let touch1 = undefined;
+    let touch2 = undefined;
+    let distance = undefined;
+    let center = undefined;
+    let scale = undefined;
+    let lastScale = undefined;
+    let lastX = undefined;
+    let lastY = undefined;
+    let lastDistance = undefined;
+    let lastCenter = undefined;
+
+    container.addEventListener('touchstart', e => {
+        e.preventDefault();
+        let touches = e.touches;
+        if (touches.length > 1) {
+            touch1 = touches[0];
+            touch2 = touches[1];
+            lastX = (touch1.clientX + touch2.clientX) / 2;
+            lastY = (touch1.clientY + touch2.clientY) / 2;
+            lastScale = zoom;
+            lastDistance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            lastCenter = { x: lastX, y: lastY };
+        }
+    });
+    container.addEventListener('touchmove', e => {
+        e.preventDefault();
+        let touches = e.touches;
+        if (touches.length > 1) {
+            touch1 = touches[0];
+            touch2 = touches[1];
+            let x = (touch1.clientX + touch2.clientX) / 2;
+            let y = (touch1.clientY + touch2.clientY) / 2;
+            let distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            let center = { x: x, y: y };
+            let scale = lastScale * distance / lastDistance;
+            updateScale(scale);
+            let dx = center.x - lastCenter.x;
+            let dy = center.y - lastCenter.y;
+            updatePosition(left + dx, top + dy);
+            lastX = x;
+            lastY = y;
+            lastDistance = distance;
+            lastCenter = center;
+        }
+    });
+});
+
+// end
 })();

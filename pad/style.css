@@ -34,6 +34,11 @@ nav {
 .custom-touch {
     touch-action: none;
     user-select: none;
+    overflow: hidden;
+}
+
+.custum-touch-inner {
+    position: absolute;
 }
 
 * {
