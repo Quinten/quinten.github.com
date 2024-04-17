@@ -223,12 +223,11 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     });
     container.addEventListener('touchend', e => {
         e.preventDefault();
-        let touches = e.chengedTouches;
+        let touches = e.changedTouches;
         for (let i = 0; i < touches.length; i++) {
             let touch = touches[i];
-            if (touch.identifier === touchId1) {
+            if (touch.identifier === touchId1 || touch.identifier === touchId2) {
                 touchId1 = undefined;
-            } else if (touch.identifier === touchId2) {
                 touchId2 = undefined;
             }
         }
