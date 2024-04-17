@@ -31,6 +31,11 @@ nav {
     top: 3.5rem;    
 }
 
+.custom-touch {
+    touch-action: none;
+    user-select: none;
+}
+
 * {
     background-color: #333;
     border: 0;
