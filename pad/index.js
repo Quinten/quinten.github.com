@@ -52,7 +52,8 @@ let codeToImg = () => {
     let svgimg = document.getElementById('svgimg');
     let svgcode = document.getElementById('svgcode');
     svgcode.value = currentSvg;
-    svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
+    //svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
+    svgimg.innerHTML = currentSvg;
 };
 codeToImg();
 
@@ -147,6 +148,9 @@ window.openView = view => {
     window.onViewOpen({view});
 };
 
+let selectedElements = [];
+let selectedCursors = [];
+
 document.querySelectorAll('.custom-touch').forEach(container => {
 
     // two finger panning and pinch zooming
@@ -188,6 +192,8 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     let lastY = undefined;
     let lastScale = undefined;
 
+    let nTaps = 0;
+
     container.addEventListener('touchstart', e => {
         e.preventDefault();
         let touches = e.touches;
@@ -200,6 +206,46 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             lastY = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
             lastScale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);
             lastWidth = inner.clientWidth;
+        }
+        if (touches.length === 1) {
+            nTaps++;
+            if (nTaps === 1) {
+                setTimeout(() => {
+                    if (nTaps === 1) {
+                    }
+                    if (nTaps === 2) {
+                        let el = e.target;
+                        let svgcursors = document.getElementById('svgcursors').querySelector('svg');
+                        if (el.closest('#svgimg')) {
+                            /*
+                            if (el.classList.contains('touch-selected')) {
+                                el.classList.remove('touch-selected');
+                            } else {
+                                el.classList.add('touch-selected');
+                            }
+                            */
+                            if (selectedElements.includes(el)) {
+                                let i = selectedElements.indexOf(el);
+                                selectedElements.splice(i, 1);
+                                selectedCursors[i].remove();
+                                selectedCursors.splice(i, 1);
+                            } else {
+                                selectedElements.push(el);
+                                let cursor = el.cloneNode(true);
+                                svgcursors.appendChild(cursor);
+                                selectedCursors.push(cursor);
+                            }
+                        } else {
+                            /*
+                            document.querySelectorAll('.touch-selected').forEach(ts => {
+                                ts.classList.remove('touch-selected');
+                            });
+                            */
+                        }
+                    }
+                    nTaps = 0;
+                }, 300);
+            }
         }
     });
     container.addEventListener('touchmove', e => {

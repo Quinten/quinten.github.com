@@ -47,6 +47,49 @@ nav {
     position: absolute;
 }
 
+.touch-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-color: transparent;
+}
+
+svg,
+svg * {
+    background-color: transparent;
+}
+
+@keyframes dash {
+    50% {
+        stroke-dashoffset: 12;
+        stroke: #000;
+    }
+    100% {
+        stroke-dashoffset: 24;
+        stroke: #fff;
+    }
+}
+
+#svgcursors svg * {
+    fill: none !important;
+    stroke: #fff;
+    stroke-dashoffset: 0;
+    stroke-width: 3;
+    stroke-dasharray: 12;
+    animation: dash 1s linear infinite;
+}
+
+
+#svgcursors svg,
+#svgimg svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 * {
     background-color: #333;
     border: 0;
