@@ -156,26 +156,21 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         inner.style.left = (left + x) + 'px';
         inner.style.top = (top + y) + 'px';
     };
+    updatePosition(0, 0);
     let zoom = 1;
-    let width = window.innerWidth;
     let updateScale = scale => {
-        zoom = scale;
-        width = window.innerWidth * zoom;
-        inner.style.width = width + 'px';
+        let w = inner.clientWidth;
+        inner.style.width = (window.innerWidth * zoom * scale) + 'px';
+        return inner.clientWidth - w;
     };
 
     let touchId1 = undefined;
     let touchId2 = undefined;
     let touch1 = undefined;
     let touch2 = undefined;
-    let distance = undefined;
-    let center = undefined;
-    let scale = undefined;
-    let lastScale = undefined;
     let lastX = undefined;
     let lastY = undefined;
-    let lastDistance = undefined;
-    let lastCenter = undefined;
+    let lastScale = undefined;
 
     container.addEventListener('touchstart', e => {
         e.preventDefault();
@@ -187,7 +182,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             touch2 = touches[1];
             lastX = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
             lastY = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
-            lastScale = zoom;
+            lastScale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);   
         }
     });
     container.addEventListener('touchmove', e => {
@@ -206,6 +201,11 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             let y = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
             let dX = x - lastX;
             let dY = y - lastY;
+            let scale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);
+            let dScale = scale / lastScale;
+            let dW = updateScale(dScale);
+            dX -= dW / 2;
+            dY -= dW / 2;
             updatePosition(dX, dY);
         }
     });
@@ -219,6 +219,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                 touchId2 = undefined;
                 top = Number(inner.style.top.replace('px', ''));
                 left = Number(inner.style.left.replace('px', ''));
+                zoom = inner.clientWidth / window.innerWidth;
             }
         }
     });
