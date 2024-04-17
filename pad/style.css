@@ -4,6 +4,12 @@ body, html {
     overflow: hidden;
 }
 
+.version {
+    padding: .5em 1em;
+    float: right;
+    color: #000;
+}
+
 .view {
     overflow: hidden;
     position: fixed;

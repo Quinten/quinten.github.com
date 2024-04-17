@@ -166,6 +166,8 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         inner.style.width = width + 'px';
     };
 
+    let touchId1 = undefined;
+    let touchId2 = undefined;
     let touch1 = undefined;
     let touch2 = undefined;
     let distance = undefined;
@@ -179,8 +181,13 @@ document.querySelectorAll('.custom-touch').forEach(container => {
 
     container.addEventListener('touchstart', e => {
         e.preventDefault();
+        if (e.target !== e.currentTarget) {
+            return;
+        }
         let touches = e.touches;
-        if (touches.length > 1) {
+        if (touches.length > 1 && touchId1 === undefined && touchId2 === undefined) {
+            touchId1 = touches[0].identifier;
+            touchId2 = touches[1].identifier;
             touch1 = touches[0];
             touch2 = touches[1];
             lastX = (touch1.clientX + touch2.clientX) / 2;
@@ -192,10 +199,19 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     });
     container.addEventListener('touchmove', e => {
         e.preventDefault();
+        if (e.target !== e.currentTarget) {
+            return;
+        }
         let touches = e.touches;
-        if (touches.length > 1) {
-            touch1 = touches[0];
-            touch2 = touches[1];
+        if (touches.length > 1 && touchId1 !== undefined && touchId2 !== undefined) {
+            for (let i = 0; i < touches.length; i++) {
+                let touch = touches[i];
+                if (touch.identifier === touchId1) {
+                    touch1 = touch;
+                } else if (touch.identifier === touchId2) {
+                    touch2 = touch;
+                }
+            }
             let x = (touch1.clientX + touch2.clientX) / 2;
             let y = (touch1.clientY + touch2.clientY) / 2;
             let distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
@@ -209,6 +225,21 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             lastY = y;
             lastDistance = distance;
             lastCenter = center;
+        }
+    });
+    container.addEventListener('touchend', e => {
+        e.preventDefault();
+        if (e.target !== e.currentTarget) {
+            return;
+        }
+        let touches = e.chengedTouches;
+        for (let i = 0; i < touches.length; i++) {
+            let touch = touches[i];
+            if (touch.identifier === touchId1) {
+                touchId1 = undefined;
+            } else if (touch.identifier === touchId2) {
+                touchId2 = undefined;
+            }
         }
     });
 });
