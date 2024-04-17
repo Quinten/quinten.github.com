@@ -150,11 +150,11 @@ document.querySelectorAll('.custom-touch').forEach(container => {
 
     // absolute positioned child
     let inner = container.querySelector('.custom-touch-inner');
-    let top = 0;
     let left = 0;
+    let top = 0;
     let updatePosition = (x, y) => {
-        inner.style.top = (top + x) + 'px';
-        inner.style.left = (left + y) + 'px';
+        inner.style.left = (left + x) + 'px';
+        inner.style.top = (top + y) + 'px';
     };
     let zoom = 1;
     let width = window.innerWidth;
