@@ -45,6 +45,11 @@ nav {
 
 .custom-touch-inner {
     position: absolute;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAJ0lEQVQoU2N89+7dfwYkICgoiMxlYKSDgv///6O44f3796huoL0CAPpyKx1ry0n4AAAAAElFTkSuQmCC') repeat top left;
+}
+
+.img-svg {
+    background-color: transparent;
 }
 
 .touch-svg {

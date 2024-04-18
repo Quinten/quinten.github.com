@@ -7,14 +7,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <link href="style.css?v1.0.8" rel="stylesheet" type="text/css">
+        <link href="style.css?v1.0.9" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="view" id="gallery">
             <nav>
                 <button onclick="newSvg()">new</button>
                 <button onclick="importSvg()">import</button>
-                <span class="version">v1.0.8</span>
+                <span class="version">v1.0.9</span>
             </nav>
             <div class="inner-view">
                 <div id="list"></div>
@@ -22,9 +22,10 @@
         </div>
         <div class="view" id="editor" style="display: none;">
             <nav>
-                <button onclick="openGallery()">list</button>
-                <button onclick="openView('source')">code</button>
-                <button onclick="exportSvg()">export</button>
+                <button onclick="openGallery()" class="default-action">list</button>
+                <button onclick="openSource()" class="default-action">code</button>
+                <button onclick="exportSvg()" class="default-action">export</button>
+                <button onclick="removeElements()" class="select-action" style="display: none;">rm</button>
             </nav>
             <div class="inner-view custom-touch">
                 <div class="custom-touch-inner">
@@ -32,7 +33,7 @@
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
                         </svg>
                     </div>
-                    <div id="svgimg"></div>
+                    <div id="svgimg" class="img-svg"></div>
                 </div>
             </div>
         </div>
@@ -45,6 +46,6 @@
                 <textarea id="svgcode"></textarea>
             </div> 
         </div>
-        <script src="index.js?v1.0.8"></script>
+        <script src="index.js?v1.0.9"></script>
     </body>
 </html>

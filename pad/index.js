@@ -8,6 +8,7 @@ let defaultSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
     <circle cx="512" cy="512" r="256" fill="#000" />
 </svg>`;
 let currentSvg = defaultSvg;
+let currentPad = undefined;
 
 let dbName = "pad";
 let dbVersion = 1;
@@ -70,7 +71,14 @@ let codeToImg = () => {
     }
 };
 
-let saveSvg = () => {
+let imgToCode = () => {
+    let svgimg = document.getElementById('svgimg');
+    let svgcode = document.getElementById('svgcode');
+    currentSvg = svgimg.innerHTML;
+    svgcode.value = currentSvg;
+};
+
+let saveSvg = callback => {
     let request = indexedDB.open(dbName, dbVersion);
     request.onsuccess = e => {
         let db = e.target.result;
@@ -89,6 +97,9 @@ let saveSvg = () => {
             addRequest.onsuccess = e => {
                 svgKey = addRequest.result;
             };
+        }
+        if (callback) {
+            callback();
         }
     };
 };
@@ -123,12 +134,22 @@ window.importSvg = e => {
 };
 
 window.openGallery = e => {
-    let request = indexedDB.open(dbName, dbVersion);
-    request.onsuccess = e => {
-        let db = e.target.result;
-        updateList(db);
-        openView('gallery');
-    };
+    imgToCode();
+    saveSvg(() => {
+        let request = indexedDB.open(dbName, dbVersion);
+        request.onsuccess = e => {
+            let db = e.target.result;
+            updateList(db);
+            openView('gallery');
+        };
+    });
+};
+
+window.openSource = () => {
+    imgToCode();
+    saveSvg(() => {
+        openView('source');
+    });
 };
 
 window.exportSvg = e => {
@@ -170,10 +191,16 @@ let deselectAllElements = () => {
         selectedElements.pop();
         selectedCursors.pop().remove();
     }
+    document.querySelectorAll('.select-action').forEach(el => {
+        el.style.display = 'none';
+    });
+    document.querySelectorAll('.default-action').forEach(el => {
+        el.style.display = 'inline-block';
+    });
 };
 let selectElement = el => {
     let svgcursors = document.getElementById('svgcursors').querySelector('svg');
-    if (el.closest('#svgimg')) {
+    if (el.closest('#svgimg') && el.tagName !== 'svg') {
         if (selectedElements.includes(el)) {
             let i = selectedElements.indexOf(el);
             selectedElements.splice(i, 1);
@@ -188,6 +215,21 @@ let selectElement = el => {
     } else {
         deselectAllElements();
     }
+    document.querySelectorAll('.select-action').forEach(el => {
+        el.style.display = selectedElements.length > 0 ? 'inline-block' : 'none';
+    });
+    document.querySelectorAll('.default-action').forEach(el => {
+        el.style.display = selectedElements.length > 0 ? 'none' : 'inline-block';
+    });
+};
+
+window.removeElements = () => {
+    selectedElements.forEach(el => {
+        el.remove();
+    });
+    deselectAllElements();
+    imgToCode();
+    saveSvg();
 };
 
 document.querySelectorAll('.custom-touch').forEach(container => {
@@ -196,11 +238,49 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         nTaps++;
         if (nTaps === 1) {
             setTimeout(() => {
+                let svgcursors = document.getElementById('svgcursors').querySelector('svg');
                 if (nTaps === 1) {
+                    if (selectedElements.length === 0) {
+                        let x = e.clientX;
+                        let y = e.clientY;
+                        let svgimg = document.getElementById('svgimg');
+                        let imgsvg = svgimg.querySelector('svg');
+                        let width = imgsvg.getAttribute('width');
+                        if (!width) {
+                            let viewBox = imgsvg.getAttribute('viewBox');
+                            if (viewBox) {
+                                width = viewBox.split(' ')[2];
+                            }
+                        }
+                        let offsetX = imgsvg.getBoundingClientRect().left;
+                        let offsetY = imgsvg.getBoundingClientRect().top;
+                        x -= offsetX;
+                        y -= offsetY;
+                        width = Number(width);
+                        let zoom = width / svgimg.clientWidth;
+                        x = x * zoom;
+                        y = y * zoom;
+                        if (currentPad === undefined) { 
+                            currentPad = "M " + x + " " + y;
+                            svgcursors.innerHTML = '<path d="' + currentPad + ' L ' + (x + 4) + ' ' + (y + 4) + ' Z" />';
+                        } else {
+                            currentPad += " L " + x + " " + y;
+                            svgcursors.innerHTML = '<path d="' + currentPad + ' Z" />';
+                        }
+                    }
                 }
                 if (nTaps === 2) {
-                    let el = e.target;
-                    selectElement(el);
+                    if (currentPad !== undefined) {
+                        currentPad += " Z";
+                        currentSvg = currentSvg.replace(/<\/svg>/, '<path d="' + currentPad + '" fill="#000" /></svg>');
+                        currentPad = undefined;
+                        codeToImg();
+                        saveSvg();
+                        svgcursors.innerHTML = '';
+                    } else {
+                        let el = e.target;
+                        selectElement(el);
+                    }
                 }
                 nTaps = 0;
             }, 300);
@@ -217,7 +297,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         inner.style.top = (top + y) + 'px';
     };
     updatePosition(0, 0);
-    let zoom = 1;
+    let zoom = inner.clientWidth / window.innerWidth;
     let lastWidth = inner.clientWidth;
     let updateScale = scale => {
         inner.style.width = (window.innerWidth * zoom * scale) + 'px';
