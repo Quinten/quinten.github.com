@@ -241,8 +241,15 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                 let svgcursors = document.getElementById('svgcursors').querySelector('svg');
                 if (nTaps === 1) {
                     if (selectedElements.length === 0) {
-                        let x = e.clientX;
-                        let y = e.clientY;
+                        let x = 0;
+                        let y = 0;
+                        if (e.touches) {
+                            x = e.touches[0].clientX;
+                            y = e.touches[0].clientY;
+                        } else {
+                            x = e.clientX;
+                            y = e.clientY;
+                        }
                         let svgimg = document.getElementById('svgimg');
                         let imgsvg = svgimg.querySelector('svg');
                         let width = imgsvg.getAttribute('width');
