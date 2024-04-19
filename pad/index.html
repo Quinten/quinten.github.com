@@ -26,6 +26,9 @@
                 <button onclick="openSource()" class="default-action">code</button>
                 <button onclick="exportSvg()" class="default-action">export</button>
                 <button onclick="removeElements()" class="select-action" style="display: none;">rm</button>
+                <input onchange="fillElements()" class="select-action" style="display: none;" type="color" id="fillcolor" value="#000000" />
+                <input onchange="strokeElements()" class="select-action" style="display: none;" type="color" id="strokecolor" value="#000000" />
+                <input onchange="strokeElements()" class="select-action" style="display: none;" type="number" min="0" max="99" step="1" id="strokewidth" value="1" />
             </nav>
             <div class="inner-view custom-touch">
                 <div class="custom-touch-inner">

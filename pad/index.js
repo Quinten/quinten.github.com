@@ -232,6 +232,32 @@ window.removeElements = () => {
     saveSvg();
 };
 
+window.fillElements = () => {
+    selectedElements.forEach(el => {
+        el.setAttribute('fill', document.getElementById('fillcolor').value);
+    });
+    imgToCode();
+    saveSvg();
+};
+
+window.strokeElements = () => {
+    let stroke = document.getElementById('strokecolor').value;
+    let width = document.getElementById('strokewidth').value;
+    if (width === '0') {
+        selectedElements.forEach(el => {
+            el.removeAttribute('stroke');
+            el.removeAttribute('stroke-width');
+        });
+    } else {
+        selectedElements.forEach(el => {
+            el.setAttribute('stroke', stroke);
+            el.setAttribute('stroke-width', width);
+        });
+    }
+    imgToCode();
+    saveSvg();
+};
+
 document.querySelectorAll('.custom-touch').forEach(container => {
 
     let handleTaps = e => {
@@ -279,7 +305,14 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                 if (nTaps === 2) {
                     if (currentPad !== undefined) {
                         currentPad += " Z";
-                        currentSvg = currentSvg.replace(/<\/svg>/, '<path d="' + currentPad + '" fill="#000" /></svg>');
+                        let fill = document.getElementById('fillcolor').value;
+                        let stroke = document.getElementById('strokecolor').value;
+                        let width = document.getElementById('strokewidth').value;
+                        if (width === '0') {
+                            currentSvg = currentSvg.replace(/<\/svg>/, '<path d="' + currentPad + '" fill="' + fill + '" /></svg>');
+                        } else {
+                            currentSvg = currentSvg.replace(/<\/svg>/, '<path d="' + currentPad + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + width + '" /></svg>');
+                        }
                         currentPad = undefined;
                         codeToImg();
                         saveSvg();
