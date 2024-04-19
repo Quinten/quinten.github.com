@@ -240,7 +240,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             setTimeout(() => {
                 let svgcursors = document.getElementById('svgcursors').querySelector('svg');
                 if (nTaps === 1) {
-                    if (selectedElements.length === 0) {
+                    if (selectedElements.length === 0 && (!e.touches || e.touches && e.touches.length === 1)) {
                         let x = 0;
                         let y = 0;
                         if (e.touches) {
