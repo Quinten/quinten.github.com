@@ -249,6 +249,60 @@ window.removeElements = () => {
     saveSvg();
 };
 
+window.raiseElements = () => {
+    let allElements = Array.from(document.getElementById('svgimg').querySelector('svg').children);
+    let highestSibling = allElements[0];
+    let moveUp = [...selectedElements];
+    moveUp.sort((a, b) => {
+        return allElements.indexOf(a) - allElements.indexOf(b);
+    });
+    highestSibling = allElements.reduce((acc, el) => {
+        if (moveUp.includes(el)) {
+            if (el.nextElementSibling && !moveUp.includes(el.nextElementSibling)) {
+                return el.nextElementSibling;
+            } else {
+                return el;
+            }
+        } else {
+            return acc;
+        }
+    }, highestSibling);
+    if (!moveUp.includes(highestSibling)) {
+        moveUp.reverse().forEach(el => {
+            highestSibling.after(el);
+        });
+    }
+    imgToCode();
+    saveSvg();
+};
+
+window.lowerElements = () => {
+    let allElements = Array.from(document.getElementById('svgimg').querySelector('svg').children);
+    let lowestSibling = allElements[allElements.length - 1];
+    let moveDown = [...selectedElements];
+    moveDown.sort((a, b) => {
+        return allElements.indexOf(b) - allElements.indexOf(a);
+    });
+    lowestSibling = allElements.reverse().reduce((acc, el) => {
+        if (moveDown.includes(el)) {
+            if (el.previousElementSibling && !moveDown.includes(el.previousElementSibling)) {
+                return el.previousElementSibling;
+            } else {
+                return el;
+            }
+        } else {
+            return acc;
+        }
+    }, lowestSibling);
+    if (!moveDown.includes(lowestSibling)) {
+        moveDown.reverse().forEach(el => {
+            lowestSibling.before(el);
+        });
+    }
+    imgToCode();
+    saveSvg();
+};
+
 window.fillElements = () => {
     selectedElements.forEach(el => {
         el.setAttribute('fill', document.getElementById('fillcolor').value);
