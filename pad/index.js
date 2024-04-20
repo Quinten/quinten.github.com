@@ -52,6 +52,9 @@ let codeToImg = () => {
     let svgimg = document.getElementById('svgimg');
     let svgcode = document.getElementById('svgcode');
     currentSvg = currentSvg.replace(/<\?[^>]*\?>/g, '');
+    // remove paths with only M and Z commands, and no L or C or S or Q or T commands, or any other
+    // alphabet letter commands
+    currentSvg = currentSvg.replace(/<path d="M[^A-Z]*Z"[^<]*(<\/path>|\/>){1}\s*/g, '');
     svgcode.value = currentSvg;
     //svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
     svgimg.innerHTML = currentSvg;
@@ -211,6 +214,20 @@ let selectElement = el => {
             let cursor = el.cloneNode(true);
             svgcursors.appendChild(cursor);
             selectedCursors.push(cursor);
+            if (selectedElements.length === 1) {
+                let fill = el.getAttribute('fill');
+                let stroke = el.getAttribute('stroke');
+                let width = el.getAttribute('stroke-width');
+                if (fill) {
+                    document.getElementById('fillcolor').value = fill;
+                }
+                if (stroke) {
+                    document.getElementById('strokecolor').value = stroke;
+                }
+                if (width) {
+                    document.getElementById('strokewidth').value = width;
+                }
+            }
         }
     } else {
         deselectAllElements();

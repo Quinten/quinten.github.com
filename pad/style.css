@@ -95,7 +95,6 @@ svg * {
     animation: dash 2s linear infinite;
 }
 
-
 #svgcursors svg,
 #svgimg svg {
     display: block;
@@ -133,14 +132,26 @@ textarea {
     height: 100%;
 }
 
+input[type="number"],
 button {
     background-color: #000;
     cursor: pointer;
     padding: .5em 1em;
 }
 
+input[type="number"]:hover, input[type="number"]:focus, input[type="number"]:active,
 button:hover, button:focus, button:active {
     background-color: #222;
+}
+
+input[type="color"] {
+    display: inline-block;
+    inline-size: 40px;
+    block-size: 40px;
+    padding: 0;
+    padding-inline: 0;
+    padding-block: 0;
+    vertical-align: middle;
 }
 
 #list {
