@@ -137,6 +137,8 @@ button {
     background-color: #000;
     cursor: pointer;
     padding: .5em 1em;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 input[type="number"]:hover, input[type="number"]:focus, input[type="number"]:active,
