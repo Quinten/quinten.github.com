@@ -9,6 +9,7 @@ let defaultSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
 let currentSvg = defaultSvg;
 let currentPad = undefined;
 
+// db module (scheme, list)
 let dbName = "pad";
 let dbVersion = 1;
 let request = indexedDB.open(dbName, dbVersion);
@@ -80,6 +81,7 @@ let imgToCode = () => {
     svgcode.value = currentSvg;
 };
 
+// db module Write
 let saveSvg = callback => {
     let request = indexedDB.open(dbName, dbVersion);
     request.onsuccess = e => {
@@ -135,6 +137,7 @@ window.importSvg = e => {
     input.click();
 };
 
+// db module (R read)
 window.openGallery = e => {
     imgToCode();
     saveSvg(() => {
