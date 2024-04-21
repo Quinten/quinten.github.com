@@ -1,52 +1,55 @@
-(function() {
-// start
+import {connect} from './filesDB.js';
 
 let svgKey = undefined;
-let defaultSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+let defaultSvg = `<svg
+    version="1.1" xmlns="http://www.w3.org/2000/svg"
     width="1024" height="1024" viewBox="0 0 1024 1024">
     <rect width="1024" height="1024" fill="#fff" />
 </svg>`;
 let currentSvg = defaultSvg;
 let currentPad = undefined;
 
-// db module (scheme, list)
-let dbName = "pad";
-let dbVersion = 1;
-let request = indexedDB.open(dbName, dbVersion);
-request.onupgradeneeded = e => {
-    // v1
-    let db = e.target.result;
-    let objectStore = db.createObjectStore("drawings", { autoIncrement: true });
-    objectStore.createIndex("name", "name", { unique: false });
-    objectStore.createIndex("content", "content", { unique: false });
-};
-let updateList = db => {
-    let transaction = db.transaction("drawings", "readwrite");
-    let objectStore = transaction.objectStore("drawings");
+let updateList = () => {
     let list = document.getElementById('list');
     list.innerHTML = '';
-    objectStore.openCursor().onsuccess = e => {
-        let cursor = e.target.result;
-        if (cursor) {
-            let drawing = cursor.value;
+    db.list({
+        onItem: item => {
+            let {key, value} = item;
+            let {content} = value;
             let img = document.createElement('img');
-            img.src = 'data:image/svg+xml,' + encodeURIComponent(drawing.content);
-            img.dataset.key = cursor.key;
+            img.src = 'data:image/svg+xml,' + encodeURIComponent(content);
+            img.dataset.key = key;
             img.onclick = e => {
                 svgKey = Number(e.target.dataset.key);
-                currentSvg = drawing.content;
+                currentSvg = content;
                 codeToImg();
                 openView('editor');
             };
             list.prepend(img);
-            cursor.continue();
         }
-    };
+    });
 };
-request.onsuccess = e => {
-    let db = e.target.result;
-    updateList(db);
+
+let saveSvg = callback => {
+    db.save({
+        key: svgKey,
+        content: currentSvg,
+        name: "Untitled",
+        onSaved: key => {
+            svgKey = key;
+            if (callback) {
+                callback();
+            }
+        }
+    });
 };
+
+let db = connect({
+    dbName: 'pad',
+    dbVersion: 1,
+    objectsName: 'drawings',
+    onConnected: updateList
+});
 
 let codeToImg = () => {
     let svgimg = document.getElementById('svgimg');
@@ -81,33 +84,6 @@ let imgToCode = () => {
     svgcode.value = currentSvg;
 };
 
-// db module Write
-let saveSvg = callback => {
-    let request = indexedDB.open(dbName, dbVersion);
-    request.onsuccess = e => {
-        let db = e.target.result;
-        let transaction = db.transaction("drawings", "readwrite");
-        let objectStore = transaction.objectStore("drawings");
-        if (svgKey) {
-            objectStore.put({
-                name: "Untitled",
-                content: currentSvg
-            }, svgKey);
-        } else {
-            let addRequest = objectStore.add({
-                name: "Untitled",
-                content: currentSvg
-            });
-            addRequest.onsuccess = e => {
-                svgKey = addRequest.result;
-            };
-        }
-        if (callback) {
-            callback();
-        }
-    };
-};
-
 // button actions
 
 window.newSvg = e => {
@@ -128,8 +104,8 @@ window.importSvg = e => {
         reader.onload = e => {
             svgKey = undefined;
             currentSvg = reader.result;
-            saveSvg();
             codeToImg();
+            saveSvg();
             openView('editor');
         };
         reader.readAsText(file);
@@ -137,16 +113,11 @@ window.importSvg = e => {
     input.click();
 };
 
-// db module (R read)
 window.openGallery = e => {
     imgToCode();
     saveSvg(() => {
-        let request = indexedDB.open(dbName, dbVersion);
-        request.onsuccess = e => {
-            let db = e.target.result;
-            updateList(db);
-            openView('gallery');
-        };
+        updateList();
+        openView('gallery');
     });
 };
 
@@ -168,8 +139,9 @@ window.applySource = () => {
     let svgcode = document.getElementById('svgcode');
     currentSvg = svgcode.value;
     codeToImg();
-    saveSvg();
-    openView('editor');
+    saveSvg(() => {
+        openView('editor');
+    });
 };
 
 window.discardSource = () => {
@@ -571,6 +543,3 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         }
     });
 });
-
-// end
-})();
