@@ -216,19 +216,20 @@ let selectElement = el => {
             let cursor = el.cloneNode(true);
             svgcursors.appendChild(cursor);
             selectedCursors.push(cursor);
-            if (selectedElements.length === 1) {
-                let fill = el.getAttribute('fill');
-                let stroke = el.getAttribute('stroke');
-                let width = el.getAttribute('stroke-width');
-                if (fill) {
-                    document.getElementById('fillcolor').value = fill;
-                }
-                if (stroke) {
-                    document.getElementById('strokecolor').value = stroke;
-                }
-                if (width) {
-                    document.getElementById('strokewidth').value = width;
-                }
+        }
+        if (selectedElements.length === 1) {
+            let sel = selectedElements[0];
+            let fill = sel.getAttribute('fill');
+            let stroke = sel.getAttribute('stroke');
+            let width = sel.getAttribute('stroke-width');
+            if (fill) {
+                document.getElementById('fillcolor').value = fill;
+            }
+            if (stroke) {
+                document.getElementById('strokecolor').value = stroke;
+            }
+            if (width) {
+                document.getElementById('strokewidth').value = width;
             }
         }
     } else {
