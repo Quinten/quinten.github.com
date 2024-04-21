@@ -5,7 +5,6 @@ let svgKey = undefined;
 let defaultSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
     width="1024" height="1024" viewBox="0 0 1024 1024">
     <rect width="1024" height="1024" fill="#fff" />
-    <circle cx="512" cy="512" r="256" fill="#000" />
 </svg>`;
 let currentSvg = defaultSvg;
 let currentPad = undefined;
