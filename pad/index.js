@@ -1,18 +1,9 @@
-import {connect} from './filesDB.js';
-
-let svgKey = undefined;
-let defaultSvg = `<svg
-    version="1.1" xmlns="http://www.w3.org/2000/svg"
-    width="1024" height="1024" viewBox="0 0 1024 1024">
-    <rect width="1024" height="1024" fill="#fff" />
-</svg>`;
-let currentSvg = defaultSvg;
-let currentPad = undefined;
+import {connect} from './collection.js';
 
 let updateList = () => {
     let list = document.getElementById('list');
     list.innerHTML = '';
-    db.list({
+    collection.list({
         onItem: item => {
             let {key, value} = item;
             let {content} = value;
@@ -20,46 +11,29 @@ let updateList = () => {
             img.src = 'data:image/svg+xml,' + encodeURIComponent(content);
             img.dataset.key = key;
             img.onclick = e => {
-                svgKey = Number(e.target.dataset.key);
-                currentSvg = content;
-                codeToImg();
-                openView('editor');
+                collection.open({
+                    key: Number(e.target.dataset.key),
+                    onOpened: svgContent => {
+                        codeToImg(svgContent);
+                        openView('editor');
+                    }
+                });
             };
             list.prepend(img);
         }
     });
 };
 
-let saveSvg = callback => {
-    db.save({
-        key: svgKey,
-        content: currentSvg,
-        name: "Untitled",
-        onSaved: key => {
-            svgKey = key;
-            if (callback) {
-                callback();
-            }
-        }
-    });
+let collection = connect({onConnected: updateList});
+
+let autoSave = () => {
+    collection.save({content: imgToCode()});
 };
 
-let db = connect({
-    dbName: 'pad',
-    dbVersion: 1,
-    objectsName: 'drawings',
-    onConnected: updateList
-});
-
-let codeToImg = () => {
+let codeToImg = (currentSvg) => {
     let svgimg = document.getElementById('svgimg');
     let svgcode = document.getElementById('svgcode');
-    currentSvg = currentSvg.replace(/<\?[^>]*\?>/g, '');
-    // remove paths with only M and Z commands, and no L or C or S or Q or T commands, or any other
-    // alphabet letter commands
-    currentSvg = currentSvg.replace(/<path d="M[^A-Z]*Z"[^<]*(<\/path>|\/>){1}\s*/g, '');
     svgcode.value = currentSvg;
-    //svgimg.src = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
     svgimg.innerHTML = currentSvg;
     let cursorsvg = document.getElementById('svgcursors').querySelector('svg');
     let imgsvg = svgimg.querySelector('svg');
@@ -80,72 +54,64 @@ let codeToImg = () => {
 let imgToCode = () => {
     let svgimg = document.getElementById('svgimg');
     let svgcode = document.getElementById('svgcode');
-    currentSvg = svgimg.innerHTML;
-    svgcode.value = currentSvg;
+    svgcode.value = svgimg.innerHTML;
+    return svgcode.value;
 };
 
 // button actions
 
 window.newSvg = e => {
-    svgKey = undefined;
-    currentSvg = defaultSvg;
-    codeToImg();
-    saveSvg();
-    openView('editor');
+    collection.create({
+        onCreated: content => {
+            codeToImg(content);
+            openView('editor');
+        }
+   });
 };
 
 window.importSvg = e => {
-    let input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.svg';
-    input.onchange = e => {
-        let file = input.files[0];
-        let reader = new FileReader();
-        reader.onload = e => {
-            svgKey = undefined;
-            currentSvg = reader.result;
-            codeToImg();
-            saveSvg();
+    collection.importItem({
+        onImported: content => {
+            codeToImg(content);
             openView('editor');
-        };
-        reader.readAsText(file);
-    };
-    input.click();
+        }
+   });
 };
 
 window.openGallery = e => {
-    imgToCode();
-    saveSvg(() => {
-        updateList();
-        openView('gallery');
-    });
-};
-
-window.openSource = () => {
-    imgToCode();
-    saveSvg(() => {
-        openView('source');
+    collection.save({
+        content: imgToCode(),
+        onSaved: () => {
+            updateList();
+            openView('gallery');
+        }
     });
 };
 
 window.exportSvg = e => {
-    let a = document.createElement('a');
-    a.href = 'data:image/svg+xml,' + encodeURIComponent(currentSvg);
-    a.download = 'drawing.svg';
-    a.click();
+    collection.exportItem();
+};
+
+window.openSource = () => {
+    collection.save({
+        content: imgToCode(),
+        onSaved: () => {
+            openView('source');
+        }
+    });
 };
 
 window.applySource = () => {
-    let svgcode = document.getElementById('svgcode');
-    currentSvg = svgcode.value;
-    codeToImg();
-    saveSvg(() => {
-        openView('editor');
+    collection.save({
+        content: document.getElementById('svgcode').value,
+        onSaved: content => {
+            codeToImg(content);
+            openView('editor');
+        }
     });
 };
 
 window.discardSource = () => {
-    codeToImg();
     openView('editor');
 };
 
@@ -160,6 +126,8 @@ window.openView = view => {
     viewToShow.style.display = 'block';
     window.onViewOpen({view});
 };
+
+// select actions
 
 let selectedElements = [];
 let selectedCursors = [];
@@ -220,8 +188,7 @@ window.removeElements = () => {
         el.remove();
     });
     deselectAllElements();
-    imgToCode();
-    saveSvg();
+    autoSave();
 };
 
 window.raiseElements = () => {
@@ -247,8 +214,7 @@ window.raiseElements = () => {
             highestSibling.after(el);
         });
     }
-    imgToCode();
-    saveSvg();
+    autoSave();
 };
 
 window.lowerElements = () => {
@@ -274,16 +240,14 @@ window.lowerElements = () => {
             lowestSibling.before(el);
         });
     }
-    imgToCode();
-    saveSvg();
+    autoSave();
 };
 
 window.fillElements = () => {
     selectedElements.forEach(el => {
         el.setAttribute('fill', document.getElementById('fillcolor').value);
     });
-    imgToCode();
-    saveSvg();
+    autoSave();
 };
 
 window.strokeElements = () => {
@@ -300,17 +264,22 @@ window.strokeElements = () => {
             el.setAttribute('stroke-width', width);
         });
     }
-    imgToCode();
-    saveSvg();
+    autoSave();
 };
 
+// editor
+
 document.querySelectorAll('.custom-touch').forEach(container => {
+
+    let currentPad = undefined;
 
     let handleTaps = e => {
         nTaps++;
         if (nTaps === 1) {
             setTimeout(() => {
                 let svgcursors = document.getElementById('svgcursors').querySelector('svg');
+                let svgimg = document.getElementById('svgimg');
+                let imgsvg = svgimg.querySelector('svg');
                 if (nTaps === 1) {
                     if (selectedElements.length === 0 && !touchId2) {
                         let x = 0;
@@ -322,8 +291,6 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                             x = e.clientX;
                             y = e.clientY;
                         }
-                        let svgimg = document.getElementById('svgimg');
-                        let imgsvg = svgimg.querySelector('svg');
                         let width = imgsvg.getAttribute('width');
                         if (!width) {
                             let viewBox = imgsvg.getAttribute('viewBox');
@@ -352,16 +319,18 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                     if (currentPad !== undefined) {
                         currentPad += " Z";
                         let fill = document.getElementById('fillcolor').value;
+                        let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        path.setAttribute('d', currentPad);
+                        path.setAttribute('fill', fill);
                         let stroke = document.getElementById('strokecolor').value;
                         let width = document.getElementById('strokewidth').value;
-                        if (width === '0') {
-                            currentSvg = currentSvg.replace(/<\/svg>/, '<path d="' + currentPad + '" fill="' + fill + '" /></svg>');
-                        } else {
-                            currentSvg = currentSvg.replace(/<\/svg>/, '<path d="' + currentPad + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + width + '" /></svg>');
+                        if (Number(width) && Number(width) > 0) {
+                            path.setAttribute('stroke', stroke);
+                            path.setAttribute('stroke-width', width);
                         }
+                        imgsvg.appendChild(path);
                         currentPad = undefined;
-                        codeToImg();
-                        saveSvg();
+                        autoSave();
                         svgcursors.innerHTML = '';
                     } else {
                         let el = e.target;
