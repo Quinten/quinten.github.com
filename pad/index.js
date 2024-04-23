@@ -253,91 +253,93 @@ window.fillElements = () => {
 window.strokeElements = () => {
     let stroke = document.getElementById('strokecolor').value;
     let width = document.getElementById('strokewidth').value;
-    if (width === '0') {
-        selectedElements.forEach(el => {
-            el.removeAttribute('stroke');
-            el.removeAttribute('stroke-width');
-        });
-    } else {
+    if (Number(width) && Number(width) > 0) {
         selectedElements.forEach(el => {
             el.setAttribute('stroke', stroke);
             el.setAttribute('stroke-width', width);
         });
+    } else {
+        selectedElements.forEach(el => {
+            el.removeAttribute('stroke');
+            el.removeAttribute('stroke-width');
+        });
     }
     autoSave();
 };
+
 
 // editor
 
 document.querySelectorAll('.custom-touch').forEach(container => {
 
     let currentPad = undefined;
+    let drawPath = (e) => {
+        if (selectedElements.length > 0) {
+            return;
+        }
+        let cursorsvg = document.getElementById('svgcursors').querySelector('svg');
+        let imgsvg = document.getElementById('svgimg').querySelector('svg');
+        let width = imgsvg.getAttribute('width');
+        if (!width) {
+            let viewBox = imgsvg.getAttribute('viewBox');
+            if (viewBox) {
+                width = viewBox.split(' ')[2];
+            }
+        }
+        let x = 0;
+        let y = 0;
+        if (e.touches) {
+            x = e.touches[0].clientX;
+            y = e.touches[0].clientY;
+        } else {
+            x = e.clientX;
+            y = e.clientY;
+        }
+        let offsetX = imgsvg.getBoundingClientRect().left;
+        let offsetY = imgsvg.getBoundingClientRect().top;
+        x -= offsetX;
+        y -= offsetY;
+        width = Number(width);
+        let zoom = width / imgsvg.clientWidth;
+        x = x * zoom;
+        y = y * zoom;
+        if (currentPad === undefined) { 
+            currentPad = "M " + x + " " + y;
+            cursorsvg.innerHTML = '<path d="' + currentPad + ' L ' + (x + 4) + ' ' + (y + 4) + ' Z" />';
+        } else {
+            currentPad += " L " + x + " " + y;
+            cursorsvg.innerHTML = '<path d="' + currentPad + ' Z" />';
+        }
+    };
+    let endPath = (e) => {
+        if (currentPad !== undefined) {
+            let cursorsvg = document.getElementById('svgcursors').querySelector('svg');
+            let imgsvg = document.getElementById('svgimg').querySelector('svg');
+            currentPad += " Z";
+            let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', currentPad);
+            imgsvg.appendChild(path);
+            currentPad = undefined;
+            cursorsvg.innerHTML = '';
+            selectElement(path);
+            fillElements();
+            strokeElements();
+        } else {
+            let el = e.target;
+            selectElement(el);
+        }
+    };
 
     let nTaps = 0;
     let handleTaps = e => {
         nTaps++;
         if (nTaps === 1) {
             setTimeout(() => {
-                let svgcursors = document.getElementById('svgcursors').querySelector('svg');
-                let svgimg = document.getElementById('svgimg');
-                let imgsvg = svgimg.querySelector('svg');
-                if (nTaps === 1) {
-                    if (selectedElements.length === 0 && !touchId2) {
-                        let x = 0;
-                        let y = 0;
-                        if (e.touches) {
-                            x = e.touches[0].clientX;
-                            y = e.touches[0].clientY;
-                        } else {
-                            x = e.clientX;
-                            y = e.clientY;
-                        }
-                        let width = imgsvg.getAttribute('width');
-                        if (!width) {
-                            let viewBox = imgsvg.getAttribute('viewBox');
-                            if (viewBox) {
-                                width = viewBox.split(' ')[2];
-                            }
-                        }
-                        let offsetX = imgsvg.getBoundingClientRect().left;
-                        let offsetY = imgsvg.getBoundingClientRect().top;
-                        x -= offsetX;
-                        y -= offsetY;
-                        width = Number(width);
-                        let zoom = width / svgimg.clientWidth;
-                        x = x * zoom;
-                        y = y * zoom;
-                        if (currentPad === undefined) { 
-                            currentPad = "M " + x + " " + y;
-                            svgcursors.innerHTML = '<path d="' + currentPad + ' L ' + (x + 4) + ' ' + (y + 4) + ' Z" />';
-                        } else {
-                            currentPad += " L " + x + " " + y;
-                            svgcursors.innerHTML = '<path d="' + currentPad + ' Z" />';
-                        }
-                    }
+                if (nTaps === 1 && !touchId2) {
+                    drawPath(e);
                 }
-                if (nTaps === 2) {
-                    if (currentPad !== undefined) {
-                        currentPad += " Z";
-                        let fill = document.getElementById('fillcolor').value;
-                        let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                        path.setAttribute('d', currentPad);
-                        path.setAttribute('fill', fill);
-                        let stroke = document.getElementById('strokecolor').value;
-                        let width = document.getElementById('strokewidth').value;
-                        if (Number(width) && Number(width) > 0) {
-                            path.setAttribute('stroke', stroke);
-                            path.setAttribute('stroke-width', width);
-                        }
-                        imgsvg.appendChild(path);
-                        currentPad = undefined;
-                        autoSave();
-                        svgcursors.innerHTML = '';
-                        selectElement(path);
-                    } else {
-                        let el = e.target;
-                        selectElement(el);
-                    }
+                if (nTaps === 2 && !touchId2) {
+                    endPath(e);
                 }
                 nTaps = 0;
             }, 300);
