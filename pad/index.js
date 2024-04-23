@@ -333,6 +333,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
                         currentPad = undefined;
                         autoSave();
                         svgcursors.innerHTML = '';
+                        selectElement(path);
                     } else {
                         let el = e.target;
                         selectElement(el);
