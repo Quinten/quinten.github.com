@@ -346,56 +346,72 @@ document.querySelectorAll('.custom-touch').forEach(container => {
     let inner = container.querySelector('.custom-touch-inner');
     let left = 0;
     let top = 0;
-    let updatePosition = (x, y) => {
-        inner.style.left = (left + x) + 'px';
-        inner.style.top = (top + y) + 'px';
-    };
-    updatePosition(0, 0);
     let startWidth = inner.clientWidth;
-    let updateScale = scale => {
-        inner.style.width = (startWidth * scale) + 'px';
-    };
-    updateScale(1);
-    let spaceDown = false;
     let panStarted = false;
-    let stopPanning = () => {
+    let startX = window.innerWidth / 2;
+    let startY = window.innerHeight / 2;
+    let startScale = 1;
+
+    let prePanning = () => {
         if (panStarted) {
-            top = Number(inner.style.top.replace('px', ''));
-            left = Number(inner.style.left.replace('px', ''));
-            panStarted = false;
-            container.style.cursor = spaceDown ? 'grab' : 'auto';
+            return;
         }
+        container.style.cursor = 'grab';
     };
-    let stopZooming = () => {
+    let startPanning = (x, y, scale) => {
+        startX = x;
+        startY = y;
+        startScale = scale;
+        panStarted = true;
+    };
+    let updatePanning = (x, y, scale) => {
+        if (!panStarted) {
+            return;
+        }
+        let dScale = scale / startScale;
+        let dX = (x - startX);
+        let dY = (y - startY);
+        dX = dX + (left - startX) * (dScale - 1);
+        dY = dY + (top - startY) * (dScale - 1);
+        inner.style.left = (left + dX) + 'px';
+        inner.style.top = (top + dY) + 'px';
+        inner.style.width = (startWidth * dScale) + 'px';
+        let cursor = dScale > 1 ? 'zoom-in' : dScale < 1 ? 'zoom-out' : 'grabbing';
+        container.style.cursor = cursor;
+    };
+    let stopPanning = () => {
         top = Number(inner.style.top.replace('px', ''));
         left = Number(inner.style.left.replace('px', ''));
         startWidth = inner.clientWidth;
+        container.style.cursor = 'auto';
+        panStarted = false;
     };
-    let resetZooming = () => {
+    let resetPanning = () => {
         left = 0;
         top = 0;
-        updatePosition(0, 0);
         startWidth = window.innerWidth;
-        updateScale(1);
+        startPanning(0, 0, 1);
+        updatePanning(0, 0, 1);
+        stopPanning();
     };
+    resetPanning();
 
     let oldOnViewOpen = window.onViewOpen;
     window.onViewOpen = e => {
         oldOnViewOpen(e);
         if (e.view === 'editor') {
-            resetZooming();
+            resetPanning();
         } else {
             deselectAllElements();
         }
     };
 
+    // touch
+
     let touchId1 = undefined;
     let touchId2 = undefined;
     let touch1 = undefined;
     let touch2 = undefined;
-    let startX = window.innerWidth / 2;
-    let startY = window.innerHeight / 2;
-    let startScale = undefined;
 
     container.addEventListener('touchstart', e => {
         e.preventDefault();
@@ -405,9 +421,10 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             touchId2 = touches[1].identifier;
             touch1 = touches[0];
             touch2 = touches[1];
-            startX = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
-            startY = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
-            startScale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);
+            let x = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
+            let y = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
+            let scale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);
+            startPanning(x, y, scale);
         }
         if (touches.length === 1) {
             handleTaps(e);  
@@ -428,14 +445,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             let x = touch1.screenX + (touch2.screenX - touch1.screenX) / 2;
             let y = touch1.screenY + (touch2.screenY - touch1.screenY) / 2;
             let scale = Math.hypot(touch2.screenX - touch1.screenX, touch2.screenY - touch1.screenY);
-
-            let dScale = scale / startScale;
-            updateScale(dScale);
-            let dX = (x - startX);
-            let dY = (y - startY);
-            dX = dX + (left - startX) * (dScale - 1);
-            dY = dY + (top - startY) * (dScale - 1);
-            updatePosition(dX, dY);
+            updatePanning(x, y, scale);
         }
     });
     container.addEventListener('touchend', e => {
@@ -446,45 +456,42 @@ document.querySelectorAll('.custom-touch').forEach(container => {
             if (touch.identifier === touchId1 || touch.identifier === touchId2) {
                 touchId1 = undefined;
                 touchId2 = undefined;
-                stopZooming();
+                stopPanning();
             }
         }
     });
 
     // desktop
+    let spaceDown = false;
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
     window.addEventListener('keydown', e => {
         if (e.keyCode === 32) {
             spaceDown = true;
-            container.style.cursor = 'grab';
+            prePanning();
         }
     });
     window.addEventListener('keyup', e => {
         if (e.keyCode === 32) {
             spaceDown = false;
-            container.style.cursor = 'auto';
+            stopPanning();
         }
     });
     container.addEventListener('mousedown', e => {
         e.preventDefault();
         if (spaceDown) {
-            startX = e.screenX;
-            startY = e.screenY;
-            panStarted = true;
-            container.style.cursor = 'grabbing';
+            let x = e.screenX;
+            let y = e.screenY;
+            startPanning(x, y, 1);
         } else {
             handleTaps(e);
         }
     });
     container.addEventListener('mousemove', e => {
         e.preventDefault();
-        if (spaceDown && panStarted) {
-            let dX = e.screenX - startX;
-            let dY = e.screenY - startY;
-            updatePosition(dX, dY);
-        } else {
-            startX = e.screenX;
-            startY = e.screenY;
-        }
+        mouseX = e.screenX;
+        mouseY = e.screenY;
+        updatePanning(mouseX, mouseY, 1);
     });
     container.addEventListener('mouseup', e => {
         stopPanning();
@@ -493,22 +500,21 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         stopPanning();
     });
     let wheelTO = undefined;
+    let wheelScale = 1;
     container.addEventListener('wheel', e => {
         e.preventDefault();
         if (e.ctrlKey) {
-            if (wheelTO) {
-                clearTimeout(wheelTO);
+            if (!wheelTO) {
+                wheelScale = 1;
+                startPanning(mouseX, mouseY, wheelScale);
             } else {
-                startScale = 1;
+                clearTimeout(wheelTO);
+                wheelScale -= e.deltaY / 750;
+                wheelScale = Math.max(0.1, wheelScale);
+                updatePanning(mouseX, mouseY, wheelScale);
             }
-            startScale -= e.deltaY / 1000;
-            startScale = Math.max(0.1, startScale);
-            updateScale(startScale);
-            let dX = (left - startX) * (startScale - 1);
-            let dY = (top - startY) * (startScale - 1);
-            updatePosition(dX, dY);
             wheelTO = setTimeout(() => {
-                stopZooming();
+                stopPanning();
                 wheelTO = undefined;
             }, 100);
         }
