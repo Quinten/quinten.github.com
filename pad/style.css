@@ -41,7 +41,9 @@ nav {
 button, input {
     background-color: #000;
     cursor: pointer;
-    padding: .5em 1em;
+    padding: .5em;
+    min-width: 40px;
+    text-align: center;
     display: inline-block;
     vertical-align: middle;
 }

@@ -115,15 +115,19 @@ window.discardSource = () => {
     openView('editor');
 };
 
+let toggleToEl = id => {
+    let elToShow = document.getElementById(id);
+    let siblingSel = '.' + elToShow.className.split(' ').join('.');
+    let siblings = elToShow.parentElement.querySelectorAll(siblingSel);
+    siblings.forEach(sibling => {
+        sibling.style.display = sibling === elToShow ? 'block' : 'none';
+    });
+};
+
 window.onViewOpen = e => {};
 
 window.openView = view => {
-    let views = document.getElementsByClassName('view');
-    for (let i = 0; i < views.length; i++) {
-        views[i].style.display = 'none';
-    }
-    let viewToShow = document.getElementById(view);
-    viewToShow.style.display = 'block';
+    toggleToEl(view);
     window.onViewOpen({view});
 };
 
@@ -136,12 +140,7 @@ let deselectAllElements = () => {
         selectedElements.pop();
         selectedCursors.pop().remove();
     }
-    document.querySelectorAll('.select-action').forEach(el => {
-        el.style.display = 'none';
-    });
-    document.querySelectorAll('.default-action').forEach(el => {
-        el.style.display = 'inline-block';
-    });
+    toggleToEl('svgtools');
 };
 let selectElement = el => {
     let svgcursors = document.getElementById('svgcursors').querySelector('svg');
@@ -175,12 +174,7 @@ let selectElement = el => {
     } else {
         deselectAllElements();
     }
-    document.querySelectorAll('.select-action').forEach(el => {
-        el.style.display = selectedElements.length > 0 ? 'inline-block' : 'none';
-    });
-    document.querySelectorAll('.default-action').forEach(el => {
-        el.style.display = selectedElements.length > 0 ? 'none' : 'inline-block';
-    });
+    toggleToEl(selectedElements.length > 0 ? 'pathtools' : 'svgtools');
 };
 
 window.removeElements = () => {

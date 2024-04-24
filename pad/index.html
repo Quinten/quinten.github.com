@@ -21,22 +21,21 @@
             </div>
         </div>
         <div class="view" id="editor" style="display: none;">
-            <nav>
+            <nav class="toolbar" id="svgtools">
                 <button onclick="openGallery()" class="default-action">list</button>
                 <button onclick="openSource()" class="default-action">code</button>
                 <button onclick="exportSvg()" class="default-action">export</button>
-                <button onclick="lowerElements()" class="select-action" style="display: none;"
-                    title="Lower selected elements">lo</button>
-                <button onclick="raiseElements()" class="select-action" style="display: none;"
-                    title="Raise selected elements">hi</button>
-                <input oninput="fillElements()" class="select-action" style="display: none;"
-                type="color" id="fillcolor" title="Fill" value="#ffffff" />
-                <input oninput="strokeElements()" class="select-action" style="display: none;"
-                type="color" id="strokecolor" title="Stroke" value="#000000" />
-                <input oninput="strokeElements()" class="select-action" style="display: none;"
-                type="number" min="0" max="99" step="1" id="strokewidth" title="Stroke width"
-                value="1" inputmode="numeric" pattern="[0-9]*" />
-                <button onclick="removeElements()" class="select-action" style="display: none;" title="Remove selected elements">rm</button>
+            </nav>
+            <nav class="toolbar" id="pathtools" style="display: none;">
+                <button onclick="lowerElements()" title="Lower selected elements">\/</button>
+                <button onclick="raiseElements()" title="Raise selected elements">/\</button>
+                <input oninput="fillElements()" type="color" id="fillcolor" title="Fill"
+                value="#ffffff" />
+                <input oninput="strokeElements()" type="color" id="strokecolor" title="Stroke"
+                value="#000000" />
+                <input oninput="strokeElements()" type="number" id="strokewidth" title="Stroke width"
+                value="1" min="0" max="99" step="1" inputmode="numeric" pattern="[0-9]*" />
+                <button onclick="removeElements()" title="Remove selected elements">X!</button>
             </nav>
             <div class="inner-view custom-touch">
                 <div class="custom-touch-inner">
