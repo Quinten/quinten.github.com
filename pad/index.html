@@ -13,7 +13,7 @@
         <div class="view" id="gallery">
             <nav>
                 <button onclick="newSvg()">new</button>
-                <button onclick="importSvg()">import</button>
+                <button onclick="importSvg()">imp</button>
                 <span class="version">v1.0.19</span>
             </nav>
             <div class="inner-view">
@@ -22,9 +22,9 @@
         </div>
         <div class="view" id="editor" style="display: none;">
             <nav class="toolbar" id="svgtools">
-                <button onclick="openGallery()" class="default-action">list</button>
-                <button onclick="openSource()" class="default-action">code</button>
-                <button onclick="exportSvg()" class="default-action">export</button>
+                <button onclick="openGallery()">all</button>
+                <button onclick="exportSvg()">exp</button>
+                <button onclick="openSource()">src</button>
             </nav>
             <nav class="toolbar" id="pathtools" style="display: none;">
                 <button onclick="lowerElements()" title="Lower selected elements">\/</button>
@@ -51,8 +51,8 @@
         </div>
         <div class="view" id="source" style="display: none;">
             <nav>
-                <button onclick="applySource()">apply</button>
-                <button onclick="discardSource()">discard</button>
+                <button onclick="applySource()">save</button>
+                <button onclick="discardSource()">cancel</button>
             </nav>
             <div class="inner-view">
                 <textarea id="svgcode"></textarea>
