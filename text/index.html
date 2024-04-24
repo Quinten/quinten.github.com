@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>text</title>
+    <meta name="description" content="The entire browser is a textfield that remebers the text.">
+    <meta name="author" content="Quinten Clause">
+    <meta name="monetization" content="$ilp.uphold.com/N3GyWXpENLq4">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <style type="text/css">
+        html,
+        body {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        #textbox {
+            width: 100%;
+            padding: .5em 1em;
+            font-family: monospace;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="textbox"></textarea>
+    <script>
+        var box = document.getElementById('textbox');
+        if (localStorage.getItem('notes')){
+            box.value = localStorage.getItem('notes');
+        }
+        window.addEventListener('keyup', function () {
+            localStorage.setItem('notes', box.value);
+        });
+        box.style.height = window.innerHeight + 'px';
+        window.addEventListener('resize', function () {
+            box.style.height = window.innerHeight + 'px';
+        });
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('sw.js?v=0.0.1');
+            });
+        }
+    </script>
+</body>
+</html>
