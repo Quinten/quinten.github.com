@@ -299,8 +299,8 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         y -= offsetY;
         width = Number(width);
         let zoom = width / imgsvg.clientWidth;
-        x = (x * zoom) % rounding;
-        y = (y * zoom) % rounding;
+        x = (x * zoom) | rounding;
+        y = (y * zoom) | rounding;
         if (currentPad === undefined) { 
             currentPad = "M " + x + " " + y;
             cursorsvg.innerHTML = '<path d="' + currentPad + ' L ' + (x + 4) + ' ' + (y + 4) + ' Z" />';
