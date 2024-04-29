@@ -35,6 +35,8 @@
                 value="#000000" />
                 <input oninput="strokeElements()" type="number" id="strokewidth" title="Stroke width"
                 value="1" min="0" max="99" step="1" inputmode="numeric" pattern="[0-9]*" />
+                <input oninput="updateRounding()" type="number" id="rounding" title="Rounding"
+                value="1" min="0" max="99" step="1" inputmode="numeric" pattern="[0-9]*" />
                 <button onclick="removeElements()" title="Remove selected elements">X!</button>
             </nav>
             <div class="inner-view custom-touch">
