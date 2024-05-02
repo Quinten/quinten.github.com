@@ -261,9 +261,20 @@ window.strokeElements = () => {
     autoSave();
 };
 
-let rounding = 1;
+let rounding = 32;
+
+let drawGridDots = () => {
+    let svgcursors = document.getElementById('svgcursors').querySelector('svg');
+    svgcursors.style.background = 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + rounding + ' ' + rounding + '"><circle cx="' + (rounding - 1) + '" cy="' + (rounding - 1) + '" r="1" fill="black" /></svg>') + '")';
+    let zoom = svgcursors.clientWidth / svgcursors.viewBox.baseVal.width;
+    svgcursors.style.backgroundSize = (rounding * zoom) + 'px ' + (rounding * zoom) + 'px';
+    svgcursors.style.backgroundRepeat = 'repeat';
+};
+drawGridDots();
+
 window.updateRounding = () => {
     rounding = Number(document.getElementById('rounding').value);
+    drawGridDots();
 };
 
 // editor
@@ -381,6 +392,7 @@ document.querySelectorAll('.custom-touch').forEach(container => {
         inner.style.width = (startWidth * dScale) + 'px';
         let cursor = dScale > 1 ? 'zoom-in' : dScale < 1 ? 'zoom-out' : 'grabbing';
         container.style.cursor = cursor;
+        drawGridDots();
     };
     let stopPanning = () => {
         top = Number(inner.style.top.replace('px', ''));
