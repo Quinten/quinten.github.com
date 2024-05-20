@@ -269,7 +269,8 @@ let drawGridDots = () => {
     let zoom = svgcursors.clientWidth / svgcursors.viewBox.baseVal.width;
     svgcursors.style.backgroundSize = (rounding * zoom) + 'px ' + (rounding * zoom) + 'px';
     svgcursors.style.backgroundRepeat = 'repeat';
-};
+    svgcursors.style.backgroundPosition = '0 0';
+}; 
 drawGridDots();
 
 window.updateRounding = () => {
