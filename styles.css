@@ -49,6 +49,8 @@ body {
     padding: 0px 15px;
     margin: 0px;
     font-family: monospace;
+    font-size: 14px;
+    line-height: 2.125;
 }
 
 ul {
