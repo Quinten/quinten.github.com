@@ -141,11 +141,13 @@ if (skipper) {
 let fullscreener = document.querySelector('.fullscreener');
 
 if (fullscreener) {
-    fullscreener.addEventListener('click', () => {
-        canvas.requestFullscreen().catch((err) => {
-            alert("Your browser does not support fullscreen mode");
+    if (document.fullscreenEnabled) {
+        fullscreener.addEventListener('click', () => {
+            canvas.requestFullscreen().catch((err) => {});
         });
-    });
+    } else {
+        fullscreener.style.display = 'none';
+    }
 }
 
 let modules = [], moduleIndex = -1;
