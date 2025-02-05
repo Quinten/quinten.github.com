@@ -134,22 +134,27 @@ a:hover, a:active {
     transition: transform .3s cubic-bezier(.24,1.34,.57,1.44);
 }
 
-.giffer:hover,
-.chaoser:hover,
-.fullscreener:hover,
-.skipper:hover,
-.expander:hover {
-    transform: scale(1.15, 1.15);
+@media (hover: hover) {
+    .giffer:hover,
+    .chaoser:hover,
+    .fullscreener:hover,
+    .skipper:hover,
+    .expander:hover {
+        transform: scale(1.15, 1.15);
+    }
 }
 
+.no-fullscreen .skipper,
 .fullscreener {
     top: 56px;
 }
 
+.no-fullscreen .chaoser,
 .skipper {
     top: 96px;
 }
 
+.no-fullscreen .giffer,
 .chaoser {
     top: 136px;
 }

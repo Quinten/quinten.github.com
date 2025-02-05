@@ -147,6 +147,7 @@ if (fullscreener) {
         });
     } else {
         fullscreener.style.display = 'none';
+        document.body.classList.add('no-fullscreen');
     }
 }
 
