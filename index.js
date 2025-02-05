@@ -142,7 +142,9 @@ let fullscreener = document.querySelector('.fullscreener');
 
 if (fullscreener) {
     fullscreener.addEventListener('click', () => {
-        canvas.requestFullscreen();
+        canvas.requestFullscreen().catch((err) => {
+            alert("Your browser does not support fullscreen mode");
+        });
     });
 }
 
