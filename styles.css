@@ -93,7 +93,7 @@ a:hover, a:active {
 
 .index-wrapper {
     margin: 0 -15px;
-    padding: 0 calc(25vw + 15px) 0 15px;
+    padding: 0 calc(25vw + 15px) 45px 15px;
 }
 
 .index-canvas {
