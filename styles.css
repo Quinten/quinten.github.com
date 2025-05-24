@@ -60,6 +60,7 @@ p {
 
 ul {
     list-style-type:circle;
+    padding-left: 1rem;
 }
 
 a:link {
