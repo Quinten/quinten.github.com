@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'geuze';
   src:
-    url('/fonts/geuze/fonts/geuze-icons.ttf?ps5ccf') format('truetype'),
-    url('/fonts/geuze/fonts/geuze-icons.woff?ps5ccf') format('woff'),
-    url('/fonts/geuze/fonts/geuze-icons.svg?ps5ccf#icons') format('svg');
+    url('/fonts/geuze/fonts/geuze-icons.ttf?ttt') format('truetype'),
+    url('/fonts/geuze/fonts/geuze-icons.woff?ttt') format('woff'),
+    url('/fonts/geuze/fonts/geuze-icons.svg?ttt#icons') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
