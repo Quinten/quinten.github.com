@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <title>Quinten Clause START!</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <style>
+        .slide {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide" id="slide1">
+        <h1>Quinten Clause</h1>
+    </div>
+    <div class="slide" id="slide2">
+        <p>Funny quote</p>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.style.display = (i === index) ? 'flex' : 'none';
+                });
+            }
+
+            showSlide(currentSlide);
+
+            window.addEventListener('keydown', function(event) {
+                if (['ArrowRight', 'ArrowDown', 'Enter', ' '].includes(event.key)) {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                } else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) {
+                    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                }
+                showSlide(currentSlide);
+            });
+        });
+    </script>
+</body>
+</html>
