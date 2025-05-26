@@ -1,4 +1,23 @@
 @font-face {
+  font-family: 'geuze';
+  src:
+    url('/fonts/geuze/fonts/geuze-icons.ttf?ps5ccf') format('truetype'),
+    url('/fonts/geuze/fonts/geuze-icons.woff?ps5ccf') format('woff'),
+    url('/fonts/geuze/fonts/geuze-icons.svg?ps5ccf#icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+[icon]:before {
+    font-family: 'geuze' !important;
+    font-size: 1.5em;
+    line-height: 1.5em;
+    display: inline-block;
+    content: attr(icon);
+}
+
+@font-face {
   font-family: 'icons';
   src:
     url('/fonts/icons.ttf?ps5ccf') format('truetype'),
@@ -63,6 +82,26 @@ ul {
     padding-left: 1rem;
 }
 
+footer {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    margin-right: 2rem;
+    font-size: 1.25rem;
+}
+
 a:link {
     color: #4FC6E3;
 }
@@ -72,6 +111,19 @@ a:visited {
 }
 
 a:hover, a:active {
+    color: #21B0D4;
+}
+
+nav ul li a:link {
+    text-decoration: none;
+    color: #F2FDFF;
+}
+
+nav ul li a:visited {
+    color: #D6C2CF;
+}
+
+nav ul li a:hover, nav ul li a:active {
     color: #21B0D4;
 }
 
@@ -106,7 +158,7 @@ h2:before {
 
 .index-wrapper {
     margin: 0 -15px;
-    padding: 0 calc(25vw + 15px) 45px 15px;
+    padding: 0 calc(25vw + 15px) 15px 15px;
 }
 
 .index-canvas {
