@@ -181,37 +181,20 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('#kompas');
+            const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
 
             function showSlide(index) {
                 slides[index].scrollIntoView({ behavior: 'smooth' });
             }
 
-            showSlide(currentSlide);
-
             window.addEventListener('keydown', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
                 if (['ArrowRight', 'Enter', ' '].includes(event.key)) {
                     currentSlide = (currentSlide + 1) % slides.length;
                 } else if (['ArrowLeft'].includes(event.key)) {
                     currentSlide = (currentSlide - 1 + slides.length) % slides.length;
                 }
                 showSlide(currentSlide);
-            });
-
-            document.body.addEventListener('click', function() {
-                let elem = document.body;
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) {
-                    elem.webkitRequestFullscreen();
-                } else if (elem.mozRequestFullScreen) {
-                    elem.mozRequestFullScreen();
-                } else if (elem.msRequestFullscreen) {
-                    elem.msRequestFullscreen();
-                }
             });
         });
     </script>

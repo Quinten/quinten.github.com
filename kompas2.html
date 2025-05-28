@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <title>Quinten Clause START!</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <style>
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 2rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        #kompas {
+            background: #272D2D;
+            color: #F2FDFF;
+        }
+    </style>
+</head>
+<body>
+    <div id="kompas">
+        <div class="slide">
+            <div class="text-center">
+                <img src="img/supernapie.svg" style="width: 128px; height: 128px;" alt="Supernapie Logo">
+                <h1>Supernapie</h1>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="text-center" style="flex: 1 0 100%; width: 100%;">
+                <img src="img/dangle-drop-poster.jpg" style="width: 100%; max-width: 100vh; height: auto;" alt="Breekbaar Zoutvat">
+            </div>
+        </div>
+        <div class="slide">
+            <div class="text-center" style="flex: 1 0 100%; width: 100%;">
+                <p>USP's</p>
+            </div>
+            <div>
+                <ul>
+                    <li>Non-violent</li>
+                    <li>Puzzels</li>
+                    <li>Meditatief</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="text-center" style="flex: 1 0 100%; width: 100%;">
+                <p>Pipeline</p>
+            </div>
+            <div>
+                <ul>
+                    <li>Arkadium</li>
+                    <li>DPG Media</li>
+                    <li>Supernapie</li>
+                    <li>App stores</li>
+                    <li>Routerlands kickstarter</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="text-center" style="flex: 1 0 100%; width: 100%;">
+                <p>Verdienmodel</p>
+            </div>
+            <div>
+                <h2>Games</h2>
+                <ul>
+                    <li>Licenties</li>
+                    <li>Ads / revenue share</li>
+                    <li>Premium games</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="text-center" style="flex: 1 0 100%; width: 100%;">
+                <p>Promotie</p>
+            </div>
+            <div>
+                <p><a href="https://supernapie.com/">supernapie.com</a></p>
+                <p><span icon="&#xe90c;"></span> itch.io</p>
+                <p><span icon="&#xf099;"></span> <s>Twitter</s> <span icon="&#xe900;"></span> Bluesky</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+            }
+
+            window.addEventListener('keydown', function(event) {
+                if (['ArrowRight', 'Enter', ' '].includes(event.key)) {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                } else if (['ArrowLeft'].includes(event.key)) {
+                    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                }
+                showSlide(currentSlide);
+            });
+        });
+    </script>
+</body>
+</html>
